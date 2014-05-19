@@ -1,0 +1,102 @@
+@import "compass/css3";
+@import (css)(sys.lib);
+
+.NavigationController {
+	overflow: hidden;
+	
+	.NavigationControllerHeaderBackButton {
+		opacity: 0;
+		pointer-events: none;
+		@include transition(opacity .2s);
+	}
+	
+	&.EnableBackButton .NavigationControllerHeaderBackButton {
+		opacity: 1;
+		pointer-events: all;
+	}
+	
+	.NavigationControllerContent {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		left: 0;
+		.NavigationControllerContentInner {
+			height: 100%;
+			& > div {
+				position: relative;
+				float: left;
+				height: 100%;
+				overflow: hidden;
+			}
+		}
+	}
+	
+	.NavigationControllerPresenter {
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		z-index: 1;
+		&:before {
+			position: absolute;
+			top: -100%;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background: rgba(0,0,0,.1);
+			content: '';
+			@include animation-duration(.3s);
+			@include animation-name(showNavigationPresenterBackground);
+		}
+		@include transform(translateZ(0));
+		@include animation-duration(.3s);
+		@include animation-name(showNavigationPresenter);
+		&.Dismiss {
+			@include animation-name(hideNavigationPresenter);
+			&:before {
+				@include animation-name(hideNavigationPresenterBackground);
+			}
+		}
+	}
+}
+
+@include keyframes(showNavigationPresenterBackground){
+	0% {
+		opacity: 0;
+	}
+	
+	100% {
+		opacity: 1;
+	}
+}
+
+@include keyframes(hideNavigationPresenterBackground){
+	from {
+		opacity: 1;
+	}
+	
+	to {
+		opacity: 0;
+	}
+}
+
+@include keyframes(showNavigationPresenter){
+	from {
+		@include transform(translateY(100%));
+	}
+	
+	to {
+		@include transform(translateY(0%));
+	}
+}
+
+@include keyframes(hideNavigationPresenter){
+	from {
+		@include transform(translateY(0%));
+	}
+	
+	to {
+		@include transform(translateY(100%));
+	}
+}

@@ -1,0 +1,21 @@
+{
+	"name": "GsScriptProject",
+	"version": "1.0.0",
+	"author": {
+		"name": "Kyle Kirby",
+		"email": "kkirby@gmrmarketing.com"
+	},
+	"dependencies": {
+		"glob": "*",
+		"gorillascript": "*",
+		"node-images": "*",
+		"node-sass": "*",
+		"underscore" : "*",
+		"underscore.string" : "*",
+		"jsdom": "*",
+		"wrench": "*",
+		"htmltidy": "*",
+		"colors": "*",
+		"sprintf": "*"
+	}
+}

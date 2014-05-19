@@ -1,0 +1,214 @@
+@function power($x,$n){
+    $ret: 1;
+    @if $n >= 0 {
+        @for $i from 1 through $n {
+            $ret: $ret * $x;
+        } 
+    }
+	@else {
+        @for $i from $n to 0 {
+            $ret: $ret / $x;
+        }
+    }
+    @return $ret;
+}
+
+@function rounded($num,$placeholder: 0){
+	$multipler: power(10,$placeholder);
+	@return round($num * $multipler) / $multipler;
+}
+
+@mixin backgroundGradient($colors...){
+	$formatA: null;
+	$formatB: null;
+	$formatC: null;
+	
+	$direction: nth($colors,1);
+	@if $direction == 'top' {
+		$formatA: top;
+		$formatB: linear, left top, left bottom;
+		$formatC: to bottom;
+	}
+	@elseif $direction == 'bottom' {
+		$formatA: bottom;
+		$formatB: linear, left bottom, left top;
+		$formatC: to top;
+	}
+	@elseif $direction == 'left' {
+		$formatA: left;
+		$formatB: linear, left top, right top;
+		$formatC: to right;
+	}
+	@elseif $direction == 'right' {
+		$formatA: right;
+		$formatB: linear, right top, left top;
+		$formatC: to left;
+	}
+	@elseif type-of($direction) == 'number' {
+		$formatA: $direction;
+		$formatC: ($direction + (360deg / 2)) % 360;
+		$deg: ($direction + 360deg) % 360;
+		@if $deg == 45deg {
+			$formatB: linear, right top, left bottom;
+		}
+		@elseif $deg == 135deg {
+			$formatB: linear, right bottom, left top;
+		}
+		@elseif $deg == 225deg {
+			$formatB: linear, left bottom, right top;
+		}
+		@elseif $deg == 315deg {
+			$formatB: linear, left top, right bottom;
+		}
+	}
+	$prepend: null;
+	$append: null;
+	$hasColor: false;
+	@for $i from 2 through length($colors) {
+		$colorGroup: nth($colors,$i);
+		@if type-of($colorGroup) == 'string' {
+			@if $hasColor {
+				@if $append == null {
+					$append: $colorGroup;
+				}
+				@else {
+					$append: append($append,$colorGroup,'comma');
+				}
+			}
+			@else {
+				@if $prepend == null {
+					$prepend: $colorGroup;
+				}
+				@else {
+					$prepend: append($prepend,$colorGroup,'comma');
+				}
+			}
+		}
+		@else {
+			$hasColor: true;
+			$color: nth($colorGroup,1);
+			$offset: nth($colorGroup,2);
+			$formatA: append($formatA,$color $offset,'comma');
+			$formatB: append($formatB,color-stop($offset,$color),'comma');
+			$formatC: append($formatC,$color $offset,'comma');
+		}
+	}
+	
+	background-image: join($prepend,join(-moz-linear-gradient($formatA),$append),'comma');
+	background-image: join($prepend,join(-webkit-gradient($formatB),$append),'comma');
+	background-image: join($prepend,join(-webkit-linear-gradient($formatA),$append),'comma');
+	background-image: join($prepend,join(-o-linear-gradient($formatA),$append),'comma');
+	background-image: join($prepend,join(-ms-linear-gradient($formatA),$append),'comma');
+	background-image: join($prepend,join(linear-gradient($formatC),$append),'comma');
+}
+
+@mixin position($x,$y,$width: auto,$height: auto){
+	position: absolute;
+	$top: $y;
+	$left: $x;
+	$right: auto;
+	$bottom: auto;
+	@if(type-of($top) == 'number' and $top < 0){
+		$bottom: abs($top+1);
+		$top: auto;
+	}
+	@if(type-of($left) == 'number' and $left < 0){
+		$right: abs($left+1);
+		$left: auto;
+	}
+	@if(type-of($width) == 'number' and $width < 0){
+		@if($right == auto){
+			$right: abs($width+1);
+		}
+		@else {
+			$left: abs($width+1);
+		}
+		$width: auto;
+	}
+	@if(type-of($height) == 'number' and $height < 0){
+		@if($bottom == auto){
+			$bottom: abs($height+1);
+		}
+		@else {
+			$top: abs($height+1);
+		}
+		$height: auto;
+	}
+	$transform: ();
+	@if(type-of($top) == 'string' and $top == center){
+		@if($height != auto){
+			$top: 50%;
+			margin-top: -1*round($height/2);
+		}
+		@else {
+			$top: 50%;
+			$transform: append($transform,translateY(-50%),space);
+		}
+	}
+	@if(type-of($left) == 'string' and $left == center){
+		@if($width != auto){
+			$left: 50%;
+			margin-left: -1*round($width/2);
+		}
+		@else {
+			$left: 50%;
+			$transform: append($transform,translateX(-50%),space);
+		}
+	}
+	@if($top != auto){
+		top: $top;
+	}
+	@if($right != auto){
+		right: $right;
+	}
+	@if($bottom != auto){
+		bottom: $bottom;
+	}
+	@if($left != auto){
+		left: $left;
+	}
+	@if($width != auto){
+		width: $width;
+	}
+	@if($height != auto){
+		height: $height;
+	}
+	@if(length($transform) > 0){
+		-webkit-transform: translateZ(0) scale(1.0, 1.0) $transform;
+	}
+}
+
+@function neg($value){
+	@return (-1 * $value) - 1;
+}
+
+@mixin keyframes($name) {
+	@-webkit-keyframes #{$name} {
+		@content; 
+	}
+	@-moz-keyframes #{$name} {
+		@content;
+	}
+	@-ms-keyframes #{$name} {
+		@content;
+	}
+	@keyframes #{$name} {
+		@content;
+	}
+}
+
+@mixin disableSelection(){
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+@mixin animation($props...){
+	-webkit-animation: $props;
+	-moz-animation: $props;
+	-o-animation: $props;
+	animation: $props;
+}
