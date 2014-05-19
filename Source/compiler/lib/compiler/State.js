@@ -110,11 +110,21 @@ module.exports = (function(){
 			if(typeof extension == 'undefined'){
 				extension = alias.pop();
 			}
-			var ret= mPath.join(
-				root,
-				dir.path.replace(/\./g,'/'),
-				alias.join('/')
-			)+'.'+extension;
+			var path = dir.path;
+			if(typeof path == 'string'){
+				path = [path];
+			}
+			var ret = null;
+			for(var pI = 0; pI < path.length; pI++){
+				ret = mPath.join(
+					root,
+					path[pI].replace(/\./g,'/'),
+					alias.join('/')
+				)+'.'+extension;
+				if(mFs.existsSync(ret)){
+					break;
+				}
+			}
 			return ret;
 		},
 		getFileInfo: function(file){
@@ -135,7 +145,10 @@ module.exports = (function(){
 				};
 				for(var rootKey in this.compiler.config.alias){
 					var rootDir = this.compiler.config.alias[rootKey];
-					if(file.indexOf(rootDir) == 0 && rootDir.length > (root.key ? root.dir.length : 0)){
+					if(
+						file.indexOf(rootDir) == 0 &&
+						rootDir.length > (root.key ? root.dir.length : 0)
+					){
 						root.dir = rootDir;
 						root.key = rootKey;
 					}
@@ -146,11 +159,23 @@ module.exports = (function(){
 					dir: null,
 					key: null
 				};
+				var extension = file.substr(file.lastIndexOf('.')+1);
 				for(var typeKey in this.compiler.config.dir){
 					var typeDir = this.compiler.config.dir[typeKey];
-					if(file.indexOf(this.compiler.config.resolveAlias(typeDir.path)) == 0 && typeDir.path.length > (type.dir ? type.dir.path.length : 0)){
-						type.dir = typeDir;
-						type.key = typeKey;
+					var path = typeDir.path;
+					if(typeof path == 'string'){
+						path = [path];
+					}
+					for(var pI = 0; pI < path.length; pI++){
+						var _path = path[pI];
+						if(
+							file.indexOf(this.compiler.config.resolveAlias(_path)) == 0 &&
+							_path.length > (type.dir ? type.dir.path.length : 0)
+						){
+							if(typeDir.extension && typeDir.extension != extension)continue;
+							type.dir = typeDir;
+							type.key = typeKey;
+						}
 					}
 				}
 				info.type = type.key;
