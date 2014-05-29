@@ -212,3 +212,13 @@
 	-o-animation: $props;
 	animation: $props;
 }
+
+@mixin forAttrs($attrName,$attrValues...){
+	$selectors: ();
+	@each $attrValue in $attrValues {
+		$selectors: append($selectors,unquote('&[#{$attrName}="#{$attrValue}"]'),comma);
+	}
+	#{$selectors} {
+		@content;
+	}
+}

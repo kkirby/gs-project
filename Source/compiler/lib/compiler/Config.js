@@ -55,7 +55,12 @@ module.exports = (function(){
 			this.alias = userConfig.alias;
 			this.main = userConfig.main;
 			this.handlers = userConfig.handlers;
-			this.output = this.getPathUsingAliases(userConfig.output,userConfig.alias);
+			if(userConfig.output.indexOf('file://') == 0){
+				this.output = userConfig.output.substr(7);
+			}
+			else {
+				this.output = this.getPathUsingAliases(userConfig.output,userConfig.alias);
+			}
 			//this.dir = this.processDirsWithAlias(userConfig.dir,userConfig.alias);
 			this.dir = userConfig.dir;
 			this.applicationName = userConfig.applicationName;

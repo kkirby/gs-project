@@ -10,7 +10,11 @@ macro $$_bootstrap()
 		if input.isIdent
 			let vars = input.scope.top().children[0].variables[input.name]
 			type := if vars?
-				vars.type().toString()
+				// Not sure if this was a bug or a feature ... :(
+				//if typeof type == \function
+				//	vars.type().toString()
+				//else
+				vars.type.toString()
 			else
 				\any
 		else
@@ -474,7 +478,7 @@ macro dyn
 		// - Select
 		else if type == 'select'
 			AST
-				let node = $('select[name="'&$inputName&'"] option:selected',@node)
+				let node = $('select[name="'&$inputName&'"]',@node)
 				node?.value
 		// - Checkbox
 		else if type == 'checkbox'
@@ -1183,10 +1187,12 @@ macro toggle(cond,a,b)
 		else
 			$b
 
-
 macro ConcurrentStateNestingPush(data)
 	GLOBAL._ConcurrentStateNesting or= []
-	GLOBAL._ConcurrentStateNesting.push [data.args[0].value,data.args[1].value]
+	if data.args[0].value == null and GLOBAL._ConcurrentStateNesting.length > 0 and GLOBAL._ConcurrentStateNesting[* - 1][0] != null
+		GLOBAL._ConcurrentStateNesting[* - 1][1] := data.args[1].value
+	else
+		GLOBAL._ConcurrentStateNesting.push [data.args[0].value,data.args[1].value]
 	wait jsTime(2_s)
 		GLOBAL._ConcurrentStateNesting := []
 	ASTE null
@@ -1227,21 +1233,8 @@ macro ConcurrentStateNestingGetHandler(handler)
 	let res = 'state_'&keys.join('_')&'_'&handler.value
 	ASTE $res
 
-macro defState
-	syntax states as ObjectLiteral, body as Body
-		let currentState = []
-		let pushes = []
-		let pops = []
-		for state in states.args[1 to (* - 1)] 
-			do key = state.args[0].value, value = state.args[1]
-				if value.isCall
-					for _value in value.args
-						let __value = _value.name
-						pushes.push ASTE ConcurrentStateNestingPush([$key,$__value])
-				else
-					let _value = value.name
-					pushes.push ASTE ConcurrentStateNestingPush([$key,$_value])
-				pops.push ASTE ConcurrentStateNestingPop()
+macro _defState
+	syntax concurrentProcess, body as Body
 		if body?
 			body := body.walkWithThis #(node)@ 
 				if node.scope == body.scope and node.isMacroAccess and node.data.macroName == \def
@@ -1252,11 +1245,43 @@ macro defState
 						@prototype[$name] := $func
 						@prototype[$name].states := ConcurrentStateNestingGet()
 						@prototype[$name].action := $_name
+		body
+
+macro defState
+	syntax states as ObjectLiteral, body as Body
+		let currentState = []
+		let pushes = []
+		let pops = []
+		if states?
+			for state in states.args[1 to (* - 1)] 
+				do key = state.args[0].value, value = state.args[1]
+					if value.isCall
+						for _value in value.args
+							let __value = _value.name
+							pushes.push ASTE ConcurrentStateNestingPush([$key,$__value])
+					else
+						let _value = value.name
+						pushes.push ASTE ConcurrentStateNestingPush([$key,$_value])
+					pops.push ASTE ConcurrentStateNestingPop()
 		AST
 			$pushes
-			$body
+			_defState concurrentProcess
+				$body
 			$pops
-	
+
+	syntax 'for', subState as Identifier, body as Body
+		subState := subState.name
+		return body.walkWithThis #(node)@
+			if node.scope == body.scope and node.isMacroAccess and node.data.macroName == \defState and node.data.macroData.name? and node.data.macroData.body?
+				let _name = node.data.macroData.name
+				let _body = node.data.macroData.body
+				let res = AST
+					defState {a:b}
+						$_body
+				res.data.macroData.states.args[1].args[0] := ASTE $subState
+				res.data.macroData.states.args[1].args[1] := ASTE $_name
+				return res
+
 	syntax name as Identifier, body as Body
 		body.walkWithThis #(node)@ 
 			if node.scope == body.scope and node.isMacroAccess and node.data.macroName == \def
@@ -1352,5 +1377,11 @@ macro operator binary arrayRemoveItem
 		let $index = $left.indexOf $right
 		if $index != -1
 			$left.splice $index, 1
+
+macro makeSingleton()
+	let instance = @tmp \instance, true
+	AST
+		let mutable $instance = null
+		@get := # -> $instance or= new @
 
 //macro operator binary inall, inAll, in=	

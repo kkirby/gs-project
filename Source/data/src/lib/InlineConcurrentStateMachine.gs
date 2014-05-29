@@ -1,12 +1,14 @@
-class InlineConcurrentStateMachine
+import sys.lib.AStateMachine
+
+class! extends AStateMachine
 	def currentState = null
-	def initialState = null
 	def states = null
 	def stateHandlers = null
 	def currentAction = null
 	def currentActionData = null
 	
-	def constructor()
+	def initialize(config)
+		callSuper initialize
 		@states := @getStates()
 		@stateHandlers := []
 		@currentState := {}
@@ -14,6 +16,9 @@ class InlineConcurrentStateMachine
 			if typeof item != \function or key.substr(0,6) != 'state_' or not item.states?
 				continue
 			@stateHandlers.push item
+		$(@):one ready()@
+			for key, item of @getInitialStates()
+				@transition key, item
 	
 	def getHandlersForState(allStates,action)
 		return for filter handler in @stateHandlers
@@ -36,12 +41,29 @@ class InlineConcurrentStateMachine
 			for newEnterHandler in newEnterHandlers
 				if newEnterHandler not in oldEnterHandlers
 					newEnterHandler.apply @
+			@emitEvent \transition
+	
+	def deferUntilTransition(state,subState)
+		die unless @currentAction?
+		let action = @currentAction
+		let actionData = @currentActionData
+		let event = #@
+			die unless @currentState ownskey state or @currentState[state] != subState
+			@removeEventListener \transition, event
+			@handle action, ...actionData
+		@addEventListener \transition, event
 	
 	def handle(action,...data)
-		let handlers = for filter handler in @stateHandlers
-			for every state in handler.states
-				let [name,subState] = state
-				@currentState[name]? and @currentState[name] == subState
+		let handlers = @getHandlersForState @currentState, action
+		let setAction = @currentAction == null
+		if setAction
+			@currentAction := action
+			@currentActionData := data
 		for handler in handlers; handler.apply @, data
+		if setAction
+			@currentAction := @currentActionData := null
 	
 	def getStates() -> {}
+	def getInitialStates() -> {}
+	
+	def isInState(state,subState) -> @currentState[state] == subState
