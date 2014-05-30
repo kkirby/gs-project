@@ -3,8 +3,16 @@ var Handler = require('./Handler.js'),
 	mPath = require('path'),
 	mColors = require('colors'),
 	sprintf = require('sprintf').sprintf,
-	mImages = require('node-images'),
+	mImages,
 	CompileException = require('./Exception.js');
+
+try {
+	mImages = require('node-images');
+}
+catch(e){
+	console.log('Cannot load node-images.');
+	console.warn(e);
+}
 
 module.exports = (function(){
 	function CssHandler(){}
@@ -31,8 +39,14 @@ module.exports = (function(){
 						path
 					)('image');
 					if(extras){
-						var img = mImages(path);
-						var size = img.size();
+						var size = {
+							width: 0,
+							height: 0
+						};
+						if(mImages){
+							var img = mImages(path);
+							size = img.size();
+						}
 						return sprintf(
 							[
 								'$%s: url(\'%s\');',
