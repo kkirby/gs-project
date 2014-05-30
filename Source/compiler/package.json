@@ -16,6 +16,7 @@
 		"wrench": "*",
 		"htmltidy": "*",
 		"colors": "*",
-		"sprintf": "*"
+		"sprintf": "*",
+		"optimist": "*"
 	}
 }
