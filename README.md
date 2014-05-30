@@ -1,4 +1,4 @@
 GsScriptProject
 ===============
 
-[Wiki](wiki)
+[Wiki](../../wiki)
