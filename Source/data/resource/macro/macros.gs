@@ -1,4 +1,4 @@
-Element.prototype.matchesSelector or= Element.prototype.mozMatchesSelector or Element.prototype.webkitMatchesSelector
+Element.prototype.matches or= Element.prototype.matchesSelector or Element.prototype.mozMatchesSelector or Element.prototype.webkitMatchesSelector or Element.prototype.msMatchesSelector
 
 //macro operator binary ownskey with precedence: 6, maximum: 1, invertible: true, type: \boolean, label: \ownership
 //  AST
@@ -179,13 +179,13 @@ macro $
 		let newElm = $$_reduce arguments
 		let newSelector = isSelector[0]
 		AST
-			if $newElm.matchesSelector($newSelector)
+			if $newElm.matches($newSelector)
 				$body
 				
 	syntax selector as InvocationArguments,':','eIs',isSelector as InvocationArguments
 		let newElm = $$_reduce arguments
 		let newSelector = isSelector[0]
-		AST $newElm.matchesSelector($newSelector)
+		AST $newElm.matches($newSelector)
 				
 	syntax selector as InvocationArguments,':','toggle',args as InvocationArguments
 		let newElm = $$_reduce arguments
@@ -228,7 +228,7 @@ macro $
 		let tmpElm = @tmp \elm
 		AST
 			let mutable $tmpElm = $newElm
-			until $tmpElm.matchesSelector($newSelector)
+			until $tmpElm.matches($newSelector)
 				$tmpElm := $tmpElm.parentNode
 			$tmpElm
 	

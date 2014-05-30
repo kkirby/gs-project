@@ -74,7 +74,7 @@ class!
 		if isTouchSupported
 			// Down
 			$(options.element):on touchstart(startEventObject)!
-				unless startEventObject.target.matchesSelector(options.selector) then return true
+				unless startEventObject.target.matches(options.selector) then return true
 				didStart := true
 				startEventObject.stopPropagation()
 				$(@):trigger(
@@ -133,7 +133,7 @@ class!
 					)
 		else
 			$(options.element):on mousedown(startEventObject)!
-				unless startEventObject.target.matchesSelector(options.selector) then return true
+				unless startEventObject.target.matches(options.selector) then return true
 				$(@):trigger(
 					IntentClick.Events.intentStart,
 					{
@@ -142,7 +142,7 @@ class!
 					}
 				)
 			$(options.element):on mouseup(stopEventObject)!
-				unless stopEventObject.target.matchesSelector(options.selector) then return true
+				unless stopEventObject.target.matches(options.selector) then return true
 				$(@):trigger(
 					IntentClick.Events.intentEnd,
 					{
@@ -151,7 +151,7 @@ class!
 					}
 				)
 			$(options.element):on click(clickEventObject)!
-				unless clickEventObject.target.matchesSelector(options.selector) then return true
+				unless clickEventObject.target.matches(options.selector) then return true
 				let eventDetail = {
 					event: clickEventObject
 					uuid
