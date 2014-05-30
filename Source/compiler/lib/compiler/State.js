@@ -183,7 +183,8 @@ module.exports = (function(){
 				var fileName = file.split(mPath.sep).pop();
 				info.extension = fileName.substr(fileName.lastIndexOf('.')+1);
 				info.name = fileName.slice(0,-1 * info.extension.length-1);
-				info.alias = file.slice(0,-1 * info.extension.length-1).replace(new RegExp(mPath.sep,'g'),'.');
+				var regex = mPath.sep == '/' ? /\//g : /\\/g;
+				info.alias = file.slice(0,-1 * info.extension.length-1).replace(regex,'.');
 				info.namespace = file.split(mPath.sep).slice(0,-1).join('.');
 				info.relative = originalFile.substr(root.dir.length+1);
 				info.fullAlias = info.alias
