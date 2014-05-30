@@ -118,8 +118,8 @@ module.exports = (function(){
 			for(var pI = 0; pI < path.length; pI++){
 				ret = mPath.join(
 					root,
-					path[pI].replace(/\./g,'/'),
-					alias.join('/')
+					path[pI].replace(/\./g,mPath.sep),
+					alias.join(mPath.sep)
 				)+'.'+extension;
 				if(mFs.existsSync(ret)){
 					break;
