@@ -2,7 +2,7 @@ var mPath = require('path');
 
 module.exports = {
 	alias: {
-		sys: mPath.normalize(mPath.join(__dirname,'..','data'))
+		sys: mPath.normalize(mPath.join(__dirname,'lib','data'))
 	},
 	dir: {
 		src: {

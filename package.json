@@ -18,5 +18,6 @@
 		"colors": "*",
 		"sprintf": "*",
 		"optimist": "*"
-	}
+	},
+	"main": "compile.js"
 }
