@@ -424,43 +424,17 @@ macro dyn
 		name := name.substr(3)
 		name := name.substr(0,1).toLowerCase()&name.substr(1)
 		if type == \get
-			ASTE @prototype.__defineGetter__ $name, $func
+			ASTE Object.defineProperty @prototype, $name, {get: $func}
 		else if type == \set
-			ASTE @prototype.__defineSetter__ $name, $func
+			ASTE Object.defineProperty @prototype, $name, $func, {set: $func}
 	
 	syntax 'bind',name as Identifier,'->',bindTo as Expression
 		name := name.name
 		AST
-			@prototype.__defineGetter__ $name, # -> $bindTo
-			@prototype.__defineSetter__ $name, #(value) -> ($bindTo) := value
-
-	syntax 'der',name as Identifier, defaultValue as ('=','(',value as Expression,')')?,func as FunctionDeclaration
-		let _name = name.name
-		let tmpName = '_'&name.name
-		let iTmpName = @ident tmpName
-		let hasSet = '_hasSet'&name.name
-		let setterName = '_set'&name.name
-		let rootSetter = '__set'&name.name
-		let _defaultValue = if defaultValue
-			let _val = defaultValue.value
-			AST
-				if @[$hasSet] == false
-					@[$hasSet] := true
-					@[$tmpName] := $_val
-		else
-			ASTE null
-		AST
-			@prototype[$tmpName] := null
-			@prototype[$hasSet] := false
-			@prototype[$setterName] := $func
-			@prototype.__defineGetter__ $_name, #
-				$_defaultValue
-				@[$tmpName]
-			@prototype.__defineSetter__ $_name, #(val)!
-				unless @.hasOwnProperty($rootSetter)
-					@[$rootSetter] := #(val)@!
-						@[$tmpName] := val
-				@[$setterName](@[$_name],val,@[$rootSetter])
+			Object.defineProperty @prototype, $name, {
+				get: # -> $bindTo
+				set: #(value) -> ($bindTo) := value
+			}
 	
 	syntax 'input','bind',':',inputName as Identifier,attrName as ('to',this as Identifier)?,type as ('as',this as Identifier)?
 		attrName or= inputName
@@ -589,10 +563,10 @@ macro dyn
 				let ret = $tmp.apply @, ...arguments
 				$onchange
 				ret
-			@prototype.__defineGetter__ $attrName, #
-				$getter
-			@prototype.__defineSetter__ $attrName, #(value)
-				$setter
+			Object.defineProperty @prototype, $attrName, {
+				get: # -> $getter
+				set: #(value) -> $setter
+			}
 	
 	syntax 'def',isModel as 'attr'?,colon as ':'?,dynName as Identifier,initialValue as ('=',this as Expression)?,dynBody as Body?
 		unless dynBody
@@ -734,23 +708,25 @@ macro dyn
 			$setFunc
 			$afterSetFunc
 			$setInitialValueFunc
-			@prototype.__defineGetter__ $dynName, #
-				$setInitialValueInline
-				let mutable value = @[$_valueName]
-				$beforeGetInline
-				$getInline
-				$afterGetInline
-				value
-			@prototype.__defineSetter__ $dynName, #(value)!
-				let mutable newValue = value
-				let oldValue = @[$_valueName]
-				if oldValue == newValue then return
-				$beforeSetInline
-				$setInline
-				@[$_valueName] := newValue
-				$setterDidSetInitialInline
-				$afterSetInline
-				$afterSetInlineModel
+			Object.defineProperty @prototype, $dynName, {
+				get: #
+					$setInitialValueInline
+					let mutable value = @[$_valueName]
+					$beforeGetInline
+					$getInline
+					$afterGetInline
+					value
+				set: #(value)!
+					let mutable newValue = value
+					let oldValue = @[$_valueName]
+					if oldValue == newValue then return
+					$beforeSetInline
+					$setInline
+					@[$_valueName] := newValue
+					$setterDidSetInitialInline
+					$afterSetInline
+					$afterSetInlineModel
+			}
 				
 
 macro modelAttrs(value)
@@ -782,24 +758,18 @@ macro modelAttrs(value)
 		let rawPropertyName = createSubPropertyName \raw
 		defs.push AST
 			@.prototype[$hiddenPropertyName] := null
-			@.prototype.__defineSetter__(
-				$propertyName,
-				#(value)!
+			Object.defineProperty @prototype, $propertyName, {
+				set: #(value)!
 					@[$hiddenPropertyName](value)
-					@emitEvent \attributeChanged, $propertyName
-			)
-			@.prototype.__defineGetter__(
-				$propertyName,
-				# @[$hiddenPropertyName]()
-			)
-			@.prototype.__defineGetter__(
-				$peekPropertyName,
-				# @[$hiddenPropertyName].peek()
-			)
-			@.prototype.__defineGetter__(
-				$rawPropertyName,
-				# @[$hiddenPropertyName]
-			)
+					@emitEvent \attributeChanged, $propertyName,
+				get: # @[$hiddenPropertyName]()
+			}
+			Object.defineProperty @prototype, $peekPropertyName, {
+				get: # @[$hiddenPropertyName].peek()
+			}
+			Object.defineProperty @prototype, $rawPropertyName, {
+				get: # @[$hiddenPropertyName]
+			}
 		if isComputed?
 			setups.push ASTE @[$hiddenPropertyName] := ko.computed
 				read: $isComputed.bind(@)
