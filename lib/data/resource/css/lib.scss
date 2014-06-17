@@ -222,3 +222,18 @@
 		@content;
 	}
 }
+
+@mixin states($states,$append: ''){
+	$selectorsA: ();
+	$selectorsB: ();
+	@each $state in $states {
+		$selectorsA: append($selectorsA,unquote('.#{$append}#{$state}'),comma);
+		$selectorsB: append($selectorsB,unquote('&.#{$append}#{$state} .#{$append}#{$state}'),comma);
+	}
+	#{$selectorsA} {
+		display: none;
+	}
+	#{$selectorsB} {
+		display: block;
+	}
+}
