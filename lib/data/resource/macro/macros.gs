@@ -1106,7 +1106,7 @@ macro do
 macro class!
 	syntax extendTo as (meh as ('extends' | '<-' | '<<' | '<->' | '->'),ident as Identifier)?, body as Body?
 		let result = this.ident this.getConstValue(\__CLASS__)
-		if extendTo?
+		let _class = if extendTo?
 			extendTo := extendTo.ident
 			AST
 				class $result extends $extendTo
@@ -1115,6 +1115,11 @@ macro class!
     		AST
     			class $result
     				$body
+		let res = @macroExpandAll(_class).args[0].args[1].args[1].func.args[1].args[0]
+		res.args.pop()
+		AST
+			$res
+			$result
 
 	syntax args as InvocationArguments
 		let result = this.ident this.getConstValue(\__CLASS__)
