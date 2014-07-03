@@ -5,6 +5,46 @@ Element.prototype.matches or= Element.prototype.matchesSelector or Element.proto
 //  	($left).hasOwnProperty($right)
 
 macro $$_bootstrap()
+	let jsdom = rootRequire \jsdom
+	let deasync = rootRequire \deasync
+	
+	GLOBAL.$$_processHtmlNode := #(node,context)
+		let res = []
+		let nodeVar = context.tmp()
+		let nodeName = node.nodeName.toLowerCase()
+		if nodeName == '#text'
+			let nodeValue = node.nodeValue
+			res.push ASTE let $nodeVar = document.createTextNode $nodeValue
+		else
+			res.push ASTE let $nodeVar = document.createElement $nodeName
+			for attr in node.attributes
+				let attrName = attr.name
+				let attrValue = attr.value
+				res.push ASTE $nodeVar.setAttribute $attrName, $attrValue
+			for child in node.childNodes
+				let _tmp = $$_processHtmlNode child, context
+				res.push ASTE $nodeVar.appendChild $_tmp
+		res.push nodeVar
+		ASTE $res
+	
+	GLOBAL.$$_processHtml := #(html,context)
+		let mutable loaded = false
+		let mutable window = null
+		let mutable err = null
+		jsdom.env html, #(_err, _window)
+			err := _err
+			window := _window
+			loaded := true
+		while not loaded
+			deasync.sleep 100
+		if err
+			@context.error err, htmlNode
+			return
+		let nodes = window.document.querySelectorAll 'body > *'
+		let res = for node in nodes; $$_processHtmlNode node, context
+		if res.length == 1; res[0]
+		else; context.internalCall \array, res
+
 	GLOBAL.$$_getType := #(input)
 		let mutable type = null
 		if input.isIdent
@@ -76,29 +116,34 @@ macro ucfirst(str)
 	@maybe-cache str, #(setStr, str)
 		ASTE $setStr.substr(0,1).toUpperCase()&$str.substr(1)
 
+GLOBAL.VendorPrefix := do
+	let prefixes = 
+		* \webkit
+		* \Moz
+		* \o
+		* \ms
+	
+	let elm = document.createElement \div
+	let style = elm.style
+	
+	#(prop)
+		let ucProp = prop.charAt(0).toUpperCase()&prop.slice(1)
+		let propPrefixes = prefixes.join(ucProp&' ').split(' ')
+		let props = [prop,ucProp].concat propPrefixes
+		for first prop in props
+			if style haskey prop; prop
+
 GLOBAL.Vendor := do
-	let mutable cachedPrefix = null
-	let getPrefix = #
-		unless cachedPrefix
-			let dummyStyle = document.createElement(\div).style
-			let vendors = {
-				'': 'transform'
-				'webkit': 'webkitTransform'
-				'ms': 'msTransform'
-				'o': 'oTransform'
-				'Moz': 'MozTransform'
-			}
-			cachedPrefix := for first prefix, style of vendors
-				if dummyStyle haskey style; prefix
-		cachedPrefix
-	#(name)
-		let vendorPrefix = getPrefix()
-		if not not vendorPrefix
-			if name.indexOf(\animation) == 0 and vendorPrefix == \Moz
-				return name.toLowerCase()
-			return vendorPrefix & ucfirst(name)
+	#(mutable name)
+		if name in [\animationEnd,\transitionEnd]
+			name := name.slice 0, -3
+			let vendorPrefix = VendorPrefix(name)
+			if vendorPrefix == name
+				vendorPrefix.toLowerCase() & \end
+			else
+				vendorPrefix & \End
 		else
-			return name
+			VendorPrefix(name) ? name
 
 macro $
 	// basic
@@ -117,40 +162,6 @@ macro $
 			$assignment
 			for $name in $tmp
 				$body
-
-	/*syntax selector as InvocationArguments,':','on',args as InvocationArguments,body as (Body|Expression)
-		let element = $$_reduce arguments
-		let events = if args[0].args? then args[0].args else [args[0]]
-		if args.length == 2
-			let insideBody = []
-			let selector = args[1]
-			for event in events
-				let useCapture = if event.value in [\focus,\blur]
-					ASTE true
-				else
-					ASTE false
-				insideBody.push AST
-					$element.addEventListener(
-						$event,
-						onEvent,
-						$useCapture
-					)
-			AST
-				do callback = $body
-					let onEvent = #(e)
-						if e.target.webkitMatchesSelector($selector)
-							callback.apply(this,arguments)
-					$insideBody
-					onEvent
-		else
-			let insideBody = []
-			for event in events
-				insideBody.push AST
-					$element.addEventListener($event,callback)
-			AST
-				do callback = $body
-					$insideBody
-					callback*/
 
 	syntax selector as InvocationArguments,':','on',runNow as '!'?,event as (Identifier|Expression),spacer as (':')?,func as (FunctionDeclaration|Expression)
 		let element = $$_reduce arguments
@@ -277,6 +288,13 @@ macro $
 	syntax selector as InvocationArguments,':','append',element as Expression
 		let elm = $$_reduce arguments
 		AST ($($elm)).appendChild $element
+	
+	syntax selector as InvocationArguments,':','appendAll',elements as Expression
+		let elm = $$_reduce arguments
+		let tmp = @tmp()
+		AST
+			let $temp = $elm
+			for elm in $elements; $temp.appendChild elm
 		
 	syntax selector as InvocationArguments,':','appendTo',element as Expression
 		let elm = $$_reduce arguments
@@ -332,6 +350,15 @@ macro $
 		let elm = $$_reduce arguments
 		AST
 			($elm).innerHTML := $html
+	
+	syntax html as InvocationArguments,':','createDom','(',')'
+		let htmlNode = html[0]
+		html := htmlNode
+		if html.nodeType != \value
+			@error('Value was not passed to createDom.',html)
+		else
+			html := html.value
+			$$_processHtml html, @
 
 	syntax body as Body
 		AST
@@ -794,6 +821,11 @@ macro wait
 			let $func = #@
 				$body
 			setTimeout($func,$time)
+
+macro sleep
+	syntax time as InvocationArguments, body as DedentedBody
+		time := time[0]
+		ASTE setTimeout (#@ -> $body), $time
 			
 macro interval
 	syntax runNow as (this as '!')?,time as Expression, body as Body
@@ -918,7 +950,8 @@ macro jsTime(left)
 	ASTE $time
 
 macro die
-	syntax cond as (type as (\if|\unless|'?'), test as Logic)?, body as (Body | (subtype as ('then' | ';')?,stmt as Statement) | (subtype as ('->' | '<-'),stmt as Expression))?
+	syntax cond as (type as (\if|\unless|'?'), test as Logic)?, body as (Body | (subtype as ('then' | ';')?,stmt as Statement) | (subtype as ('->' | '<-'),stmt as Expression))?, retVal as (',',this as Expression)?
+		retVal ?= __const("null")
 		if cond?
 			let mutable test = cond.test
 			let type = cond.type
@@ -947,13 +980,13 @@ macro die
 			if type in [\if,'?']
 				AST if $test
 					$condBody
-					return null
+					return $retVal
 			else if type == \unless
 				AST unless $test
 					$condBody
-					return null
+					return $retVal
 		else
-			if body.subtype? and body.subtype in ['->','<-']
+			if body? and body.subtype? and body.subtype in ['->','<-']
 				@error 'Cannot use '&body.subtype&' with non-conditional die.', body.subtype
 			let stmt = if body?
 				if body.stmt
@@ -961,10 +994,21 @@ macro die
 				else
 					body
 			else
-				ASTE null
+				ASTE $retVal
 			AST
 				$stmt
-				return null
+				return $retVal
+
+	syntax 'with', withExp as Expression,',', cond as (type as (\if|\unless|'?'), test as Logic)?
+		if cond?
+			let _macro = ASTE die if a, b
+			_macro.data.macroData.cond.type := cond.type
+			_macro.data.macroData.cond.test := cond.test
+			_macro.data.macroData.retVal := withExp
+			_macro
+		else
+			let _macro = ASTE die ,b
+			_macro.data.macroData.retVal := withExp
 	
 macro operator binary ?^
 	AST
@@ -1345,6 +1389,35 @@ macro operator assign mapownsor=
 					else
 						$parent.set($child,$set-right)
 						$right
+
+macro operator binary <<<?
+	@maybe-cache right, #(setRight, right)
+		AST
+			if typeof $setRight == \object
+				$left <<< $right
+			$right
+
+macro helper __compare = #(a,b)
+	let [aType,bType] = [typeof a,typeof b]
+	die with false, if aType != bType
+	if a instanceof Array
+		die with false, if b not instanceof Array or a.length != b.length
+		return for every aValue, aKey in a
+			__compare b[aKey], aValue
+	else if aType == \object
+		let [aTypeName,bTypeName] = [typeof! a,typeof! b]
+		die with false, if aTypeName != bTypeName
+		if aTypeName == \Object
+			return for every aKey, aValue of a
+				__compare b[aKey], aValue
+		else if typeof a.compare == \function
+			return a.compare b
+	a == b
+			
+
+macro operator binary <~=>
+	AST
+		__compare $left, $right
 
 macro operator binary arrayRemoveItem
 	let index = @tmp \index
