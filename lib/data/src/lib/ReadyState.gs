@@ -1,7 +1,7 @@
 class!
 	def _readyState = 1
 	def waiters = null
-	dyn getIsReady() -> @_readySate == 0 
+	dyn getIsReady() -> @_readyState == 0 
 	
 	def constructor()
 		@waiters := []
