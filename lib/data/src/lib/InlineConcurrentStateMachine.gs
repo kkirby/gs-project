@@ -26,7 +26,7 @@ class! extends AStateMachine
 				let [name,subState] = state
 				allStates[name]? and allStates[name] == subState
 	
-	def transition(state,subState)
+	def transition(state,subState,...data)
 		if @states[state]? and subState in @states[state]
 			let currentState = {} <<< @currentState
 			let oldExitHandlers = @getHandlersForState currentState, \exit
@@ -40,7 +40,7 @@ class! extends AStateMachine
 			@currentState[state] := subState
 			for newEnterHandler in newEnterHandlers
 				if newEnterHandler not in oldEnterHandlers
-					newEnterHandler.apply @
+					newEnterHandler.apply @, data
 			@emitEvent \transition
 	
 	def deferUntilTransition(state,subState)
