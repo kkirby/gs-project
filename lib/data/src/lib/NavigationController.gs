@@ -12,6 +12,7 @@ class! extends InlineStateMachine
 	def backButtonNode = null
 	def presenterNode = null
 	def presenterCount = 0
+	def transitioning = false
 	
 	def setup(config = {})
 		@headerNode := $('.NavigationControllerHeader',@node)
@@ -39,13 +40,17 @@ class! extends InlineStateMachine
 	
 	def render(controller)
 		die if @presenterCount > 0
+		die if @transitoning
 		@controllerList.push controller
 		@updateWidth()
 		@view.addChildView controller.view, '.NavigationControllerContentInner'
 		@updateTitle()
 		@updateBackButton()
 		if @controllerList.length > 1
+			@transitoning := true
 			@view.iScroll.next(450)
+			wait 450
+				@transitoning := false
 	
 	def blurAllInputs()
 		let node = @controllerList[* - 1].view.node
@@ -59,9 +64,9 @@ class! extends InlineStateMachine
 		presenter.style.display := \none
 		@controllerList.push controller
 		$(@node):append presenter
-		wait 1
-			presenter.style.display := \block
-			controller.view.show presenter
+		sleep 1
+		presenter.style.display := \block
+		controller.view.show presenter
 	
 	def dismissController(controller)
 		let position = @controllerList.indexOf controller
@@ -70,14 +75,14 @@ class! extends InlineStateMachine
 		@presenterCount -= 1
 		@controllerList.splice position, 1
 		let presenter = controller.node.parentNode
-		$(presenter):addClass \Dismiss
-		let eventName = Vendor \animationEnd
+		let eventName = Vendor(\animationEnd)
 		let event = #(e)@
 			die unless e.animationName == \hideNavigationPresenter
 			presenter.removeEventListener eventName, event
 			controller.view.hide()
 			@node.removeChild presenter
 		presenter.addEventListener eventName, event, false
+		$(presenter):addClass \Dismiss
 		
 	
 	def updateBackButton()
