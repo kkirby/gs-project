@@ -59,6 +59,7 @@ class! extends AStateMachine
 		if setAction
 			@currentAction := action
 			@currentActionData := data
+		if @[action]?; @[action].apply @, data
 		for handler in handlers; handler.apply @, data
 		if setAction
 			@currentAction := @currentActionData := null
