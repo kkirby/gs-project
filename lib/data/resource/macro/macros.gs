@@ -186,6 +186,15 @@ macro $
 				$first
 				$second
 	
+	syntax selector as InvocationArguments,':','watch','(',other as Expression,')',event as (Identifier|Expression),func as (FunctionDeclaration|Expression)
+		let funcVar = @tmp \func, true
+		let nestedSelector = other.value
+		AST
+			let $funcVar = $func
+			$($selector):on $event(e)
+				if e.target.matches $nestedSelector
+					$funcVar ...arguments
+	
 	syntax selector as InvocationArguments,':','is',isSelector as InvocationArguments,body as Body
 		let newElm = $$_reduce arguments
 		let newSelector = isSelector[0]
@@ -401,10 +410,10 @@ macro ajax
 			let $vCallback = once! (mutate-function! $func)
 			$vRequest.onreadystatechange := #@
 				if $vRequest.readyState == 4
-						let error = if $vRequest.status != 200; "HTTP Request failed, got an HTTP status of $($vRequest.status)"
-						let response = $vRequest
-						let text = response.responseText
-						$vCallback.apply @, $callbackArgsAst
+					let error = if $vRequest.status != 200; "HTTP Request failed, got an HTTP status of $($vRequest.status)"
+					let response = $vRequest
+					let text = response.responseText
+					$vCallback.apply @, $callbackArgsAst
 			$vRequest.open $method, $url, true
 			$__headers
 			$vRequest.send $data
@@ -567,7 +576,7 @@ macro dyn
 					$(input):on change(e)@
 						let eventInfo = {
 							attribute: $inputName
-							value: for selectedInput in ($('input[name="'&$inputName&'"]:checked',@node)); selectedInput.value
+							value: for selectedInput in ($('input[name="'&$inputName&'"]:checked',@node)[]); selectedInput.value
 						}
 						@emitEvent 'attributeChange', eventInfo
 						@emitEvent 'attributeChange.'&$inputName, eventInfo
