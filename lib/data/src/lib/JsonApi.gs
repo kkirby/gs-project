@@ -7,11 +7,10 @@ class!
 		dataStr
 	
 	@DecodeResponse := #(data)
-		if data.indexOf('{') == -1 then throw ('Invalid response '&shorten(data))
 		try
 			let json = JSON.parse data
-			if typeof json != \object then throw ('Decoded response is invalid: '&shorten(data))
-			JSON.parse data
+			unless json then throw ('Decoded response is invalid: '&shorten(data))
+			json
 		catch eErr
 			throw ('Unable to decode response ('&shorten(data)&') got error: '&str!eErr)
 
@@ -24,7 +23,7 @@ class!
 		@Handle error, response, callback, successKey, errorKey, dataKey
 		throw? _err
 		_result
-
+	
 	@Handle := #(error,response,callback,successKey = null,errorKey = null,dataKey = null)
 		die if error -> callback
 		let data = try
