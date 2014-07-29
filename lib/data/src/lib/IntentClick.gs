@@ -132,26 +132,70 @@ class!
 						}
 					)
 		else
+			let mutable targetElement = null
 			$(options.element):on mousedown(startEventObject)!
 				unless startEventObject.target.matches(options.selector) then return true
-				$(@):trigger(
+				targetElement := startEventObject.target
+				didStart := true
+				$(targetElement):trigger(
 					IntentClick.Events.intentStart,
 					{
 						event: startEventObject
 						uuid
 					}
 				)
+				
+			$(options.element):on mousemove(moveEventObject)!
+				if didStart
+					moveEventObject.preventDefault()
+					moveEventObject.customTarget := targetElement
+					let inArea = IntentClick.IsElementInBounds(
+						targetElement,
+						IntentClick.GetBoundsFromEvent(moveEventObject)
+					)
+					let eventDetail = {
+						event: moveEventObject
+						uuid
+					}
+					if shouldDisableMove(moveEventObject)
+						$(targetElement):trigger(
+							IntentClick.Events.intentEnd,
+							eventDetail
+						)
+					else
+						if not isActive and inArea
+							$(targetElement):trigger(
+								IntentClick.Events.intentStart,
+								eventDetail
+							)
+						else if isActive and not inArea
+							$(targetElement):trigger(
+								IntentClick.Events.intentEnd,
+								eventDetail
+							)
+			
 			$(options.element):on mouseup(stopEventObject)!
 				unless stopEventObject.target.matches(options.selector) then return true
-				$(@):trigger(
+				unless didStart and isActive then return true
+				stopEventObject.customTarget := targetElement
+				didStart := false
+				$(targetElement):trigger(
 					IntentClick.Events.intentEnd,
 					{
 						event: stopEventObject
 						uuid
 					}
 				)
-			$(options.element):on click(clickEventObject)!
-				unless clickEventObject.target.matches(options.selector) then return true
+				$(targetElement):trigger(
+					IntentClick.Events.intentClick,
+					{
+						event: stopEventObject
+						uuid
+					}
+				)
+			
+			/*$(options.element):on click(clickEventObject)!
+				unless clickEventObject.target.matches(options.selector) or isActive then return true
 				let eventDetail = {
 					event: clickEventObject
 					uuid
@@ -163,4 +207,4 @@ class!
 				$(@):trigger(
 					IntentClick.Events.intentEnd,
 					eventDetail
-				)
+				)*/
