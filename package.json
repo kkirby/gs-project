@@ -8,7 +8,7 @@
 	"dependencies": {
 		"glob": "*",
 		"gorillascript": "*",
-		"node-images": "*",
+		"image-size": "*",
 		"node-sass": "*",
 		"underscore" : "*",
 		"underscore.string" : "*",
