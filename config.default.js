@@ -27,7 +27,7 @@ module.exports = {
 		},
 		image: {
 			path: 'resource.img',
-			extension: 'png'
+			extensions: ['png','jpeg','jpg']
 		},
 		raw: {
 			path: 'resource.raw'
