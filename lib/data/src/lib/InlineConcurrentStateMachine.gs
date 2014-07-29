@@ -64,6 +64,8 @@ class! extends AStateMachine
 		if setAction
 			@currentAction := @currentActionData := null
 	
+	def hasHandler(action) -> @getHandlersForState(@currentState,action).length > 0
+	
 	def getStates() -> {}
 	def getInitialStates() -> {}
 	
