@@ -33,10 +33,13 @@ class! extends Component
 			$(node):append view.node
 			if @_isShowing
 				view.afterShow()
-			
 	
 	def addChildView(childView,selector)!
 		@addChildViews [childView], selector
+	
+	def removeChildView(childView)
+		@childViews arrayRemoveItem childView
+		childView.hide()
 	
 	def _bindingSetup() ->
 	def setup()
