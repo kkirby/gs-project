@@ -70,5 +70,5 @@ class! extends Component
 	
 	def hide()
 		@beforeHide()
-		@node.parentNode.removeChild @node
+		@node.parentNode?.removeChild @node
 		@afterHide()
