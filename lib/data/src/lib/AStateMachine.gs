@@ -1,4 +1,5 @@
 import sys.lib.Component
+import macro sys.stateMachine
 
 class! extends Component
 	def view = null
@@ -9,7 +10,7 @@ class! extends Component
 		@view ?=in config
 		@view and= @readyState.waitFor if typeof @view == 'function' then @view() else @view
 		if @view and not @node.classList.contains \StateMachineScope
-			$(@node):addClass \StateMachineScope
+			@node.classList.add \StateMachineScope
 			@node.stateMachine := @
 		@setup ...arguments
 	
@@ -21,9 +22,9 @@ class! extends Component
 			handler,
 			#(e)@ -> @handle handler, e
 		)
-		$(@node):on($eventName):(e)
+		_(@node):on($eventName):(e)
 			if selector?
-				$(e.target):is selector
+				if e.target.matches selector
 					_handler e
 			else
 				_handler e

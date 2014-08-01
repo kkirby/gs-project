@@ -1,4 +1,5 @@
 import .Component
+import macro sys.webMacros
 
 class! extends Component
 	def node = null
