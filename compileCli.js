@@ -24,6 +24,10 @@ var argv = optimist.usage(
 			description: 'The path to the application configuration file.',
 			short: 'c',
 			default: path.join(process.cwd(),'config.js')
+		},
+		override: {
+			description: 'An override object to use.',
+			default: null
 		}
 	}
 ).argv;
@@ -34,7 +38,8 @@ if(argv.help || argv.h){
 else {
 	var config = ConfigLoader.get(
 		path.join(cwd,'config.default.js'),
-		argv.config
+		argv.config,
+		argv.override
 	);
 	new Compiler(config).compile(!argv.once);
 }
