@@ -54,9 +54,7 @@ class! extends AStateMachine
 		@addEventListener \transition, event
 	
 	def saveState()
-		let savedState = {}
-		savedState.currentStateName := @currentStateName
-		savedState
+		{@currentStateName}
 	
 	def restoreState(savedState)
 		if savedState.currentStateName?

@@ -70,3 +70,11 @@ class! extends AStateMachine
 	def getInitialStates() -> {}
 	
 	def isInState(state,subState) -> @currentState[state] == subState
+		
+	def saveState()
+		currentState: @currentState
+	
+	def restoreState(savedState)
+		if savedState.currentState?
+			for k, v of savedState.currentState
+				@transition k, v
