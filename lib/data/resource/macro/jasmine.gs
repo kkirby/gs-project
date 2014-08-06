@@ -9,18 +9,37 @@ macro describe
 		)
 
 macro it
-	syntax description as Expression, body as Body
-		let func = ASTE #! -> $body
+	syntax cb as ('(',this as Identifier,')')?, description as Expression, body as Body
+		let func = if cb?
+			ASTE #($cb)! -> $body
+		else
+			ASTE #! -> $body
 		__call(
 			null,
 			__symbol(null,\ident,\it),
 			__wrap(description),
 			__wrap(func)
 		)
+		
+macro xit
+	syntax cb as ('(',this as Identifier,')')?, description as Expression, body as Body
+		let func = if cb?
+			ASTE #($cb)! -> $body
+		else
+			ASTE #! -> $body
+		__call(
+			null,
+			__symbol(null,\ident,\xit),
+			__wrap(description),
+			__wrap(func)
+		)
 
 macro beforeEach
-	syntax body as Body
-		let func = ASTE #! -> $body
+	syntax cb as ('(',this as Identifier,')')?, body as Body
+		let func = if cb?
+			ASTE #($cb)! -> $body
+		else
+			ASTE #! -> $body
 		__call(
 			null,
 			__symbol(null,\ident,\beforeEach),
@@ -28,8 +47,11 @@ macro beforeEach
 		)
 
 macro afterEach
-	syntax body as Body
-		let func = ASTE #! -> $body
+	syntax cb as ('(',this as Identifier,')')?, body as Body
+		let func = if cb?
+			ASTE #($cb)! -> $body
+		else
+			ASTE #! -> $body
 		__call(
 			null,
 			__symbol(null,\ident,\afterEach),

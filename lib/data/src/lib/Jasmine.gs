@@ -5,13 +5,15 @@ import macro sys.macros
 import macro sys.jasmine
 
 class!
-	@Execute := #(done = # ->, showColors = true)
+	@Execute := #(onComplete = # ->, showColors = true, verbose = false, sentences = false)
 		let env = jasmine.getEnv()
 		let consoleReporter = new jasmine.ConsoleReporter({
 			print: require('util').print
-			onComplete: done
-			showColors: showColors
 			timer: new jasmine.Timer()
+			onComplete
+			showColors
+			verbose
+			sentences
 	    })
 		env.addReporter(consoleReporter)
 		env.execute()
