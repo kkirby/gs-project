@@ -1,4 +1,5 @@
 import .Uuid
+import macro sys.webMacros
 
 class!
 	@Events := {
