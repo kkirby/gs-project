@@ -16,7 +16,7 @@ class! extends AStateMachine
 			if typeof item != \function or key.substr(0,6) != 'state_' or not item.states?
 				continue
 			@stateHandlers.push item
-		$(@):one ready()@
+		_(@):one ready()@
 			for key, item of @getInitialStates()
 				@transition key, item
 	

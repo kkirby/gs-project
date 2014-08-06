@@ -10,7 +10,7 @@ class! extends AStateMachine
 	def initialize()
 		callSuper initialize
 		@states := @getStates()
-		$(@):one ready()@
+		_(@):one ready()@
 			if @initialState and not @currentStateName?
 				@transition @initialState
 	
