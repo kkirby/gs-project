@@ -8,6 +8,16 @@ class!
 		\intentClick
 	}
 	
+	let nonTouchEvents = 
+		if PointerEvent?
+			{down: \pointerdown
+			move: \pointermove
+			up: \pointerup}
+		else
+			{down: \mousedown
+			move: \mousemove
+			up: \mouseup}
+	
 	/*do
 		$(document):on(\touchstart) #(e) ->
 		$(document):on(\touchend) #(e) ->*/
@@ -134,7 +144,8 @@ class!
 					)
 		else
 			let mutable targetElement = null
-			$(options.element):on mousedown(startEventObject)!
+			
+			$(options.element):on(nonTouchEvents.down):(startEventObject)!
 				unless startEventObject.target.matches(options.selector) then return true
 				targetElement := startEventObject.target
 				didStart := true
@@ -146,7 +157,7 @@ class!
 					}
 				)
 				
-			$(options.element):on mousemove(moveEventObject)!
+			$(options.element):on(nonTouchEvents.move):(moveEventObject)!
 				if didStart
 					moveEventObject.preventDefault()
 					moveEventObject.customTarget := targetElement
@@ -175,7 +186,7 @@ class!
 								eventDetail
 							)
 			
-			$(options.element):on mouseup(stopEventObject)!
+			$(options.element):on(nonTouchEvents.up):(stopEventObject)!
 				unless stopEventObject.target.matches(options.selector) then return true
 				unless didStart and isActive then return true
 				stopEventObject.customTarget := targetElement
