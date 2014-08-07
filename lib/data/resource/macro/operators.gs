@@ -216,11 +216,14 @@ macro operator binary <<<?
 				$left <<< $right
 			$right
 
-macro helper __compare = #(a,b)
+macro helper __compare = #(mutable a,mutable b)
 	let [aType,bType] = [typeof a,typeof b]
-	if aType != bType; return false
+	if \number in [aType,bType] and \string in [aType,bType]
+		if aType == \string; a := parseInt a, 10
+		if bType == \string; b := parseInt b, 10
+	else if aType != bType; return false
 	if a instanceof Array
-		f b not instanceof Array or a.length != b.length; return false
+		if b not instanceof Array or a.length != b.length; return false
 		return for every aValue, aKey in a
 			__compare b[aKey], aValue
 	else if aType == \object
