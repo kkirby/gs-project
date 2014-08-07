@@ -162,18 +162,31 @@ macro operator assign <bind>,<bindattr>
 			AST
 				$leftObj.addEventListener $leftEventName, $leftFunc
 				$leftFunc()
-	
+	let leftHandler =
+		if macroData.leftHandler
+			let leftHandlerFunc = macroData.leftHandler
+			AST
+				$left := $leftHandlerFunc($right)
+		else
+			ASTE $left := $right
+	let rightHandler =
+		if macroData.rightHandler
+			let rightHandlerFunc = macroData.rightHandler
+			AST
+				$right := $rightHandlerFunc($left)
+		else
+			ASTE $right := $left
 	AST
 		let mutable $locked = false
 		let $leftFunc = #()@
 			if $locked; return
 			$locked := true
-			$right := $left
+			$rightHandler
 			$locked := false
 		let $rightFunc = #()@
 			if $locked; return
 			$locked := true
-			$left := $right
+			$leftHandler
 			$locked := false
 		$addListener
 		$rightObj.addEventListener $rightEventName, $rightFunc

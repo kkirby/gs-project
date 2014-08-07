@@ -420,9 +420,13 @@ macro randomNum(maxNum,places,roundToNearest)
 	places or= ASTE 0
     roundToNearest or= ASTE 1
     places.value := 1 * (10 ^ places.value)
-    let b = ASTE $maxNum * $places
-	AST
-		(Math.round((Math.random() * $b) / $roundToNearest) * $roundToNearest) / $places
+	if places.value == 0
+		AST
+			Math.round(Math.random() * $maxNum)
+	else
+	    let b = ASTE $maxNum * $places
+		AST
+			(Math.round((Math.random() * $b) / $roundToNearest) * $roundToNearest) / $places
 /**
  TODO: Implement ..		
 macro random!
@@ -498,8 +502,11 @@ macro class!
 			$result
 
 	syntax args as InvocationArguments
-		let result = this.ident this.getConstValue(\__CLASS__)
-		@call result, args
+		if args.length == 1 and args[0].name == \self
+			@ident @getConstValue(\__CLASS__)
+		else
+			let result = this.ident this.getConstValue(\__CLASS__)
+			@call result, args
 
 macro isEmpty(input)
 	ASTE not $input? or $input == ''
@@ -546,5 +553,30 @@ macro _
 				$elm.removeEventListener $event, $callback
 				$userCallback.apply this, arguments
 			$elm.addEventListener $event, $callback, false
+
+macro bindTogether
+	syntax 'left',':',left as Expression,',','right',':',right as Expression,body as Body
+		unless body
+			body := ASTE null
+		if body.args?
+			body := body.args
+		else
+			body := [body]
+		let helpers = {
+			left: null
+			right: null
+		}
+		for node in body
+			if node.nodeType == \macroAccess  
+				let {macroData,macroName} = node.data
+				if macroName == \let
+					let name = macroData.ident.name
+					let value = macroData.func
+					if helpers ownskey name
+						helpers[name] := value
+		let tmp = ASTE $left <bind> $right
+		tmp.data.leftHandler := helpers.left
+		tmp.data.rightHandler := helpers.right
+		tmp
 
 //macro operator binary inall, inAll, in=	
