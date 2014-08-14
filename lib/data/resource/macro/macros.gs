@@ -1,17 +1,10 @@
 macro def
-	syntax key as ObjectKey
-		@internal-call \custom,
-			@const \def
-			key
-
 	syntax key as ObjectKey, func as FunctionDeclaration
 		let mutable argsVar = null
 		func := func.walkWithThis #(node)@
-			if node.isNormalCall \superArg
+			if node.isNormalCall() and node.func.name == \superArg
 				argsVar ?= @tmp \args, true
 				ASTE(node) super[$key](...$argsVar)
-			else
-				node
 		if argsVar?
 			let oldData = func.data.node.args[1]
 			let newData = AST
@@ -22,12 +15,6 @@ macro def
 			@const \def
 			key
 			func
-
-	syntax key as ObjectKey, "=", value as ExpressionOrAssignment
-		@internal-call \custom,
-			@const \def
-			key
-			value // do-wrap?
 
 macro ucfirst(str)
 	@maybe-cache str, #(setStr, str)
@@ -484,10 +471,9 @@ macro do
       ASTE (#@ -> $body)()
 
 macro class!
-	syntax extendTo as (meh as ('extends' | '<-' | '<<' | '<->' | '->'),ident as Identifier)?, body as Body?
+	syntax generic as ("<", head as Identifier, tail as (",", this as Identifier)*, ">")?, extendTo as ("extends", this)?, body as Body?
 		let result = this.ident this.getConstValue(\__CLASS__)
 		let _class = if extendTo?
-			extendTo := extendTo.ident
 			AST
 				class $result extends $extendTo
 					$body
@@ -495,11 +481,15 @@ macro class!
     		AST
     			class $result
     				$body
-		let res = @macroExpandAll(_class).args[0].args[1].args[1].func.args[1].args[0]
-		res.args.pop()
-		AST
-			$res
-			$result
+		if generic?; _class.data.macroData.generic := generic
+		if generic? or extendTo?.isCall
+			_class
+		else
+			let res = @macroExpandAll(_class).args[0].args[1].args[1].func.args[1].args[0]
+			res.args.pop()
+			AST
+				$res
+				$result
 
 	syntax args as InvocationArguments
 		if args.length == 1 and args[0].name == \self
@@ -517,12 +507,6 @@ macro toggle(cond,a,b)
 			$a
 		else
 			$b
-
-macro makeSingleton()
-	let instance = @tmp \instance, true
-	AST
-		let mutable $instance = null
-		@get := # -> $instance or= new @
 
 macro _
 	syntax selector as InvocationArguments,':','on',runNow as '!'?,event as (Identifier|Expression),spacer as (':')?,func as (FunctionDeclaration|Expression)
@@ -578,5 +562,28 @@ macro bindTogether
 		tmp.data.leftHandler := helpers.left
 		tmp.data.rightHandler := helpers.right
 		tmp
+
+macro let
+	syntax ?!'as', type as Type, ident as Identifier, init as InvocationArguments?
+		if init?
+			let initFunc =
+				if type.scope.has type
+					__call(
+						null,
+						type,
+						...init
+					)
+				else if type.name in [\Number,\String]
+					ASTE $init[0]
+				else
+					__call(
+						null,
+						__symbol(null,\internal,\new)
+						type,
+						...init
+					)
+			ASTE let $ident as $type = $initFunc
+		else
+			ASTE let mutable $ident as $type = null
 
 //macro operator binary inall, inAll, in=	

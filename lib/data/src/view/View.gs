@@ -1,38 +1,44 @@
-import .Component
+import sys.Component
+
 import macro sys.webMacros
+
+macro $View
+	syntax '(',node as Identifier,superclass as (',',this as Identifier)?,')',body as Body?
+		superclass ?= @ident \View
+		AST
+			class! extends $superclass
+				def node = $node
+				$body
 
 class! extends Component
 	def node = null
-	def _node = null
 	def childViews = null
 	def _isShowing = false
 	
 	def initialize()
-		super.initialize()
-		@node := @_node.cloneNode true
+		superArg()
+		@node := @node.cloneNode true
 		@childViews := []
 		@setup ...arguments
 	
 	dyn getIsVisible() -> @_isShowing
 	
 	def onVisible(callback)
-		if @_isShowing
-			callback()
-		else
-			$(@):one afterShow callback
+		if @_isShowing; callback()
+		else; _(@):one afterShow callback
 	
 	def addChildViews(childViews,selector)!
 		@childViews := @childViews.concat childViews
-		let node = if selector?
-			$(selector,@node)
-		else
-			@node
+		let node =
+			if selector?
+				if typeof selector == \string; $(selector,@node)
+				else; selector
+			else
+				@node
 		for view in childViews
-			if @_isShowing
-				view.beforeShow()
+			if @_isShowing; view.beforeShow()
 			$(node):append view.node
-			if @_isShowing
-				view.afterShow()
+			if @_isShowing; view.afterShow()
 	
 	def addChildView(childView,selector)!
 		@addChildViews [childView], selector
@@ -50,8 +56,8 @@ class! extends Component
 		for view in @childViews; view.beforeShow()
 	
 	def afterShow()
-		@emitEvent \afterShow
 		@_isShowing := true
+		@emitEvent \afterShow
 		for view in @childViews; view.afterShow()
 	
 	def beforeHide()
@@ -59,9 +65,9 @@ class! extends Component
 		for view in @childViews; view.beforeHide()
 	
 	def afterHide()
+		@_isShowing := false
 		@emitEvent \afterHide
 		for view in @childViews; view.afterHide()
-		@_isShowing := false
 	
 	def show(where)
 		@beforeShow()
@@ -70,5 +76,5 @@ class! extends Component
 	
 	def hide()
 		@beforeHide()
-		@node.parentNode?.removeChild @node
+		$(@node):remove()
 		@afterHide()

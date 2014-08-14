@@ -1,6 +1,6 @@
-import .AStateMachine
+import sys.Component
 
-class! extends AStateMachine
+class! extends Component
 	def currentStateName = null
 	def initialState = null
 	def states = null
@@ -17,7 +17,7 @@ class! extends AStateMachine
 	def getStates() -> []
 	
 	def handle(action,...data)
-		callSuper handle
+		@[action]? ...data
 		unless @currentStateName?
 			if typeof @catchAll == \function; @catchAll action, ...data
 			return

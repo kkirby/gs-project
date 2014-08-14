@@ -1,6 +1,6 @@
-import sys.lib.AStateMachine
+import sys.Component
 
-class! extends AStateMachine
+class! extends Component
 	def currentState = null
 	def states = null
 	def stateHandlers = null
@@ -59,7 +59,7 @@ class! extends AStateMachine
 		if setAction
 			@currentAction := action
 			@currentActionData := data
-		if @[action]?; @[action].apply @, data
+		@[action]? ...data
 		for handler in handlers; handler.apply @, data
 		if setAction
 			@currentAction := @currentActionData := null
