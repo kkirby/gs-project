@@ -411,10 +411,11 @@ macro ajax
 			$vRequest.send $data
 
 macro dynInput
-	syntax 'bind',':',inputName as Identifier,attrName as ('to',this as Identifier)?,type as ('as',this as Identifier)?
-		attrName or= inputName
+	syntax 'bind',':',inputName as (Identifier|Expression),comma as ','?,attrName as ('to',this as Identifier)?,type as ('as',this as Identifier)?
 		type or= @ident \text
-		inputName := inputName.name
+		unless comma?
+			attrName or= inputName
+			inputName := inputName.name
 		attrName := attrName.name
 		type := type.name
 		////////////
@@ -437,7 +438,7 @@ macro dynInput
 		else if type == 'multiCheckbox'
 			AST
 				let nodes = $('input[name="'&$inputName&'"]:checked',@node)[]
-				for node in nodes; node.value
+				return for node in nodes; node.value
 		// - Radio
 		else if type == 'radio'
 			AST
@@ -470,7 +471,10 @@ macro dynInput
 		else if type == 'multiCheckbox'
 			AST
 				for node in ($('input[name="'&$inputName&'"]',@node)[])
-					node.checked := node.value in value
+					node.checked :=
+						if value?
+							node.value in value
+						else; false
 		// - Radio
 		else if type == 'radio'
 			AST
@@ -483,53 +487,53 @@ macro dynInput
 			AST
 				$('input[name="'&$inputName&'"]',@node):on keyup(e)@
 					let eventInfo = {
-						attribute: $inputName
+						attribute: $attrName
 						value: e.target.value
 					}
 					@emitEvent 'attributeChange', eventInfo
-					@emitEvent 'attributeChange.'&$inputName, eventInfo
+					@emitEvent 'attributeChange.'&$attrName, eventInfo
 		// - Select
 		else if type == 'select'
 			AST
 				$('select[name="'&$inputName&'"]',@node):on change(e)@
 					let eventInfo = {
-						attribute: $inputName
+						attribute: $attrName
 						value: e.target.value
 					}
 					@emitEvent 'attributeChange', eventInfo
-					@emitEvent 'attributeChange.'&$inputName, eventInfo
+					@emitEvent 'attributeChange.'&$attrName, eventInfo
 		// - Checkbox
 		else if type == 'checkbox'
 			AST
 				$('input[name="'&$inputName&'"]',@node):on change(e)@
 					let eventInfo = {
-						attribute: $inputName
+						attribute: $attrName
 						value: e.target.checked
 					}
 					@emitEvent 'attributeChange', eventInfo
-					@emitEvent 'attributeChange.'&$inputName, eventInfo
+					@emitEvent 'attributeChange.'&$attrName, eventInfo
 		// - MultiCheckbox
 		else if type == 'multiCheckbox'
 			AST
 				for input in ($('input[name="'&$inputName&'"]',@node)[])
 					$(input):on change(e)@
 						let eventInfo = {
-							attribute: $inputName
+							attribute: $attrName
 							value: for selectedInput in ($('input[name="'&$inputName&'"]:checked',@node)[]); selectedInput.value
 						}
 						@emitEvent 'attributeChange', eventInfo
-						@emitEvent 'attributeChange.'&$inputName, eventInfo
+						@emitEvent 'attributeChange.'&$attrName, eventInfo
 		// - Radio
 		else if type == 'radio'
 			AST
 				for input in ($('input[name="'&$inputName&'"]',@node)[])
 					$(input):on change(e)@
 						let eventInfo = {
-							attribute: $inputName
+							attribute: $attrName
 							value: $getter
 						}
 						@emitEvent 'attributeChange', eventInfo
-						@emitEvent 'attributeChange.'&$inputName, eventInfo
+						@emitEvent 'attributeChange.'&$attrName, eventInfo
 						
 		let tmp = @tmp \oldSetup, true
 		AST
