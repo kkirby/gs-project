@@ -13,6 +13,82 @@
     @return $ret;
 }
 
+@function factorial($x){
+	$ret: 1;
+	@if $x > 0 {
+		@while $x > 0 {
+			$ret: $ret * $x;
+			$x: $x - 1;
+		}
+	}
+	@return $ret;
+}
+
+@function sin($x){
+	$ret: 0;
+	@for $n from 0 to 25 {
+		$ret: $ret + power(-1, $n) * power($x, 2 * $n + 1) / factorial(2 * $n + 1);
+	}
+	@return $ret;
+}
+
+@function cos($x){
+	$ret: 0;
+	@for $n from 0 to 25 {
+		$ret: $ret + power(-1, $n) * power($x, 2 * $n) / factorial(2 * $n);
+	}
+	@return $ret;
+}
+
+@function exp($x){
+	$ret: 0;
+	@for $n from 0 to 25 {
+		$ret: $ret + power($x, $n) / factorial($n);
+	}	
+	@return $ret;
+}
+
+@function ln($x){
+	$ret: 0;
+	$n: 1;
+	$dx: .001;	
+	@while $n <= $x {
+		$ret: $ret + $dx / $n;		
+		$n: $n + $dx;
+	}	
+	@return $ret;
+}
+
+@function sqrt($x){
+	@return exp(0.5 * ln($x));
+}
+
+@function convert-angle($value, $unit){
+	$convertable-units: deg grad turn rad;
+	$conversion-factors: 1 10grad/9deg 1turn/360deg 3.1415926rad/180deg;
+	@if index($convertable-units, unit($value)) and index($convertable-units, $unit) {
+		@return $value / nth($conversion-factors, index($convertable-units, unit($value))) * nth($conversion-factors, index($convertable-units, $unit));
+  	}
+	@else {
+		@warn "Cannot convert #{unit($value)} to #{$unit}";
+	}
+}
+
+@function getPointInCircle($cX,$cY,$radius,$angle){
+	@if unit($angle) == deg {
+		$angle: ($angle * 3.14159 / 180) / 1deg;
+	}
+	@return ($cX + $radius * cos($angle),$cY - $radius * sin($angle));
+}
+
+@function getPointInEllipse($cX,$cY,$xRadius,$yRadius,$angle){
+	@if unit($angle) == deg {
+		$angle: ($angle * 3.14159 / 180) / 1deg;
+	}
+	@return ($cX + $xRadius * cos($angle),$cY - $yRadius * sin($angle));
+}
+
+
 @function rounded($num,$placeholder: 0){
 	$multipler: power(10,$placeholder);
 	@return round($num * $multipler) / $multipler;
@@ -235,5 +311,16 @@
 	}
 	#{$selectorsB} {
 		display: block;
+	}
+}
+
+@mixin clearfix(){
+	&:after {
+		display: inline-block;
+		content: ' ';
+		clear: both;
+		width: 0;
+		height: 0;
+		visibility: hidden;
 	}
 }
