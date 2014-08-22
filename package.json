@@ -18,7 +18,8 @@
 		"colors": "*",
 		"sprintf": "*",
 		"optimist": "*",
-		"deasync": "*"
+		"deasync": "*",
+		"codepage": "*"
 	},
 	"main": "compile.js"
 }
