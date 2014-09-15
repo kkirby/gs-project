@@ -80,7 +80,7 @@ macro operator unary cos
 macro operator unary sin
 	ASTE Math.sin $node
 
-macro operator unary asNumber
+macro operator unary asNumber, int!
 	ASTE parseInt($node,10)
 
 macro operator binary arrayFill
@@ -247,3 +247,10 @@ macro operator binary arrayRemoveItem
 		let $index = $left.indexOf $right
 		if $index != -1
 			$left.splice $index, 1
+			
+macro operator binary uniquePush
+	@maybeCache left, #(setLeft,left)@
+		@maybeCache right, #(setRight,right)@
+			AST
+				unless $setRight in $setLeft
+					$left.push $right

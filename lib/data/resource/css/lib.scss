@@ -1,3 +1,36 @@
+$__contentVars: ();
+
+@function StartContent($args...){
+	$__contentVars: append($__contentVars,$args);
+	@return 0;
+}
+
+@function GetContentVar($key){
+	$contentVars: nth($__contentVars,length($__contentVars));
+	@for $i from 1 through length($contentVars) {
+		$contentVar: nth($contentVars,$i);
+		@if nth($contentVar,1) == $key {
+			@return nth($contentVar,2);
+		}
+	}
+	@warn "Key \"#{$key}\" does not exist!";
+	@return;
+}
+
+@function EndContent(){
+	$result: ();
+	@for $i from 1 through length($__contentVars) - 1 {
+		$result: append($result,nth($__contentVars,$i));
+	}
+	$__contentVars: $result;
+	@return 0;
+}
+
+@function pi(){
+	@return 3.1415926;
+}
+
+
 @function power($x,$n){
     $ret: 1;
     @if $n >= 0 {
@@ -11,6 +44,10 @@
         }
     }
     @return $ret;
+}
+
+@function pow($x,$n){
+	@return power($x,$n);
 }
 
 @function factorial($x){
@@ -40,6 +77,10 @@
 	@return $ret;
 }
 
+@function tan($angle){
+	@return sin($angle) / cos($angle);
+}
+
 @function exp($x){
 	$ret: 0;
 	@for $n from 0 to 25 {
@@ -53,7 +94,7 @@
 	$n: 1;
 	$dx: .001;	
 	@while $n <= $x {
-		$ret: $ret + $dx / $n;		
+		$ret: $ret + $dx / $n;
 		$n: $n + $dx;
 	}	
 	@return $ret;
@@ -63,15 +104,65 @@
 	@return exp(0.5 * ln($x));
 }
 
-@function convert-angle($value, $unit){
-	$convertable-units: deg grad turn rad;
-	$conversion-factors: 1 10grad/9deg 1turn/360deg 3.1415926rad/180deg;
-	@if index($convertable-units, unit($value)) and index($convertable-units, $unit) {
-		@return $value / nth($conversion-factors, index($convertable-units, unit($value))) * nth($conversion-factors, index($convertable-units, $unit));
-  	}
-	@else {
-		@warn "Cannot convert #{unit($value)} to #{$unit}";
+$default-threshold: pi()/180/20;
+
+@function convert-angle($value, $unit-name) {
+	@if $unit-name == rad {
+		@return $value * 1rad;
 	}
+	@else if $unit-name == deg {
+		@return $value * 180deg / pi();
+	}
+	@else if $unit-name == grad {
+		@return $value * 200grad/pi();
+	}
+	@else if $unit-name == turn {
+		@return $value * .5turn / pi();
+	}
+	@else {
+		@warn 'unit `#{$unit-name}` is not a valid unit - please make sure it is either `deg`, `rad`, `grad` or `turn`';
+	}
+}
+
+@function asin($z, $unit-name: deg, $threshold: $default-threshold) {
+  $sum: 0;
+  $complement: false;
+  $sign: if($z != 0, $z/abs($z), 1);
+  $z: abs($z);
+  
+  @if $z > 1 {
+    @warn 'illegal `#{$z}` value for function';
+    @return false;
+  }
+
+  @if $z > sin(pi()/4) {
+    $complement: true;
+    $z: sqrt(1 - pow($z, 2));
+  }
+
+  $term: $z;
+  $i: 0;
+  $k: 1;
+
+  @while $term > $threshold {
+    $sum: $sum + $term;
+
+    $i: $i + 1;
+    $k: $k*(2*$i - 1)/(2*$i);
+    $j: 2*$i + 1;
+
+    $term: $k*pow($z, $j)/$j;
+  }
+
+  @return convert-angle($sign*(if($complement, pi()/2 - $sum, $sum)), $unit-name);
+}
+
+@function acos($z, $unit-name: deg, $threshold: $default-threshold) {
+  @return convert-angle(pi()/2, $unit-name) - asin($z, $unit-name, $threshold);
+}
+
+@function atan($z, $unit-name: deg, $threshold: $default-threshold) {
+  @return asin($z/sqrt(1 + pow($z, 2)), $unit-name, $threshold);
 }
 
 @function getPointInCircle($cX,$cY,$radius,$angle){
@@ -302,15 +393,21 @@
 @mixin states($states,$append: ''){
 	$selectorsA: ();
 	$selectorsB: ();
+	$selectorsC: ();
 	@each $state in $states {
 		$selectorsA: append($selectorsA,unquote('.#{$append}#{$state}'),comma);
 		$selectorsB: append($selectorsB,unquote('&.#{$append}#{$state} .#{$append}#{$state}'),comma);
+		$selectorsC: append($selectorsC,unquote('&.#{$append}#{$state} span.#{$append}#{$state}'),comma);
 	}
 	#{$selectorsA} {
 		display: none;
 	}
 	#{$selectorsB} {
 		display: block;
+	}
+	
+	#{$selectorsC} {
+		display: inline;
 	}
 }
 
@@ -322,5 +419,121 @@
 		width: 0;
 		height: 0;
 		visibility: hidden;
+	}
+}
+
+.Flex {
+	display: -webkit-flex;
+	
+	> * {
+		-webkit-flex: 0 0 auto;
+		
+		@for $i from 1 through 5 {
+			$selector: unquote('&[data-flex-grow="#{$i}"]');
+			#{$selector} {
+				-webkit-flex-grow: $i;
+			}
+			
+			$selector: unquote('&[data-flex-shrink="#{$i}"]');
+			#{$selector} {
+				-webkit-flex-shrink: $i;
+			}
+		}
+	}
+	
+	&Wrap {
+		-webkit-flex-wrap: wrap;
+	}
+	
+	&Inline {
+		display: -webkit-inline-flex;
+	}
+	
+	&Direction {
+		&Row {
+			-webkit-flex-direction: row;
+			&Reverse {
+				-webkit-flex-direction: row-reverse;
+			}
+		}
+		
+		&Column {
+			-webkit-flex-direction: column;
+			&Reverse {
+				-webkit-flex-direction: column-reverse;
+			}
+		}
+	}
+	
+	&Y {
+		&Top {
+			-webkit-align-items: flex-start;
+		}
+		
+		&Center {
+			-webkit-align-items: flex-center;
+		}
+		
+		&Bottom {
+			-webkit-align-items: flex-end;
+		}
+		
+		&Stretch {
+			-webkit-align-items: stretch;
+		}
+		
+		&Baseline {
+			-webkit-align-items: baseline;
+		}
+	}
+	
+	&Justify {
+		&X {
+			&Left {
+				-webkit-justify-content: flex-start;
+			}
+		
+			&Right {
+				-webkit-justify-content: flex-end;
+			}
+		
+			&Center {
+				-webkit-justify-content: center;
+			}
+		
+			&SpaceBetween {
+				-webkit-justify-content: space-between;
+			}
+		
+			&SpaceAround {
+				-webkit-justify-content: space-around;
+			}
+		}
+	
+		&Y {
+			&Top {
+				-webkit-align-content: flex-start;
+			}
+		
+			&Bottom {
+				-webkit-align-content: flex-end;
+			}
+		
+			&Center {
+				-webkit-align-content: center;
+			}
+		
+			&SpaceBetween {
+				-webkit-align-content: space-between;
+			}
+		
+			&SpaceAround {
+				-webkit-align-content: space-around;
+			}
+		
+			&Stretch {
+				-webkit-align-content: space-around;
+			}
+		}
 	}
 }

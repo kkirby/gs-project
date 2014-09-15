@@ -107,7 +107,7 @@ class!
 						event: moveEventObject
 						uuid
 					}
-					if shouldDisableMove(moveEventObject)
+					if shouldDisableMove(moveEventObject) and not inArea
 						$(@):trigger(
 							IntentClick.Events.intentEnd,
 							eventDetail

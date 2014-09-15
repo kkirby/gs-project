@@ -163,9 +163,9 @@ macro $
 					event.name := event.name.substr(1)
 				else
 					event := event.name
-			if event == 'afterAnimate'
+			if event in ['afterAnimate','animationEnd']
 				event := ASTE Vendor(\animationEnd)
-			else if event == 'afterTransit'
+			else if event in ['afterTransit','transitionEnd']
 				event := ASTE Vendor(\transitionEnd)
 			let useCapture = event in [\focus,\blur]
 			let first = if useCapture
@@ -222,9 +222,9 @@ macro $
 		let element = $$_reduce arguments
 		event := event.name
 		let mutable vendorify = false
-		if event == 'afterAnimate'
+		if event in ['afterAnimate','animationEnd']
 			event := ASTE Vendor(\animationEnd)
-		else if event == 'afterTransit'
+		else if event in ['afterTransit','transitionEnd']
 			event := ASTE Vendor(\transitionEnd)
 		AST
 			let $elm = $element
@@ -542,3 +542,11 @@ macro dynInput
 				get: # -> $getter
 				set: #(value) -> $setter
 			}
+
+macro loadImage!(img,cb)
+	let imgVar = @tmp \img
+	AST
+		let $imgVar = document.createElement(\img)
+		$imgVar.onload := # -> cb()
+		$imgVar.onerror := # -> cb 'Unable to load image "'&$img&'"'
+		$imgVar.src := $img

@@ -1,0 +1,34 @@
+@function tweenBackEaseIn($t, $b, $c, $d){
+	$s: 1.70158;
+	$t: $t / $d;
+    @return $c * $t * $t * (($s + 1) * $t - $s) + $b;
+}
+@function tweenBackEaseOut($t, $b, $c, $d){
+	$s: 1.70158;
+	$t: $t / $d - 1;
+    @return $c * ($t * $t * (($s + 1) * $t + $s) + 1) + $b;
+}
+@function tweenBackEaseInOut($t, $b, $c, $d){
+    $s: 1.70158;
+	$t: $t / ($d / 2);
+    @if $t < 1 {
+		$s: $s * 1.525;
+        @return $c / 2 * ($t * $t * (($s + 1) * $t - $s)) + $b;
+    }
+	$t: $t - 2;
+	$s: $s * 1.525;
+    @return $c / 2 * ($t * $t * (($s + 1) * $t + $s) + 2) + $b;
+}
+@function tweenElasticEaseIn($t, $b, $c, $d){}
+@function tweenElasticEaseOut($t, $b, $c, $d){}
+@function tweenElasticEaseInOut($t, $b, $c, $d){}
+@function tweenBounceEaseOut($t, $b, $c, $d){}
+@function tweenBounceEaseIn($t, $b, $c, $d){}
+@function tweenBounceEaseInOut($t, $b, $c, $d){}
+@function tweenEaseIn($t, $b, $c, $d){}
+@function tweenEaseOut($t, $b, $c, $d){}
+@function tweenEaseInOut($t, $b, $c, $d){}
+@function tweenStrongEaseIn($t, $b, $c, $d){}
+@function tweenStrongEaseOut($t, $b, $c, $d){}
+@function tweenStrongEaseInOut($t, $b, $c, $d){}
+@function tweenLinear($t, $b, $c, $d){}

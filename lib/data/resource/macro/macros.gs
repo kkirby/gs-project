@@ -25,10 +25,13 @@ macro dyn
 		name := name.name
 		let type = name.substr(0,3)
 		name := name.substr(3)
-		name := name.substr(0,1).toLowerCase()&name.substr(1)
-		if type == \get
+		let transformMethod = 
+			if type in [\get,\set]; 'toLowerCase'
+			else if type in [\Get,\Set]; 'toUpperCase'
+		name := name.substr(0,1)[transformMethod]()&name.substr(1)
+		if type in [\get,\Get]
 			ASTE Object.defineProperty @prototype, $name, {get: $func}
-		else if type == \set
+		else if type in [\set,\Set]
 			ASTE Object.defineProperty @prototype, $name, $func, {set: $func}
 	
 	syntax 'bind',name as Identifier,'->',bindTo as Expression
@@ -314,6 +317,7 @@ macro die
 				if body.subtype?
 					if body.subtype in ['->','<-']
 						let oldTest = test
+						// TODO: Cache value of $test so that the result doesn't evaluate it twice!
 						test := ASTE ($test)?
 						let mutable stmt = body.stmt
 						stmt := @macro-expand-1 stmt
@@ -322,7 +326,7 @@ macro die
 								@call stmt.func, [oldTest, ...stmt.args]
 							else
 								@call stmt.func, [...stmt.args, oldTest]
-						else if stmt.isIdent
+						else if stmt.isIdent or (stmt.isCall and not stmt.isNormalCall())
 							ASTE $stmt $oldTest
 						else
 							@error 'Invalid symbol used with '&body.subtype, stmt
@@ -364,6 +368,13 @@ macro die
 		else
 			let _macro = ASTE die ,b
 			_macro.data.macroData.retVal := withExp
+
+macro compose
+	syntax 'if',test as Logic, '->', stmt as Expression
+		@maybeCache test, #(setTest,test)
+			stmt := @macro-expand-1 stmt
+			AST
+				if $setTest?; $stmt $test
 			
 macro ConstStr
 	syntax inputNodes as InvocationArguments

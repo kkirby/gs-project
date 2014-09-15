@@ -1,4 +1,5 @@
 import sys.Component
+import macro sys.stateMachine
 
 class! extends Component
 	def currentState = null
@@ -17,8 +18,7 @@ class! extends Component
 				continue
 			@stateHandlers.push item
 		_(@):one ready()@
-			for key, item of @getInitialStates()
-				@transition key, item
+			@resetStates()
 	
 	def getHandlersForState(allStates,action)
 		return for filter handler in @stateHandlers
@@ -78,3 +78,7 @@ class! extends Component
 		if savedState.currentState?
 			for k, v of savedState.currentState
 				@transition k, v
+	
+	def resetStates()
+		for key, item of @getInitialStates()
+			@transition key, item
