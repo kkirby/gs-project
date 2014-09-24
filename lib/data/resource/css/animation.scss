@@ -1,5 +1,3 @@
-@import (css)(sys.math);
-@import (css)(sys.map);
 @import (css)(sys.animationTweens);
 
 @function _tween($func,$start,$end,$time,$duration){
