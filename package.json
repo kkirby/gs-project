@@ -9,7 +9,6 @@
 		"glob": "*",
 		"gorillascript": "*",
 		"image-size": "*",
-		"node-sass": "*",
 		"underscore" : "*",
 		"underscore.string" : "*",
 		"jsdom": "0.11.1",
@@ -18,7 +17,7 @@
 		"colors": "*",
 		"sprintf": "*",
 		"optimist": "*",
-		"deasync": "*"
+		"deasync": "*",
 	},
 	"main": "compile.js"
 }
