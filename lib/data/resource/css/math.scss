@@ -1,0 +1,176 @@
+@function pi() {
+  @return 3.141592;
+}
+
+@function tau() {
+  @return 2 * pi();
+}
+
+@function golden-ratio() {
+  @return 1.61803398;
+}
+
+@function e() {
+  @return 2.7182818284;
+}
+
+@function exponent($base, $exponent) {
+	// reset value
+	$value: $base;
+	// positive intergers get multiplied
+	@if $exponent > 1 {
+		@for $i from 2 through $exponent {
+			$value: $value * $base; } }
+	// negitive intergers get divided. A number divided by itself is 1
+	@if $exponent < 1 {
+		@for $i from 0 through -$exponent {
+			$value: $value / $base; } }
+	// return the last value written
+	@return $value; 
+}
+
+@function power($base, $exponent) {
+	@return exponent($base, $exponent);
+}
+
+@function pow($x,$y){
+	@return power($x,$y);
+}
+
+@function factorial($x){
+	$ret: 1;
+	@if $x > 0 {
+		@while $x > 0 {
+			$ret: $ret * $x;
+			$x: $x - 1;
+		}
+	}
+	@return $ret;
+}
+
+@function sin($x){
+	$ret: 0;
+	@for $n from 0 to 25 {
+		$ret: $ret + power(-1, $n) * power($x, 2 * $n + 1) / factorial(2 * $n + 1);
+	}
+	@return $ret;
+}
+
+@function cos($x){
+	$ret: 0;
+	@for $n from 0 to 25 {
+		$ret: $ret + power(-1, $n) * power($x, 2 * $n) / factorial(2 * $n);
+	}
+	@return $ret;
+}
+
+@function tan($angle){
+	@return sin($angle) / cos($angle);
+}
+
+@function exp($x){
+	$ret: 0;
+	@for $n from 0 to 25 {
+		$ret: $ret + power($x, $n) / factorial($n);
+	}	
+	@return $ret;
+}
+
+@function ln($x){
+	$ret: 0;
+	$n: 1;
+	$dx: .01;	
+	@while $n <= $x {
+		$ret: $ret + $dx / $n;
+		$n: $n + $dx;
+	}	
+	@return $ret;
+}
+
+@function log($value) {
+	@return ln($value) / ln(10);
+}
+
+@function sqrt($x){
+	@return exp(0.5 * ln($x));
+}
+
+$default-threshold: pi() / 180/20;
+
+@function convert-angle($value, $unit-name) {
+	@if $unit-name == rad {
+		@return $value * 1rad;
+	}
+	@else if $unit-name == deg {
+		@return $value * 180deg / pi();
+	}
+	@else if $unit-name == grad {
+		@return $value * 200grad/pi();
+	}
+	@else if $unit-name == turn {
+		@return $value * .5turn / pi();
+	}
+	@else {
+		@warn 'unit `#{$unit-name}` is not a valid unit - please make sure it is either `deg`, `rad`, `grad` or `turn`';
+	}
+}
+
+@function asin($z, $unit-name: deg, $threshold: $default-threshold) {
+	$sum: 0;
+	$complement: false;
+	$sign: if($z != 0, $z/abs($z), 1);
+	$z: abs($z);
+
+	@if $z > 1 {
+		@warn 'illegal `#{$z}` value for function';
+		@return false;
+	}
+
+	@if $z > sin(pi()/4) {
+		$complement: true;
+		$z: sqrt(1 - pow($z, 2));
+	}
+
+	$term: $z;
+	$i: 0;
+	$k: 1;
+
+	@while $term > $threshold {
+		$sum: $sum + $term;
+
+		$i: $i + 1;
+		$k: $k*(2*$i - 1)/(2*$i);
+		$j: 2*$i + 1;
+
+		$term: $k*pow($z, $j)/$j;
+	}
+
+	@return convert-angle($sign*(if($complement, pi()/2 - $sum, $sum)), $unit-name);
+}
+
+@function acos($z, $unit-name: deg, $threshold: $default-threshold) {
+	@return convert-angle(pi()/2, $unit-name) - asin($z, $unit-name, $threshold);
+}
+
+@function atan($z, $unit-name: deg, $threshold: $default-threshold) {
+	@return asin($z/sqrt(1 + pow($z, 2)), $unit-name, $threshold);
+}
+
+@function getPointInCircle($cX,$cY,$radius,$angle){
+	@if unit($angle) == deg {
+		$angle: ($angle * 3.14159 / 180) / 1deg;
+	}
+	@return ($cX + $radius * cos($angle),$cY - $radius * sin($angle));
+}
+
+@function getPointInEllipse($cX,$cY,$xRadius,$yRadius,$angle){
+	@if unit($angle) == deg {
+		$angle: ($angle * 3.14159 / 180) / 1deg;
+	}
+	@return ($cX + $xRadius * cos($angle),$cY - $yRadius * sin($angle));
+}
+
+@function rounded($num,$placeholder: 0){
+	$multipler: power(10,$placeholder);
+	@return round($num * $multipler) / $multipler;
+}
