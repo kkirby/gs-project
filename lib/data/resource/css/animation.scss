@@ -51,49 +51,20 @@
 }
 
 @mixin tween($name,$animations){
-	$iterations: ();
-	@for $i from 0 through 100 {
-		$iteration: Map();
-		@each $animationName in MapGetKeys($animations){
-			$animationConfig: MapGetValue($animations,$animationName);
-			$easing: MapGetValue($animationConfig,easing);
-			$start: MapGetValue($animationConfig,start);
-			$end: MapGetValue($animationConfig,end);
-			$iteration: MapSetKey($iteration,$animationName,_tween($easing,$start,$end,$i,100));
-		}
-		$iterations: append($iterations,$iteration);
-	}
 	@include keyframes($name){
 		@for $i from 0 through 100 {
-			$nth: $i + 1;
-			$previousIteration: false;
-			$nextIteration: false;
-			$currentIteration: nth($iterations,$nth);
-			@if $nth > 1 {
-				$previousIteration: nth($iterations,$nth - 1);
-			}
-			@if $nth <= 100 {
-				$nextIteration: nth($iterations,$nth + 1);
-			}
 			$p: $i * 1%;
-			$contentMap: Map();
 			#{$p} {
-				@each $animationName in MapGetKeys($currentIteration){
-					$previousAnimationValue: MapGetValue($previousIteration,$animationName,false);
-					$currentAnimationValue: MapGetValue($currentIteration,$animationName,false);
-					$nextAnimationValue: MapGetValue($nextIteration,$animationName,false);
-					// TODO: Implement better algorithm.
-					//@if $nextAnimationValue != $currentAnimationValue or $previousAnimationValue != $currentAnimationValue {
-						$contentMap: MapSetKey($contentMap,$animationName,$currentAnimationValue);
-					//}
+				$contentMap: ();
+				@each $animationName, $animationConfig in $animations {
+					$value: _tween(nth($animationConfig,3),nth($animationConfig,1),nth($animationConfig,2),$i,100);
+					$contentMap: map-merge($contentMap,(#{$animationName}:#{$value}));
 				}
-				
 				$_: StartContent($contentMap);
 				@content;
 				$_: EndContent();
 			}
 		}
 	}
-	
 	@include animation($name linear 1s);
 }

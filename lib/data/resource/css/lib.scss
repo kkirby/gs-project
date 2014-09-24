@@ -11,7 +11,7 @@ $__contentVars: ();
 
 @function GetContentVar($key){
 	$map: nth($__contentVars,length($__contentVars));
-	@return MapGetValue($map,$key);
+	@return map-get($map,$key);
 }
 
 @function EndContent(){
