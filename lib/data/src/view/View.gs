@@ -78,3 +78,16 @@ class! extends Component
 		@beforeHide()
 		$(@node):remove()
 		@afterHide()
+	
+	def showAnimate()
+		$(@node):css \display, \block
+		$(@node):one afterAnimate()@
+			$(@node):removeClass \ShowAnimate
+		$(@node):addClass \ShowAnimate
+	
+	def hideAnimate()
+		$(@node):one afterAnimate()@
+			$(@node):css \display, \none
+			$(@node):removeClass \HideAnimate
+		$(@node):addClass \HideAnimate
+			
