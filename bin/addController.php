@@ -1,6 +1,6 @@
 <?php
 $name = $argv[1];
-$local = dirname(__FILE__).'/templates/controller';
+$local = dirname(__FILE__).'/../lib/consoleTemplates/controller';
 $pwd = trim(`pwd`);
 $dir = $pwd.'/'.$name;
 echo $dir;
