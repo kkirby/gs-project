@@ -18,6 +18,23 @@ class!
 			move: \mousemove
 			up: \mouseup}
 	
+	@DefaultInit := #(down,up,click)
+		IntentClick.BindToElement {
+			selector: '.Clickable'
+			down: #(e)
+				$(e.target):addClass \Down
+				down?(e)
+			up: #(e)
+				$(e.target):removeClass \Down
+				up?(e)
+			click: #(e)@
+				click?(e)
+				unless isEmpty(e.target.dataset.event)
+					$(e.target):trigger(e.target.dataset.event,e)
+			element: $('body')
+			disableMove: '.DisableMove *'
+		}
+	
 	/*do
 		$(document):on(\touchstart) #(e) ->
 		$(document):on(\touchend) #(e) ->*/
