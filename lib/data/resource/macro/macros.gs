@@ -528,7 +528,7 @@ macro _
 					event.name := event.name.substr(1)
 				else
 					event := event.name
-			let first = ASTE $element.addEventListener $event, $setFunc, false
+			let first = ASTE $element.addEventListener $event, $setFunc
 			let second = if runNow?; ASTE $func()
 			else; ASTE null
 			AST
@@ -547,7 +547,7 @@ macro _
 			let $callback = #
 				$elm.removeEventListener $event, $callback
 				$userCallback.apply this, arguments
-			$elm.addEventListener $event, $callback, false
+			$elm.addEventListener $event, $callback
 
 macro bindTogether
 	syntax 'left',':',left as Expression,',','right',':',right as Expression,body as Body
