@@ -1,4 +1,4 @@
-import sys.lib.Component
+import sys.Component
 
 die if typeof module?.exports == \object
 

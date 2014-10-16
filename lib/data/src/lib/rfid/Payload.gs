@@ -1,4 +1,4 @@
-import sys.lib.Component
+import sys.Component
 
 class! extends Component
 	

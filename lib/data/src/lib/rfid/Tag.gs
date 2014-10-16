@@ -1,4 +1,4 @@
-import sys.lib.Component
+import sys.Component
 import .Payload
 import sys.lib.Long
 
