@@ -1,4 +1,5 @@
 import sys.Component
+import macro sys.stateMachine
 
 class! extends Component
 	def currentStateName = null
