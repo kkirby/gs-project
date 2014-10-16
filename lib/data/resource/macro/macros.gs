@@ -417,11 +417,11 @@ macro lengthOf(str)
 macro randomNum(maxNum,places,roundToNearest)
 	places or= ASTE 0
     roundToNearest or= ASTE 1
-    places.value := 1 * (10 ^ places.value)
 	if places.value == 0
 		AST
 			Math.round(Math.random() * $maxNum)
 	else
+		places.value := 1 * (10 ^ places.value)
 	    let b = ASTE $maxNum * $places
 		AST
 			(Math.round((Math.random() * $b) / $roundToNearest) * $roundToNearest) / $places
