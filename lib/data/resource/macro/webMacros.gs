@@ -290,6 +290,24 @@ macro $
 		let elm = $$_reduce arguments
 		AST ($($elm)).appendChild $element
 	
+	syntax selector as InvocationArguments,':','prepend',element as Expression
+		let elm = $$_reduce arguments
+		let elm2 = AST ($($elm))
+		@maybeCache elm2, #(setElm,elm)
+			AST ($setElm).insertBefore $element, $elm.children[0]
+	
+	syntax selector as InvocationArguments,':','firstChild',args as InvocationArguments
+		let elm = $$_reduce arguments
+		AST
+			($($elm)).children[0]
+	
+	syntax selector as InvocationArguments,':','lastChild',args as InvocationArguments
+		let elm = $$_reduce arguments
+		let elm2 = ASTE ($($elm))
+		@maybeCache elm2, #(setElm,elm)
+			AST
+				($setElm).children[$elm.children.length - 1]
+	
 	syntax selector as InvocationArguments,':','appendAll',elements as Expression
 		let elm = $$_reduce arguments
 		let tmp = @tmp()
