@@ -1,30 +1,102 @@
 @import (css)(sys.bourbon);
 @import (css)(sys.math);
+@import (css)(sys.contentVars);
 
-$__contentVars: ();
-
-@function StartContent($map){
-	$__contentVars: append($__contentVars,$map) !global;
-	@return null;
+@function scale-all($scale){
+	@return scale($scale,$scale);
 }
 
-@function GetContentVar($key){
-	$map: nth($__contentVars,length($__contentVars));
-	@return map-get($map,$key);
-}
+// Order of the includes matters, and it is: normal, bold, italic, bold+italic.
 
-@function EndContent(){
-	$result: ();
-	@if length($__contentVars) > 1 {
-		@for $i from 1 through (length($__contentVars) - 1) {
-			$result: append($result,nth($__contentVars,$i));
+@function str-last-index($string,$substring){
+	$last-index: null;
+	$count: 0;
+	@while true {
+		$index: str-index($string,$substring);
+		@if $index == null {
+			@if $count == 0 {
+				@return -1;
+			}
+			@else {
+				@return $count;
+			}
+		}
+		@else {
+			$count: $count + $index;
+			$last-index: $index;
+			$string: str-slice($string,$last-index + 1);
 		}
 	}
-	$__contentVars: $result !global;
-	@return null;
 }
 
-@mixin backgroundGradient($colors...){
+@function str-first-index($string,$substring){
+	$index: str-index($string,$substring);
+	@if $index == null {
+		@return -1;
+	}
+	@else {
+		@return $index;
+	}
+}
+
+@function get-font-url-info($font-url){
+	$url: null;
+	$type: null;
+	$extension: null;
+	@if str-index($font-url,'url') != null {
+		$url: str-slice($font-url,str-index($font-url,'(') + 1,str-index($font-url,')') - 1);
+	}
+	@if str-index($url,'"') != null or str-index($url,"'") != null {
+		$url: str-slice($url,2,str-length($url) - 1);
+	}
+	
+	$extension-index: str-index($url,'.');
+	@if $extension-index != null {
+		$extension: str-slice($url,$extension-index + 1);
+	}
+	@if $extension != null {
+		@if $extension == eot {
+			$type: embedded-opentype;
+		}
+		@else if $extension == otf {
+			$type: opentype;
+		}
+		@else if $extension == woff {
+			$type: woff;
+		}
+		@else if $extension == ttf {
+			$type: truetype;
+		}
+		@else if $extension == svg {
+			$name: str-slice($url,str-last-index($url,'/') + 1,-5);
+			$url: $url + '#' + $name;
+			$type: svg;
+		}
+	}
+	@return (url:$url,extension:$extension,type:$type);
+}
+
+// TODO: Finish this code.
+@mixin my-font-face($font-family, $fonts, $weight: normal, $style: normal, $disable: null){
+	@font-face {
+		font-family: $font-family;
+		font-weight: $weight;
+		font-style: $style;
+		$font-srcs: ();
+		@each $font in $fonts {
+			$info: get-font-url-info($font);
+			@if $info.extension != null {
+				@if $disable == null or index($disable,$info.extension) == null {
+					$url: $info.url;
+					$font-srcs: append($font-srcs,url('#{$url}') format('#{$info.type}'),comma);
+				}
+			}
+		}
+		src: $font-srcs;
+	}
+}
+
+@mixin background-gradient($colors...){
 	$formatA: null;
 	$formatB: null;
 	$formatC: null;
@@ -108,7 +180,7 @@ $__contentVars: ();
 	background-image: join($prepend,join(linear-gradient($formatC),$append),'comma');
 }
 
-@mixin position($x,$y,$width: auto,$height: auto){
+@mixin view($x,$y,$width: auto,$height: auto){
 	position: absolute;
 	$top: $y;
 	$left: $x;
@@ -188,16 +260,12 @@ $__contentVars: ();
 	@return (-1 * $value) - 1;
 }
 
-@mixin disableSelection(){
+@mixin disable-selection(){
 	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+	@include user-select(none);
 }
 
-@mixin forAttrs($attrName,$attrValues...){
+@mixin for-attrs($attrName,$attrValues...){
 	$selectors: ();
 	@each $attrValue in $attrValues {
 		$selectors: append($selectors,unquote('&[#{$attrName}="#{$attrValue}"]'),comma);
@@ -207,7 +275,70 @@ $__contentVars: ();
 	}
 }
 
-@mixin states($states,$append: ''){
+@mixin font($attrs){
+	$family: null;
+	$bold: false;
+	$italic: false;
+	$size: null;
+	$color: null;
+	$uppercase: false;
+	$direction: null;
+	@each $attr in $attrs {
+		@if type-of($attr) == number {
+			$size: $attr;
+		}
+		@else if $attr == bold {
+			$bold: bold;
+		}
+		@else if $attr == bolder {
+			$bold: bolder;
+		}
+		@else if $attr == italic {
+			$italic: true;
+		}
+		@else if $attr == uppercase {
+			$uppercase: true;
+		}
+		@else if $attr == left {
+			$direction: left;
+		}
+		@else if $attr == center {
+			$direction: center;
+		}
+		@else if $attr == right {
+			$direction: right;
+		}
+		@else if type-of($attr) == color {
+			$color: $attr;
+		}
+		@else {
+			$family: $attr;
+		}
+	}
+	@if $family != null {
+		font-family: $family;
+	}
+	@if $bold != false {
+		font-weight: $bold;
+	}
+	@if $size {
+		font-size: $size;
+	}
+	@if $italic {
+		font-style: italic;
+	}
+	@if $uppercase {
+		text-transform: uppercase;
+	}
+	@if $direction != null {
+		text-align: $direction;
+	}
+	@if $color != null {
+		color: $color;
+	}
+}
+
+@mixin state($states,$append: ''){
 	$selectorsA: ();
 	$selectorsB: ();
 	$selectorsC: ();
@@ -225,16 +356,5 @@ $__contentVars: ();
 	
 	#{$selectorsC} {
 		display: inline;
-	}
-}
-
-@mixin clearfix(){
-	&:after {
-		display: inline-block;
-		content: ' ';
-		clear: both;
-		width: 0;
-		height: 0;
-		visibility: hidden;
 	}
 }

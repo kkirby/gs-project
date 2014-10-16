@@ -1,68 +1,95 @@
 @import (css)(sys.animationTweens);
 
-@function _tween($func,$start,$end,$time,$duration){
-	$p: $time / $duration;
-	@if $p >= 1 {
+@function _tween($start,$end,$func,$iteration){
+	@if $iteration >= 1 {
 		@return $end;
 	}
-	$v: 0;
-	@if $func == linear {
-		$v: tweenLinear($p);
-	}
-	@elseif $func == easeIn {
-		$v: tweenEaseIn($p);
-	}
-	@elseif $func == easeOut {
-		$v: tweenEaseOut($p);
-	}
-	@elseif $func == easeInOut {
-		$v: tweenEaseInOut($p);
-	}
-	@elseif $func == backIn {
-		$v: tweenBackIn($p);
-	}
-	@elseif $func == backOut {
-		$v: tweenBackOut($p);
-	}
-	@elseif $func == elastic {
-		$v: tweenElastic($p);
-	}
-	@elseif $func == bounce {
-		$v: tweenBounce($p);
-	}
-	
+	$percent: call(tween-#{$func},$iteration);
 	@if type-of($start) == color {
-		@return mix($end,$start,percentage(min($v,1)));
+		@return mix($end,$start,force-range($percent,0,1) * 100%);
 	}
 	@else {
-		$ret: max($start + ($end - $start) * $v,0);
-		@if unitless($ret) {
-			@return round($ret * 1000) / 1000;
+		$value: $start + ($end - $start) * $percent;
+		@if unit($value) == px {
+			@return round($value);
 		}
-		@if unit($ret) == px {
-			@return round($ret);
+		@else if unitless($value) {
+			@return rounded($value,3);
 		}
 		@else {
-			@return round($ret * 100) / 100;
+			@return rounded($value,2);
 		}
 	}
 }
 
-@mixin tween($name,$animations){
+@mixin tween($duration,$animations...){
+	$animations: keywords($animations);
+	$name: keyframes#{uuid()};
 	@include keyframes($name){
-		@for $i from 0 through 100 {
-			$p: $i * 1%;
-			#{$p} {
+		@for $iteration from 0 through 100 {
+			$decimal: $iteration / 100;
+			#{$iteration * 1%} {
 				$contentMap: ();
 				@each $animationName, $animationConfig in $animations {
-					$value: _tween(nth($animationConfig,3),nth($animationConfig,1),nth($animationConfig,2),$i,100);
-					$contentMap: map-merge($contentMap,(#{$animationName}:#{$value}));
+					$contentMap: map-merge(
+						$contentMap,
+						(#{$animationName}: _tween(append($animationConfig,$decimal)...))
+					);
 				}
-				$_: StartContent($contentMap);
+				$_: start-content($contentMap);
 				@content;
-				$_: EndContent();
+				$_: end-content();
 			}
 		}
 	}
-	@include animation($name linear 1s);
+	@include animation($name linear $duration);
+}
+
+@mixin tween-with-name($name,$animations...){
+	$animations: keywords($animations);
+	@include keyframes($name){
+		@for $iteration from 0 through 100 {
+			$decimal: $iteration / 100;
+			#{$iteration * 1%} {
+				$contentMap: ();
+				@each $animationName, $animationConfig in $animations {
+					$contentMap: map-merge(
+						$contentMap,
+						(#{$animationName}: _tween(append($animationConfig,$decimal)...))
+					);
+				}
+				$_: start-content($contentMap);
+				@content;
+				$_: end-content();
+			}
+		}
+	}
+}
+
+
+$items: (
+	image: (
+		selector: '.PlayerImageContainer',
+		animation: zoomIn,
+		duration: 1s
+	),
+	basicInfo: (
+		selector: '.BasicInformation row:nth-child(@7) label',
+		animation: slideIn,
+		duration: 1s,
+		start: .5s after image,
+		nth-child-start: .5s after previous
+	)
+);
+
+@mixin do-stuff($config){
+	$times: ();
+	
+	@each $name, $animation in $config {
+		$duration: $animation.duration;
+		$total-duration: $duration;
+		@if $animation.start == null {
+			
+		}
+	}
 }

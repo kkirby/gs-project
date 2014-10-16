@@ -49,7 +49,11 @@
     $webkit-backgrounds: append($webkit-backgrounds, $webkit-background, comma);
     $spec-backgrounds:   append($spec-backgrounds,   $spec-background,   comma);
   }
-
-  background: $webkit-backgrounds;
-  background: $spec-backgrounds;
+  @if $webkit-backgrounds != $spec-backgrounds {
+	  background: $webkit-backgrounds;
+	  background: $spec-backgrounds;
+  }
+  @else {
+	  background: $spec-backgrounds;
+  }
 }

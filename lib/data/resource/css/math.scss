@@ -1,8 +1,5 @@
-@function getPointInCircle($cX,$cY,$radius,$angle){
-	@if unit($angle) == deg {
-		$angle: ($angle * 3.14159 / 180) / 1deg;
-	}
-	@return ($cX + $radius * cos($angle),$cY - $radius * sin($angle));
+@function get-point-in-circle($cX,$cY,$radius,$angle){
+	@return (x:$cX + $radius * cos($angle),y:$cY - $radius * sin($angle));
 }
 
 @function getPointInEllipse($cX,$cY,$xRadius,$yRadius,$angle){
@@ -15,4 +12,30 @@
 @function rounded($num,$placeholder: 0){
 	$multipler: power(10,$placeholder);
 	@return round($num * $multipler) / $multipler;
+}
+
+@function force-range($value,$min,$max){
+	@return max($min,min($value,$max));
+}
+
+@function center-of($container,$self){
+	@return ($container - $self) / 2;
+}
+
+@function quadrant($angle){
+	$x: center;
+	$y: center;
+	@if $angle > 0deg and $angle < 180deg {
+		$y: top;
+	}
+	@else if $angle > 180deg and $angle < 360deg {
+		$y: bottom;
+	}
+	@if $angle > 0deg and $angle < 90deg or $angle > 270deg and $angle < 360deg {
+		$x: right;
+	}
+	@else if $angle > 90deg and $angle < 180deg or $angle > 180deg and $angle < 270deg {
+		$x: left;
+	}
+	@return (x:$x,y:$y);
 }

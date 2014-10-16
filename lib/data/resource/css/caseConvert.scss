@@ -1,0 +1,296 @@
+// ----
+// Sass (v3.3.7)
+// Compass (v1.0.0.alpha.18)
+// https://gist.github.com/HugoGiraudel/02a6606156882928df1e
+// ----
+
+// String replace function
+// ---
+// @param [string] $string: string to update
+// @param [string] $old: sub-string to replace
+// @param [string] $new (''): new string to use
+// @param [bool] $case-sensitize (true): case sensiveness
+// ---
+// @return [string]
+// ---
+@function str-replace($string, $old, $new: "") {
+  $result: $string;
+  $index: str-index($string, $old);
+
+  @while $index {
+    $result: if($index > 1, str-slice($result, 1, $index - 1), "");
+    $result: $result + $new;
+    $result: $result + str-slice($string, $index + str-length($old));
+    $index: str-index($result, $old);
+  }
+  
+  @return $result;
+}
+
+// Capitalize a string
+// ---
+// @param [string] $string: string to capitalize
+// ---
+// @return [string]
+// ---
+@function capitalize($string) {
+  @return to-upper-case(str-slice($string, 1, 1)) + str-slice($string, 2);
+}
+
+// Purge a string (lowercase + implicit casting)
+// ---
+// @param [string] $string: string to purge
+// ---
+// @return [string]
+// ---
+@function purge($string) {
+  @return to-lower-case($string + unquote(""));
+}
+
+// Move from a $token-separated string to camelCase
+// ---
+// @param [string] $string: string to convert
+// @param [string] $token: current separator
+// ---
+// @return [string]
+// ---
+@function separated-to-case($string, $token) {
+  $purged: purge($string);
+  $result: "";
+  $word: false;
+  
+  @for $i from 1 through str-length($purged) {
+    $character: str-slice($purged, $i, $i);
+    @if $character == $token {
+      $word: true;
+    }
+    @else {
+      $result: $result + if($word, capitalize($character), $character);
+      $word: false;
+    }
+  }
+
+  @return unquote($result);
+}
+
+
+// Move from a camelCase string to a $token-separated one
+// ---
+// @param [string] $string: string to convert
+// @param [string] $token: desired separator
+// ---
+// @return [string]
+// ---
+@function case-to-separated($string, $token) {
+  $result: "";
+  $word: false;
+  
+  @for $i from 1 through str-length($string) {
+    $char: str-slice($string, $i, $i);
+    $result: $result + if($char == to-upper-case($char) and $i > 1, $token + $char, $char);
+  }
+
+  @return unquote(to-lower-case($result));
+}
+
+// Hyphenate a string
+// ---
+// @param [string] $string: string to hyphenate
+// ---
+// @return [string]
+// ---
+@function hyphenate($string) {
+  @return str-replace(purge($string), " ", "-");
+}
+
+// Underscorize a string
+// ---
+// @param [string] $string: string to underscorize
+// ---
+// @return [string]
+// ---
+@function underscorize($string) {
+  @return str-replace(purge($string), " ", "_");
+}
+
+// Turn a string into PascalCase
+// ---
+// @param [string] $string: string to turn into PascalCase
+// ---
+// @return [string]
+// ---
+@function pascal-case($string) {
+  @return capitalize(camel-case($string));
+}
+
+// Turn a string into camelCase
+// ---
+// @param [string] $string: string to turn into camelCase
+// ---
+// @return [string]
+// ---
+@function camel-case($string) {
+  @return separated-to-case($string, " ");
+}
+
+// Turn an hyphen-separated string to a underscore-separated one
+// ---
+// @param [string] $string: string to convert
+// ---
+// @return [string]
+// --- 
+@function hyphenate-to-underscorize($string) {
+  @return str-replace(purge($string), "-", "_");
+}
+
+// Turn an hyphen-separated string to a camelCase one
+// ---
+// @param [string] $string: string to convert
+// ---
+// @return [string]
+// --- 
+@function hyphenate-to-camel-case($string) {
+  @return separated-to-case($string, "-");
+}
+
+// Turn an hyphen-separated string to a PascalCase one
+// ---
+// @param [string] $string: string to convert
+// ---
+// @return [string]
+// --- 
+@function hyphenate-to-pascal-case($string) {
+  @return capitalize(separated-to-case($string, "-"));
+}
+
+// Turn an underscore-separated string to a hyphen-separated one
+// ---
+// @param [string] $string: string to convert
+// ---
+// @return [string]
+// --- 
+@function underscorize-to-hyphenate($string) {
+  @return str-replace(purge($string), "_", "-");
+}
+
+// Turn an underscore-separated string to a camelCase one
+// ---
+// @param [string] $string: string to convert
+// ---
+// @return [string]
+// --- 
+@function underscorize-to-camel-case($string) {
+  @return separated-to-case($string, "_");
+}
+
+// Turn an underscore-separated string to a pascalCase one
+// ---
+// @param [string] $string: string to convert
+// ---
+// @return [string]
+// --- 
+@function underscorize-to-pascal-case($string) {
+  @return capitalize(separated-to-case($string, "_"));
+}
+
+// Turn a camelCase string to a underscore-separated one
+// ---
+// @param [string] $string: string to convert
+// ---
+// @return [string]
+// --- 
+@function camel-case-to-hyphenate($string) {
+  @return case-to-separated($string, '-');
+}
+
+// Turn a camelCase string to a underscore-separated one
+// ---
+// @param [string] $string: string to convert
+// ---
+// @return [string]
+// --- 
+@function camel-case-to-underscorize($string) {
+  @return case-to-separated($string, '_');
+}
+
+// Turn a camelCase string to a PascalCase one
+// ---
+// @param [string] $string: string to convert
+// ---
+// @return [string]
+// --- 
+@function camel-case-to-pascal-case($string) {
+  @return capitalize($string);
+}
+
+// Turn a PascalCase string to a hyphen-separated one
+// ---
+// @param [string] $string: string to convert
+// ---
+// @return [string]
+// --- 
+@function pascal-case-to-hyphenate($string) {
+  @return case-to-separated($string, '-');
+}
+
+// Turn a PascalCase string to a underscore-separated one
+// ---
+// @param [string] $string: string to convert
+// ---
+// @return [string]
+// --- 
+@function pascal-case-to-underscorize($string) {
+  @return case-to-separated($string, '_');
+}
+
+// Turn a PascalCase string to a camelCase one
+// ---
+// @param [string] $string: string to convert
+// ---
+// @return [string]
+// --- 
+@function pascal-case-to-camel-case($string) {
+  @return to-lower-case(str-slice($string, 1, 1)) + str-slice($string, 2);
+}
+
+// Generic convert function
+// ---
+// @param [string] $string: string to convert
+// @param [string] $from: starting type
+// @param [string] $to: ending type
+// ---
+// @return [string]
+// ---
+@function convert($string, $from, $to) {
+  @return call('#{dictionnary($from)}-to-#{dictionnary($to)}', $string);
+}
+
+// Helper function allowing several names for each type
+// Avoiding a lot of typing errors
+// ---
+// @param [string] $string: string 
+// ---
+// @return [string] | null
+// ---
+@function dictionnary($string) {
+  $string: to-lower-case($string);
+  
+  $dictionnary: (
+    'hyphenate': 'hyphen' 'hyphens' 'hyphenate',
+    'underscorize': 'underscore' 'underscores' 'underscorize',
+    'pascal-case': 'pascal' 'pascalcase' 'pascal-case',
+    'camel-case': 'camel' 'camelcase' 'camel-case'
+  );
+  
+  @if map-has-key($dictionnary, $string) {
+    @return $string;
+  }
+  
+  @each $key, $value in $dictionnary {
+    @if index($value, $string) or $string == $key  {
+      @return $key;
+    }
+  }
+  
+  @return null;
+}

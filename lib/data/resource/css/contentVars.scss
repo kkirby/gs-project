@@ -1,0 +1,21 @@
+$__contentVars: ();
+@function start-content($map){
+	$__contentVars: append($__contentVars,$map) !global;
+	@return null;
+}
+
+@function content-var($key){
+	$map: nth($__contentVars,length($__contentVars));
+	@return map-get($map,$key);
+}
+
+@function end-content(){
+	$result: ();
+	@if length($__contentVars) > 1 {
+		@for $i from 1 through (length($__contentVars) - 1) {
+			$result: append($result,nth($__contentVars,$i));
+		}
+	}
+	$__contentVars: $result !global;
+	@return null;
+}
