@@ -16,8 +16,8 @@
 		"htmltidy": "*",
 		"colors": "*",
 		"sprintf": "*",
-		"optimist": "*",
-		"deasync": "*",
+		"yargs": "*",
+		"deasync": "*"
 	},
 	"main": "compile.js"
 }
