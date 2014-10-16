@@ -30,11 +30,4 @@ class! extends StateMachine
 					_handler e
 			else
 				_handler e
-				
-	def handle(action,...data)
-		if @[action]?
-			@[action] ...data
-	
-	def saveState() ->
-	def restoreState() ->
 
