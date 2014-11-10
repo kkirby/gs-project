@@ -43,6 +43,9 @@ class! extends Component
 	def addChildView(childView,selector)!
 		@addChildViews [childView], selector
 	
+	def removeChildViews(childViews)
+		for childView in childViews; @removeChildView childView
+	
 	def removeChildView(childView)
 		@childViews arrayRemoveItem childView
 		childView.hide()
