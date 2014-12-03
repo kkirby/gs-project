@@ -8,6 +8,7 @@ class! extends Component
 	
 	dyn getResponseText() -> @request.responseText
 	dyn getStatusCode() -> @request.status
+	dyn getStatusText() -> @request.statusText
 	dyn getResponseHeaders() -> @request.getAllResponseHeaders()
 	dyn getReadyStateCode() -> @request.readyState
 	
@@ -15,6 +16,7 @@ class! extends Component
 	
 	def open(method,uri)
 		@request := new GLOBAL.XMLHttpRequest()
+		@request
 			..addEventListener \readystatechange, #()@ -> @emitEvent \readyStateChange
 			..addEventListener \progress, #(e)@
 				if e.lengthComputable; @contentLength := e.total
