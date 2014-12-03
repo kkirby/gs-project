@@ -215,12 +215,16 @@ macro $
 				else
 					$newElm.style.display := \none
 	
-	syntax selector as InvocationArguments,':','one',event as Identifier,func as (FunctionDeclaration | Expression)
+	syntax selector as InvocationArguments,':','one',event as (Identifier|Expression),spacer as (':')?,func as (FunctionDeclaration|Expression)
 		let userCallback = @tmp \userCallback, true
 		let callback = @tmp \callback, true
 		let elm = @tmp \elm, true
 		let element = $$_reduce arguments
-		event := event.name
+		if event.isIdent
+			if event.name.substr(0,1) == '$'
+				event.name := event.name.substr(1)
+			else
+				event := event.name
 		let mutable vendorify = false
 		if event in ['afterAnimate','animationEnd']
 			event := ASTE Vendor(\animationEnd)
