@@ -1,7 +1,7 @@
-import .InlineStateMachine
+import sys.stateMachine.#WithView
 import .#View as View
 
-class! extends InlineStateMachine
+class! extends StateMachineWithView
 	def view = View
 	
 	def controllerList = null

@@ -1,10 +1,9 @@
-import .View
+import sys.view.#
 import html sys.navigationController as ViewNode
 import css sys.navigationController
 import js sys.iscroll
 
-class! extends View
-	def _node = ViewNode
+$View(ViewNode)
 	def iScroll = null
 	
 	def setup()
