@@ -597,4 +597,14 @@ macro let
 		else
 			ASTE let mutable $ident as $type = null
 
+macro helper _ellipsis = #(text,length as Number,append = '...')
+	if text.length > length
+		text.substr(0,length - append.length) & append
+	else; text
+
+macro ellipsis(text,length,append)
+	append ?= ASTE null
+	AST
+		_ellipsis($text,$length,$append)
+
 //macro operator binary inall, inAll, in=	
