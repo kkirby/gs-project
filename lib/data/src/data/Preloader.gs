@@ -82,7 +82,7 @@ class!
 		
 	def loadAudio(audio,cb)
 		let xhr = new XMLHttpRequest()
-			..open \GET, video, true
+			..open \GET, audio, true
 			..responseType := \arraybuffer
 			..onload := #(evt)
 				if xhr.response; cb()
