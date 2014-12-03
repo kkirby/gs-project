@@ -18,21 +18,35 @@ class!
 			move: \mousemove
 			up: \mouseup}
 	
-	@DefaultInit := #(down,up,click)
+	@DefaultInit := #(...args)
+		let options = {
+			down: null
+			up: null
+			click: null
+			threshold: null
+		}
+		for arg in args
+			if typeof arg == \function
+				if options.down == null; options.down := arg
+				else if options.up == null; options.up := arg
+				else if options.click == null; options.click := arg
+			else if typeof arg == \number
+				if options.threshold == null; options.threshold := arg
 		IntentClick.BindToElement {
 			selector: '.Clickable'
 			down: #(e)
 				$(e.target):addClass \Down
-				down?(e)
+				options.down?(e)
 			up: #(e)
 				$(e.target):removeClass \Down
-				up?(e)
+				options.up?(e)
 			click: #(e)@
-				click?(e)
+				options.click?(e)
 				unless isEmpty(e.target.dataset.event)
 					$(e.target):trigger(e.target.dataset.event,e)
 			element: $('body')
 			disableMove: '.DisableMove *'
+			disableMoveThreshold: options.threshold ? false
 		}
 	
 	/*do
@@ -53,8 +67,9 @@ class!
 		if event.changedTouches?
 			area := event.changedTouches[0]
 		return {
-			y: area.pageY,
+			y: area.pageY
 			x: area.pageX
+			max: area.pageY max area.pageX
 		}
 	let isTouchSupported = not not ((GLOBAL haskey \ontouchstart) or (GLOBAL.DocumentTouch and document instanceof GLOBAL.DocumentTouch))
 	@BindToElement := #(userOptions)
@@ -65,6 +80,7 @@ class!
 			selector: '*'
 			element: null
 			disableMove: false
+			disableMoveThreshold: false
 			exactSelection: false
 		} <<< userOptions
 		
@@ -73,13 +89,29 @@ class!
 		
 		let mutable isActive = false
 		let mutable didStart = false
+		let mutable startEventBounds = null
 		let uuid = Uuid.Fast()
+			
 		
-		let shouldDisableMove = if typeof options.disableMove == \boolean
+		let _shouldDisableMove = if typeof options.disableMove == \boolean
 			# -> options.disableMove
 		else if typeof options.disableMove == \string
 			#(moveEventObject) -> $(moveEventObject.target):eIs options.disableMove
-			
+		
+		let shouldDisableMove(eventObject,inArea)
+			let result = _shouldDisableMove(eventObject)
+			if result == true
+				if options.disableMoveThreshold == false and not inArea
+					true
+				else if typeof options.disableMoveThreshold == \number
+					if startEventBounds?
+						let previous = startEventBounds
+						let current = IntentClick.GetBoundsFromEvent(eventObject)
+						Math.abs(current.x - previous.x) > options.disableMoveThreshold or Math.abs(current.y - previous.y) > options.disableMoveThreshold
+					else; false
+				else; true
+			else; false
+				
 		
 		// Proxy event binds
 		
@@ -104,6 +136,7 @@ class!
 			$(options.element):on touchstart(startEventObject)!
 				unless startEventObject.target.matches(options.selector) then return true
 				didStart := true
+				startEventBounds := IntentClick.GetBoundsFromEvent(startEventObject)
 				startEventObject.stopPropagation()
 				$(@):trigger(
 					IntentClick.Events.intentStart,
@@ -124,7 +157,20 @@ class!
 						event: moveEventObject
 						uuid
 					}
-					if shouldDisableMove(moveEventObject) and not inArea
+					/**
+					 * We care about the area because a move event is fired in
+					 * some browsers along with a start event. So this was the
+					 * quickest solution.
+					 */
+					if shouldDisableMove(moveEventObject,inArea)
+						/**
+						 * If there is a threshold, then we aren't
+						 * measuring by wether or not we are in the area
+						 * of the element, we just want to stop tracking
+						 * all together.
+						 */
+						if typeof options.disableMoveThreshold == \number
+							didStart := false
 						$(@):trigger(
 							IntentClick.Events.intentEnd,
 							eventDetail
@@ -179,26 +225,39 @@ class!
 					moveEventObject.preventDefault()
 					moveEventObject.customTarget := targetElement
 					let inArea = IntentClick.IsElementInBounds(
-						targetElement,
+						moveEventObject.target,
 						IntentClick.GetBoundsFromEvent(moveEventObject)
 					)
 					let eventDetail = {
 						event: moveEventObject
 						uuid
 					}
-					if shouldDisableMove(moveEventObject) and not inArea
-						$(targetElement):trigger(
+					/**
+					 * We care about the area because a move event is fired in
+					 * some browsers along with a start event. So this was the
+					 * quickest solution.
+					 */
+					if shouldDisableMove(moveEventObject,inArea)
+						/**
+						 * If there is a threshold, then we aren't
+						 * measuring by wether or not we are in the area
+						 * of the element, we just want to stop tracking
+						 * all together.
+						 */
+						if typeof options.disableMoveThreshold == \number
+							didStart := false
+						$(@):trigger(
 							IntentClick.Events.intentEnd,
 							eventDetail
 						)
 					else
 						if not isActive and inArea
-							$(targetElement):trigger(
+							$(@):trigger(
 								IntentClick.Events.intentStart,
 								eventDetail
 							)
 						else if isActive and not inArea
-							$(targetElement):trigger(
+							$(@):trigger(
 								IntentClick.Events.intentEnd,
 								eventDetail
 							)
