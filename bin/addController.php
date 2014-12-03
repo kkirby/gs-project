@@ -3,7 +3,6 @@ $name = $argv[1];
 $local = dirname(__FILE__).'/../lib/consoleTemplates/controller';
 $pwd = trim(`pwd`);
 $dir = $pwd.'/'.$name;
-echo $dir;
 @mkdir($dir,0777,true);
 $layout = file_get_contents($local.'/layout.html');
 $style = file_get_contents($local.'/style.scss');
