@@ -2,7 +2,7 @@ import sys.Component
 
 class! extends Component
 	
-	def isValueValid(value)
+	@IsValueValid := #(value)
 		if typeof! value == 'Object'
 			for every key, subValue of value; @isValueValid subValue
 		else
@@ -11,7 +11,7 @@ class! extends Component
 			else
 				value)
 	
-	def compareValues(valueA,valueB)
+	@CompareValues := #(valueA,valueB)
 		if typeof! valueA == \Object
 			if typeof! valueB != \Object; return false
 			for every key of value; @compareValues valueA[key], valueB[key]
