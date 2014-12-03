@@ -3,7 +3,7 @@ import sys.Component
 import macro sys.webMacros
 
 macro $View
-	syntax '(',node as Identifier,superclass as (',',this as Identifier)?,')',body as Body?
+	syntax '(',node as Expression,superclass as (',',this as Identifier)?,')',body as Body?
 		superclass ?= @ident \View
 		AST
 			class! extends $superclass

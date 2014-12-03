@@ -2,13 +2,13 @@ import sys.stateMachine.#
 
 macro $ViewController
 	syntax '(',view as Identifier,superclass as (',',this as Identifier)?,')',body as Body?
-		superclass ?= @ident \ViewController
+		superclass ?= AST null
 		AST
-			class! extends ViewController
+			class! extends ViewController<$superclass>
 				def view = $view
 				$body
 
-class! extends StateMachine
+class! <ParentClass> extends (ParentClass ? StateMachine)
 	def view = null
 	
 	def initialize()
