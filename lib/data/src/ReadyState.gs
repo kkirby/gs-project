@@ -1,3 +1,5 @@
+import sys.lib.Function
+
 class!
 	def _readyState = 1
 	def waiters = null
@@ -18,8 +20,15 @@ class!
 
 	def ready()!
 		if (@_readyState -= 1) == 0
-			for waiter in @waiters; waiter()
+			// We copy and reassign before we sleep
+			// so that there is if for some reason
+			// a waiter is added during execution, it
+			// won't be reset.
+			let waiters = @waiters.concat()
 			@waiters := []
+			// execute the waiters outside of this context
+			sleep 0
+			for waiter in waiters; waiter()
 	
 	def whenReady(cb)
 		if @_readyState == 0; cb()
