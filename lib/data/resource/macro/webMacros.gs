@@ -424,7 +424,7 @@ macro ajax
 			let $vCallback = once! (mutate-function! $func)
 			$vRequest.onreadystatechange := #@
 				if $vRequest.readyState == 4
-					let error = if $vRequest.status != 200; "HTTP Request failed, got an HTTP status of $($vRequest.status)"
+					let error = if $vRequest.status != 200; "HTTP Request failed, got an HTTP status of $($vRequest.statusText)"
 					let response = $vRequest
 					let text = response.responseText
 					$vCallback.apply @, $callbackArgsAst
