@@ -1,3 +1,10 @@
+macro get_const(type)
+	let name = type.name.toLowerCase().replace r'_'g, ''
+	if name == \builddate
+		let currentTime = new Date().getTime();
+		AST
+			new Date($currentTime)
+
 macro def
 	syntax key as ObjectKey, func as FunctionDeclaration
 		let mutable argsVar = null
