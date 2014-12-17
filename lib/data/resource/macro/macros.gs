@@ -23,6 +23,16 @@ macro def
 			key
 			func
 
+macro yield-cb
+	syntax pos as ('(',this as Expression,')')?,call as Expression
+		let args = [...call.args]
+		let successCb = ASTE #(result) -> callback(null,result)
+		let errorCb = ASTE #(err) -> callback(err)
+		if pos == \start; args.splice(0,0,[successCb,errorCb])
+		else if not pos? or pos == \end; args.splice(args.length - 1,0,[successCb,errorCb])
+		call := @call call.func, args
+		ASTE yield to-promise! (#(callback) -> $call)()
+
 macro ucfirst(str)
 	@maybe-cache str, #(setStr, str)
 		ASTE $setStr.substr(0,1).toUpperCase()&$str.substr(1)
