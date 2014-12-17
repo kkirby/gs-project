@@ -11,6 +11,11 @@ class! extends StateMachine
 	
 	def frameListeners = null
 	
+	def framer = if GLOBAL.requestAnimationFrame?
+		GLOBAL@.requestAnimationFrame
+	else
+		#(func) -> setTimeout func, 1000 / 60
+	
 	def initialize()
 		superArg()
 		@frameListeners := []
@@ -45,7 +50,7 @@ class! extends StateMachine
 			if @frameListeners.length == 0; @transition \idle
 		
 		def requestTick()
-			requestAnimationFrame #@ -> @handle \tick
+			@framer #@ -> @handle \tick
 		
 		def tick()
 			let tickTime = new Date().getTime()
