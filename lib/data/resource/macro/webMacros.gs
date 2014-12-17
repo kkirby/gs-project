@@ -412,7 +412,7 @@ macro ajax
 			for header, key in headers.args
 				if key > 0
 					_headers[header.args[0].value] := header.args[1].value
-		if data? and data.type().inspect().indexOf(\Object) != -1
+		if data? and data.type().inspect().toLowerCase().indexOf(\object) != -1
 			data := ASTE JSON.stringify $data
 			unless _headers['Content-Type']?
 		    	_headers['Content-Type'] := 'application/json'
