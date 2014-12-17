@@ -90,8 +90,9 @@ macro operator binary arrayFill
     @internalCall \array, values
 
 macro operator binary =?
-	AST
-		if $right?; $left := $right
+	@maybeCache right, #(setRight,right)
+		AST
+			if $setRight?; $left := $right
 
 macro operator binary ?=in
 	let name = if left.args?
