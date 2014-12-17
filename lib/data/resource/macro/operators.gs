@@ -115,6 +115,7 @@ macro operator unary str!
 
 macro operator assign <difference>
 	let tmp = @tmp()
+	// TODO: Check diff from right side, too
 	AST
 		for filter $tmp in $left
 			$tmp not in $right
@@ -251,3 +252,11 @@ macro operator binary uniquePush
 			AST
 				unless $setRight in $setLeft
 					$left.push $right
+
+macro operator binary concat
+	@maybeCache right, #(setRight,right)@
+		AST
+			if $setRight instanceof Array
+				$left := $left.concat $right
+			else
+				$left.push $right
