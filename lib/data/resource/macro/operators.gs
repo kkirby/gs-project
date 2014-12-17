@@ -80,7 +80,7 @@ macro operator unary cos
 macro operator unary sin
 	ASTE Math.sin $node
 
-macro operator unary asNumber, int!
+macro operator unary asNumber, int!, num!
 	ASTE parseInt($node,10)
 
 macro operator binary arrayFill
@@ -111,10 +111,6 @@ macro operator binary ?=in!
 macro operator unary str!
 	AST
 		String($node)
-		
-macro operator unary num!
-	AST
-		parseInt($node,10)
 
 macro operator assign <difference>
 	let tmp = @tmp()
