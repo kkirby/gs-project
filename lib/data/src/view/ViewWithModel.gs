@@ -40,9 +40,9 @@ class! extends View
 		let nodes = @_modelAttributeNodes[attribute]
 		for node in nodes
 			die unless node?
-			if node.dataset.showIf? and node.dataset.showIf != ''
-				$(node):toggle @formatModelAttribute attribute, value
-			if node.dataset.cssClassIf? and node.dataset.cssClassIf != ''
+			if node.dataset.showIf?
+				$(node):toggle @formatModelAttribute(attribute,value)?
+			else if node.dataset.cssClassIf? and node.dataset.cssClassIf != ''
 				$(node):toggleClass node.dataset.cssClassIf, @formatModelAttribute attribute, value
 			else
 				$(node):html @formatModelAttribute attribute, value
