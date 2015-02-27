@@ -30,7 +30,10 @@ class!
 			//sleep 0 // I can't remember why I had this :(
 			for waiter in waiters; waiter()
 	
-	def whenReady(cb)
+	def _whenReady(cb)
 		if @_readyState == 0; cb()
 		else; @waiters.push cb
 	
+	def whenReady(cb)
+		if cb; @_whenReady(cb)
+		else; new Promise #(fulfill)@ -> @_whenReady fulfill
