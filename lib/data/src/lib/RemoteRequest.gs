@@ -4,6 +4,16 @@ import .#.NodeJs
 
 let root = Browser ? NodeJs
 class! extends root
+	@Error := class
+		def statusCode = 0
+		def statusText = null
+		def constructor(@statusCode,@statusText)
+			if @statusCode == 0
+				@statusText := 'No internet connection, or the server isn\'t responding.'
+			@statusText or= 'Unknown Error'
+		
+		def toString() -> @statusText & ' (' & @statusCode & ')'
+			
 	def call(method,uri,headers = {},mutable userData = null)
 		new Promise #(resolve,reject)@
 			_(@):on readyStateChange()@
@@ -12,7 +22,7 @@ class! extends root
 					if statusCode >= 200 and statusCode < 300
 						resolve @responseText
 					else
-						reject @statusText
+						reject RemoteRequest.Error(@statusCode,(if @statusText?.length > 0 then @statusText else null))
 			@open method, uri
 			if typeof! userData == \Object
 				if headers not ownskey 'Content-Type'
