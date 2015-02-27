@@ -678,4 +678,35 @@ macro ellipsis(text,length,append)
 	AST
 		_ellipsis($text,$length,$append)
 
+/**
+ * Usage:
+ *	extract(
+ *		{
+ *			firstName: 'Kyle'
+ *		},
+ *		[\firstName]
+ *	)
+ *	This is essentially the same thing as a <<< b execept
+ *	you get to pick and choose the keys you want. Plus
+ *	it's more efficent.
+*/
+macro extract(obj,keys)
+	keys := for key in keys.args; key.value
+	let storage = @tmp \obj
+	let keyAsts = for key in keys
+		__call(
+			null,
+			__symbol(null,\internal,\array),
+			__value(null,key),
+			ASTE $storage[$key]
+		)
+	let newObj = __call(
+		null,
+		__symbol(null,\internal,\object),
+		__symbol(null,\internal,\nothing),
+		...keyAsts
+	)
+	AST
+		let $storage = $obj
+		$newObj
 //macro operator binary inall, inAll, in=	
