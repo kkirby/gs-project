@@ -47,6 +47,7 @@ class!
 			element: $('body')
 			disableMove: '.DisableMove *'
 			disableMoveThreshold: options.threshold ? false
+			exactSelection: true
 		}
 	
 	/*do
@@ -54,12 +55,13 @@ class!
 		$(document):on(\touchend) #(e) ->*/
 		
 	@IsElementInBounds := #(element,bounds)
-		let rect = element.getClientRects()[0]
+		let rect = extract element.getClientRects()[0], [\top,\right,\bottom,\left,\width,\height]
 		let extra = parseInt(element.dataset.touchArea,10)
-		rect.top -= extra
-		rect.right += extra
-		rect.bottom += extra
-		rect.left -= extra
+		if extra
+			rect.top -= extra
+			rect.right += extra
+			rect.bottom += extra
+			rect.left -= extra
 		return bounds.y between [rect.top,rect.bottom] and bounds.x between [rect.left,rect.right]
 	
 	@GetBoundsFromEvent := #(event)
