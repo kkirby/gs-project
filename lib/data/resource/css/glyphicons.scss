@@ -18,1413 +18,1833 @@
 	font-family: 'Glyphicons Regular';
 	-webkit-font-smoothing: antialiased;
 	@if $icon == glass {
-		content: "\E001";
+	    content: "\E001";
 	}
 	@else if $icon == leaf {
-		content: "\E002";
+	    content: "\E002";
 	}
 	@else if $icon == dog {
-		content: "\E003";
+	    content: "\E003";
 	}
 	@else if $icon == user {
-		content: "\E004";
+	    content: "\E004";
 	}
 	@else if $icon == girl {
-		content: "\E005";
+	    content: "\E005";
 	}
 	@else if $icon == car {
-		content: "\E006";
+	    content: "\E006";
 	}
 	@else if $icon == user_add {
-		content: "\E007";
+	    content: "\E007";
 	}
 	@else if $icon == user_remove {
-		content: "\E008";
+	    content: "\E008";
 	}
 	@else if $icon == film {
-		content: "\E009";
+	    content: "\E009";
 	}
 	@else if $icon == magic {
-		content: "\E010";
+	    content: "\E010";
 	}
 	@else if $icon == envelope {
-		content: "\2709";
+	    content: "\2709";
 	}
 	@else if $icon == camera {
-		content: "\E011";
+	    content: "\E011";
 	}
 	@else if $icon == heart {
-		content: "\E013";
+	    content: "\E013";
 	}
 	@else if $icon == beach_umbrella {
-		content: "\E014";
+	    content: "\E014";
 	}
 	@else if $icon == train {
-		content: "\E015";
+	    content: "\E015";
 	}
 	@else if $icon == print {
-		content: "\E016";
+	    content: "\E016";
 	}
 	@else if $icon == bin {
-		content: "\E017";
+	    content: "\E017";
 	}
 	@else if $icon == music {
-		content: "\E018";
+	    content: "\E018";
 	}
 	@else if $icon == note {
-		content: "\E019";
+	    content: "\E019";
 	}
 	@else if $icon == heart_empty {
-		content: "\E020";
+	    content: "\E020";
 	}
 	@else if $icon == home {
-		content: "\E021";
+	    content: "\E021";
 	}
 	@else if $icon == snowflake {
-		content: "\2744";
+	    content: "\2744";
 	}
 	@else if $icon == fire {
-		content: "\E023";
+	    content: "\E023";
 	}
 	@else if $icon == magnet {
-		content: "\E024";
+	    content: "\E024";
 	}
 	@else if $icon == parents {
-		content: "\E025";
+	    content: "\E025";
 	}
 	@else if $icon == binoculars {
-		content: "\E026";
+	    content: "\E026";
 	}
 	@else if $icon == road {
-		content: "\E027";
+	    content: "\E027";
 	}
 	@else if $icon == search {
-		content: "\E028";
+	    content: "\E028";
 	}
 	@else if $icon == cars {
-		content: "\E029";
+	    content: "\E029";
 	}
 	@else if $icon == notes_2 {
-		content: "\E030";
+	    content: "\E030";
 	}
 	@else if $icon == pencil {
-		content: "\270F";
+	    content: "\270F";
 	}
 	@else if $icon == bus {
-		content: "\E032";
+	    content: "\E032";
 	}
 	@else if $icon == wifi_alt {
-		content: "\E033";
+	    content: "\E033";
 	}
 	@else if $icon == luggage {
-		content: "\E034";
+	    content: "\E034";
 	}
 	@else if $icon == old_man {
-		content: "\E035";
+	    content: "\E035";
 	}
 	@else if $icon == woman {
-		content: "\E036";
+	    content: "\E036";
 	}
 	@else if $icon == file {
-		content: "\E037";
+	    content: "\E037";
 	}
 	@else if $icon == coins {
-		content: "\E038";
+	    content: "\E038";
 	}
 	@else if $icon == airplane {
-		content: "\2708";
+	    content: "\2708";
 	}
 	@else if $icon == notes {
-		content: "\E040";
+	    content: "\E040";
 	}
 	@else if $icon == stats {
-		content: "\E041";
+	    content: "\E041";
 	}
 	@else if $icon == charts {
-		content: "\E042";
+	    content: "\E042";
 	}
 	@else if $icon == pie_chart {
-		content: "\E043";
+	    content: "\E043";
 	}
 	@else if $icon == group {
-		content: "\E044";
+	    content: "\E044";
 	}
 	@else if $icon == keys {
-		content: "\E045";
+	    content: "\E045";
 	}
 	@else if $icon == calendar {
-		content: "\E046";
+	    content: "\E046";
 	}
 	@else if $icon == router {
-		content: "\E047";
+	    content: "\E047";
 	}
 	@else if $icon == camera_small {
-		content: "\E048";
+	    content: "\E048";
 	}
-	@else if $icon == dislikes {
-		content: "\E049";
+	@else if $icon == star_empty {
+	    content: "\E049";
 	}
 	@else if $icon == star {
-		content: "\E050";
+	    content: "\E050";
 	}
 	@else if $icon == link {
-		content: "\E051";
+	    content: "\E051";
 	}
 	@else if $icon == eye_open {
-		content: "\E052";
+	    content: "\E052";
 	}
 	@else if $icon == eye_close {
-		content: "\E053";
+	    content: "\E053";
 	}
 	@else if $icon == alarm {
-		content: "\E054";
+	    content: "\E054";
 	}
 	@else if $icon == clock {
-		content: "\E055";
+	    content: "\E055";
 	}
 	@else if $icon == stopwatch {
-		content: "\E056";
+	    content: "\E056";
 	}
 	@else if $icon == projector {
-		content: "\E057";
+	    content: "\E057";
 	}
 	@else if $icon == history {
-		content: "\E058";
+	    content: "\E058";
 	}
 	@else if $icon == truck {
-		content: "\E059";
+	    content: "\E059";
 	}
 	@else if $icon == cargo {
-		content: "\E060";
+	    content: "\E060";
 	}
 	@else if $icon == compass {
-		content: "\E061";
+	    content: "\E061";
 	}
 	@else if $icon == keynote {
-		content: "\E062";
+	    content: "\E062";
 	}
 	@else if $icon == paperclip {
-		content: "\E063";
+	    content: "\E063";
 	}
 	@else if $icon == power {
-		content: "\E064";
+	    content: "\E064";
 	}
 	@else if $icon == lightbulb {
-		content: "\E065";
+	    content: "\E065";
 	}
 	@else if $icon == tag {
-		content: "\E066";
+	    content: "\E066";
 	}
 	@else if $icon == tags {
-		content: "\E067";
+	    content: "\E067";
 	}
 	@else if $icon == cleaning {
-		content: "\E068";
+	    content: "\E068";
 	}
-	@else if $icon == ruller {
-		content: "\E069";
+	@else if $icon == ruler {
+	    content: "\E069";
 	}
 	@else if $icon == gift {
-		content: "\E070";
+	    content: "\E070";
 	}
 	@else if $icon == umbrella {
-		content: "\2602";
+	    content: "\2602";
 	}
 	@else if $icon == book {
-		content: "\E072";
+	    content: "\E072";
 	}
 	@else if $icon == bookmark {
-		content: "\E073";
+	    content: "\E073";
 	}
 	@else if $icon == wifi {
-		content: "\E074";
+	    content: "\E074";
 	}
 	@else if $icon == cup {
-		content: "\E075";
+	    content: "\E075";
 	}
 	@else if $icon == stroller {
-		content: "\E076";
+	    content: "\E076";
 	}
 	@else if $icon == headphones {
-		content: "\E077";
+	    content: "\E077";
 	}
 	@else if $icon == headset {
-		content: "\E078";
+	    content: "\E078";
 	}
 	@else if $icon == warning_sign {
-		content: "\E079";
+	    content: "\E079";
 	}
 	@else if $icon == signal {
-		content: "\E080";
+	    content: "\E080";
 	}
 	@else if $icon == retweet {
-		content: "\E081";
+	    content: "\E081";
 	}
 	@else if $icon == refresh {
-		content: "\E082";
+	    content: "\E082";
 	}
 	@else if $icon == roundabout {
-		content: "\E083";
+	    content: "\E083";
 	}
 	@else if $icon == random {
-		content: "\E084";
+	    content: "\E084";
 	}
 	@else if $icon == heat {
-		content: "\E085";
+	    content: "\E085";
 	}
 	@else if $icon == repeat {
-		content: "\E086";
+	    content: "\E086";
 	}
 	@else if $icon == display {
-		content: "\E087";
+	    content: "\E087";
 	}
 	@else if $icon == log_book {
-		content: "\E088";
+	    content: "\E088";
 	}
 	@else if $icon == address_book {
-		content: "\E089";
+	    content: "\E089";
 	}
 	@else if $icon == building {
-		content: "\E090";
+	    content: "\E090";
 	}
 	@else if $icon == eyedropper {
-		content: "\E091";
+	    content: "\E091";
 	}
 	@else if $icon == adjust {
-		content: "\E092";
+	    content: "\E092";
 	}
 	@else if $icon == tint {
-		content: "\E093";
+	    content: "\E093";
 	}
 	@else if $icon == crop {
-		content: "\E094";
+	    content: "\E094";
 	}
 	@else if $icon == vector_path_square {
-		content: "\E095";
+	    content: "\E095";
 	}
 	@else if $icon == vector_path_circle {
-		content: "\E096";
+	    content: "\E096";
 	}
 	@else if $icon == vector_path_polygon {
-		content: "\E097";
+	    content: "\E097";
 	}
 	@else if $icon == vector_path_line {
-		content: "\E098";
+	    content: "\E098";
 	}
 	@else if $icon == vector_path_curve {
-		content: "\E099";
+	    content: "\E099";
 	}
 	@else if $icon == vector_path_all {
-		content: "\E100";
+	    content: "\E100";
 	}
 	@else if $icon == font {
-		content: "\E101";
+	    content: "\E101";
 	}
 	@else if $icon == italic {
-		content: "\E102";
+	    content: "\E102";
 	}
 	@else if $icon == bold {
-		content: "\E103";
+	    content: "\E103";
 	}
 	@else if $icon == text_underline {
-		content: "\E104";
+	    content: "\E104";
 	}
 	@else if $icon == text_strike {
-		content: "\E105";
+	    content: "\E105";
 	}
 	@else if $icon == text_height {
-		content: "\E106";
+	    content: "\E106";
 	}
 	@else if $icon == text_width {
-		content: "\E107";
+	    content: "\E107";
 	}
 	@else if $icon == text_resize {
-		content: "\E108";
+	    content: "\E108";
 	}
 	@else if $icon == left_indent {
-		content: "\E109";
+	    content: "\E109";
 	}
 	@else if $icon == right_indent {
-		content: "\E110";
+	    content: "\E110";
 	}
 	@else if $icon == align_left {
-		content: "\E111";
+	    content: "\E111";
 	}
 	@else if $icon == align_center {
-		content: "\E112";
+	    content: "\E112";
 	}
 	@else if $icon == align_right {
-		content: "\E113";
+	    content: "\E113";
 	}
 	@else if $icon == justify {
-		content: "\E114";
+	    content: "\E114";
 	}
 	@else if $icon == list {
-		content: "\E115";
+	    content: "\E115";
 	}
 	@else if $icon == text_smaller {
-		content: "\E116";
+	    content: "\E116";
 	}
 	@else if $icon == text_bigger {
-		content: "\E117";
+	    content: "\E117";
 	}
 	@else if $icon == embed {
-		content: "\E118";
+	    content: "\E118";
 	}
 	@else if $icon == embed_close {
-		content: "\E119";
+	    content: "\E119";
 	}
 	@else if $icon == table {
-		content: "\E120";
+	    content: "\E120";
 	}
 	@else if $icon == message_full {
-		content: "\E121";
+	    content: "\E121";
 	}
 	@else if $icon == message_empty {
-		content: "\E122";
+	    content: "\E122";
 	}
 	@else if $icon == message_in {
-		content: "\E123";
+	    content: "\E123";
 	}
 	@else if $icon == message_out {
-		content: "\E124";
+	    content: "\E124";
 	}
 	@else if $icon == message_plus {
-		content: "\E125";
+	    content: "\E125";
 	}
 	@else if $icon == message_minus {
-		content: "\E126";
+	    content: "\E126";
 	}
 	@else if $icon == message_ban {
-		content: "\E127";
+	    content: "\E127";
 	}
 	@else if $icon == message_flag {
-		content: "\E128";
+	    content: "\E128";
 	}
 	@else if $icon == message_lock {
-		content: "\E129";
+	    content: "\E129";
 	}
 	@else if $icon == message_new {
-		content: "\E130";
+	    content: "\E130";
 	}
 	@else if $icon == inbox {
-		content: "\E131";
+	    content: "\E131";
 	}
 	@else if $icon == inbox_plus {
-		content: "\E132";
+	    content: "\E132";
 	}
 	@else if $icon == inbox_minus {
-		content: "\E133";
+	    content: "\E133";
 	}
 	@else if $icon == inbox_lock {
-		content: "\E134";
+	    content: "\E134";
 	}
 	@else if $icon == inbox_in {
-		content: "\E135";
+	    content: "\E135";
 	}
 	@else if $icon == inbox_out {
-		content: "\E136";
+	    content: "\E136";
 	}
 	@else if $icon == cogwheel {
-		content: "\E137";
+	    content: "\E137";
 	}
 	@else if $icon == cogwheels {
-		content: "\E138";
+	    content: "\E138";
 	}
 	@else if $icon == picture {
-		content: "\E139";
+	    content: "\E139";
 	}
 	@else if $icon == adjust_alt {
-		content: "\E140";
+	    content: "\E140";
 	}
 	@else if $icon == database_lock {
-		content: "\E141";
+	    content: "\E141";
 	}
 	@else if $icon == database_plus {
-		content: "\E142";
+	    content: "\E142";
 	}
 	@else if $icon == database_minus {
-		content: "\E143";
+	    content: "\E143";
 	}
 	@else if $icon == database_ban {
-		content: "\E144";
+	    content: "\E144";
 	}
 	@else if $icon == folder_open {
-		content: "\E145";
+	    content: "\E145";
 	}
 	@else if $icon == folder_plus {
-		content: "\E146";
+	    content: "\E146";
 	}
 	@else if $icon == folder_minus {
-		content: "\E147";
+	    content: "\E147";
 	}
 	@else if $icon == folder_lock {
-		content: "\E148";
+	    content: "\E148";
 	}
 	@else if $icon == folder_flag {
-		content: "\E149";
+	    content: "\E149";
 	}
 	@else if $icon == folder_new {
-		content: "\E150";
+	    content: "\E150";
 	}
 	@else if $icon == edit {
-		content: "\E151";
+	    content: "\E151";
 	}
 	@else if $icon == new_window {
-		content: "\E152";
+	    content: "\E152";
 	}
 	@else if $icon == check {
-		content: "\E153";
+	    content: "\E153";
 	}
 	@else if $icon == unchecked {
-		content: "\E154";
+	    content: "\E154";
 	}
 	@else if $icon == more_windows {
-		content: "\E155";
+	    content: "\E155";
 	}
 	@else if $icon == show_big_thumbnails {
-		content: "\E156";
+	    content: "\E156";
 	}
 	@else if $icon == show_thumbnails {
-		content: "\E157";
+	    content: "\E157";
 	}
 	@else if $icon == show_thumbnails_with_lines {
-		content: "\E158";
+	    content: "\E158";
 	}
 	@else if $icon == show_lines {
-		content: "\E159";
+	    content: "\E159";
 	}
 	@else if $icon == playlist {
-		content: "\E160";
+	    content: "\E160";
 	}
 	@else if $icon == imac {
-		content: "\E161";
+	    content: "\E161";
 	}
 	@else if $icon == macbook {
-		content: "\E162";
+	    content: "\E162";
 	}
 	@else if $icon == ipad {
-		content: "\E163";
+	    content: "\E163";
 	}
 	@else if $icon == iphone {
-		content: "\E164";
+	    content: "\E164";
 	}
 	@else if $icon == iphone_transfer {
-		content: "\E165";
+	    content: "\E165";
 	}
 	@else if $icon == iphone_exchange {
-		content: "\E166";
+	    content: "\E166";
 	}
 	@else if $icon == ipod {
-		content: "\E167";
+	    content: "\E167";
 	}
 	@else if $icon == ipod_shuffle {
-		content: "\E168";
+	    content: "\E168";
 	}
 	@else if $icon == ear_plugs {
-		content: "\E169";
+	    content: "\E169";
 	}
 	@else if $icon == record {
-		content: "\E170";
+	    content: "\E170";
 	}
 	@else if $icon == step_backward {
-		content: "\E171";
+	    content: "\E171";
 	}
 	@else if $icon == fast_backward {
-		content: "\E172";
+	    content: "\E172";
 	}
 	@else if $icon == rewind {
-		content: "\E173";
+	    content: "\E173";
 	}
 	@else if $icon == play {
-		content: "\E174";
+	    content: "\E174";
 	}
 	@else if $icon == pause {
-		content: "\E175";
+	    content: "\E175";
 	}
 	@else if $icon == stop {
-		content: "\E176";
+	    content: "\E176";
 	}
 	@else if $icon == forward {
-		content: "\E177";
+	    content: "\E177";
 	}
 	@else if $icon == fast_forward {
-		content: "\E178";
+	    content: "\E178";
 	}
 	@else if $icon == step_forward {
-		content: "\E179";
+	    content: "\E179";
 	}
 	@else if $icon == eject {
-		content: "\E180";
+	    content: "\E180";
 	}
 	@else if $icon == facetime_video {
-		content: "\E181";
+	    content: "\E181";
 	}
 	@else if $icon == download_alt {
-		content: "\E182";
+	    content: "\E182";
 	}
 	@else if $icon == mute {
-		content: "\E183";
+	    content: "\E183";
 	}
 	@else if $icon == volume_down {
-		content: "\E184";
+	    content: "\E184";
 	}
 	@else if $icon == volume_up {
-		content: "\E185";
+	    content: "\E185";
 	}
 	@else if $icon == screenshot {
-		content: "\E186";
+	    content: "\E186";
 	}
 	@else if $icon == move {
-		content: "\E187";
+	    content: "\E187";
 	}
 	@else if $icon == more {
-		content: "\E188";
+	    content: "\E188";
 	}
 	@else if $icon == brightness_reduce {
-		content: "\E189";
+	    content: "\E189";
 	}
 	@else if $icon == brightness_increase {
-		content: "\E190";
+	    content: "\E190";
 	}
 	@else if $icon == circle_plus {
-		content: "\E191";
+	    content: "\E191";
 	}
 	@else if $icon == circle_minus {
-		content: "\E192";
+	    content: "\E192";
 	}
 	@else if $icon == circle_remove {
-		content: "\E193";
+	    content: "\E193";
 	}
 	@else if $icon == circle_ok {
-		content: "\E194";
+	    content: "\E194";
 	}
 	@else if $icon == circle_question_mark {
-		content: "\E195";
+	    content: "\E195";
 	}
 	@else if $icon == circle_info {
-		content: "\E196";
+	    content: "\E196";
 	}
 	@else if $icon == circle_exclamation_mark {
-		content: "\E197";
+	    content: "\E197";
 	}
 	@else if $icon == remove {
-		content: "\E198";
+	    content: "\E198";
 	}
 	@else if $icon == ok {
-		content: "\E199";
+	    content: "\E199";
 	}
 	@else if $icon == ban {
-		content: "\E200";
+	    content: "\E200";
 	}
 	@else if $icon == download {
-		content: "\E201";
+	    content: "\E201";
 	}
 	@else if $icon == upload {
-		content: "\E202";
+	    content: "\E202";
 	}
 	@else if $icon == shopping_cart {
-		content: "\E203";
+	    content: "\E203";
 	}
 	@else if $icon == lock {
-		content: "\E204";
+	    content: "\E204";
 	}
 	@else if $icon == unlock {
-		content: "\E205";
+	    content: "\E205";
 	}
 	@else if $icon == electricity {
-		content: "\E206";
+	    content: "\E206";
 	}
 	@else if $icon == ok_2 {
-		content: "\E207";
+	    content: "\E207";
 	}
 	@else if $icon == remove_2 {
-		content: "\E208";
+	    content: "\E208";
 	}
 	@else if $icon == cart_out {
-		content: "\E209";
+	    content: "\E209";
 	}
 	@else if $icon == cart_in {
-		content: "\E210";
+	    content: "\E210";
 	}
 	@else if $icon == left_arrow {
-		content: "\E211";
+	    content: "\E211";
 	}
 	@else if $icon == right_arrow {
-		content: "\E212";
+	    content: "\E212";
 	}
 	@else if $icon == down_arrow {
-		content: "\E213";
+	    content: "\E213";
 	}
 	@else if $icon == up_arrow {
-		content: "\E214";
+	    content: "\E214";
 	}
 	@else if $icon == resize_small {
-		content: "\E215";
+	    content: "\E215";
 	}
 	@else if $icon == resize_full {
-		content: "\E216";
+	    content: "\E216";
 	}
 	@else if $icon == circle_arrow_left {
-		content: "\E217";
+	    content: "\E217";
 	}
 	@else if $icon == circle_arrow_right {
-		content: "\E218";
+	    content: "\E218";
 	}
 	@else if $icon == circle_arrow_top {
-		content: "\E219";
+	    content: "\E219";
 	}
 	@else if $icon == circle_arrow_down {
-		content: "\E220";
+	    content: "\E220";
 	}
 	@else if $icon == play_button {
-		content: "\E221";
+	    content: "\E221";
 	}
 	@else if $icon == unshare {
-		content: "\E222";
+	    content: "\E222";
 	}
 	@else if $icon == share {
-		content: "\E223";
+	    content: "\E223";
 	}
 	@else if $icon == chevron_right {
-		content: "\E224";
+	    content: "\E224";
 	}
 	@else if $icon == chevron_left {
-		content: "\E225";
+	    content: "\E225";
 	}
 	@else if $icon == bluetooth {
-		content: "\E226";
+	    content: "\E226";
 	}
 	@else if $icon == euro {
-		content: "\20AC";
+	    content: "\20AC";
 	}
 	@else if $icon == usd {
-		content: "\E228";
+	    content: "\E228";
 	}
 	@else if $icon == gbp {
-		content: "\E229";
+	    content: "\E229";
 	}
 	@else if $icon == retweet_2 {
-		content: "\E230";
+	    content: "\E230";
 	}
 	@else if $icon == moon {
-		content: "\E231";
+	    content: "\E231";
 	}
 	@else if $icon == sun {
-		content: "\2609";
+	    content: "\2609";
 	}
 	@else if $icon == cloud {
-		content: "\2601";
+	    content: "\2601";
 	}
 	@else if $icon == direction {
-		content: "\E234";
+	    content: "\E234";
 	}
 	@else if $icon == brush {
-		content: "\E235";
+	    content: "\E235";
 	}
 	@else if $icon == pen {
-		content: "\E236";
+	    content: "\E236";
 	}
 	@else if $icon == zoom_in {
-		content: "\E237";
+	    content: "\E237";
 	}
 	@else if $icon == zoom_out {
-		content: "\E238";
+	    content: "\E238";
 	}
 	@else if $icon == pin {
-		content: "\E239";
+	    content: "\E239";
 	}
 	@else if $icon == albums {
-		content: "\E240";
+	    content: "\E240";
 	}
 	@else if $icon == rotation_lock {
-		content: "\E241";
+	    content: "\E241";
 	}
 	@else if $icon == flash {
-		content: "\E242";
+	    content: "\E242";
 	}
 	@else if $icon == google_maps {
-		content: "\E243";
+	    content: "\E243";
 	}
 	@else if $icon == anchor {
-		content: "\2693";
+	    content: "\2693";
 	}
 	@else if $icon == conversation {
-		content: "\E245";
+	    content: "\E245";
 	}
 	@else if $icon == chat {
-		content: "\E246";
+	    content: "\E246";
 	}
 	@else if $icon == male {
-		content: "\E247";
+	    content: "\E247";
 	}
 	@else if $icon == female {
-		content: "\E248";
+	    content: "\E248";
 	}
 	@else if $icon == asterisk {
-		content: "\002A";
+	    content: "\002A";
 	}
 	@else if $icon == divide {
-		content: "\00F7";
+	    content: "\00F7";
 	}
 	@else if $icon == snorkel_diving {
-		content: "\E251";
+	    content: "\E251";
 	}
 	@else if $icon == scuba_diving {
-		content: "\E252";
+	    content: "\E252";
 	}
 	@else if $icon == oxygen_bottle {
-		content: "\E253";
+	    content: "\E253";
 	}
 	@else if $icon == fins {
-		content: "\E254";
+	    content: "\E254";
 	}
 	@else if $icon == fishes {
-		content: "\E255";
+	    content: "\E255";
 	}
 	@else if $icon == boat {
-		content: "\E256";
+	    content: "\E256";
 	}
 	@else if $icon == delete {
-		content: "\E257";
+	    content: "\E257";
 	}
 	@else if $icon == sheriffs_star {
-		content: "\E258";
+	    content: "\E258";
 	}
 	@else if $icon == qrcode {
-		content: "\E259";
+	    content: "\E259";
 	}
 	@else if $icon == barcode {
-		content: "\E260";
+	    content: "\E260";
 	}
 	@else if $icon == pool {
-		content: "\E261";
+	    content: "\E261";
 	}
 	@else if $icon == buoy {
-		content: "\E262";
+	    content: "\E262";
 	}
 	@else if $icon == spade {
-		content: "\E263";
+	    content: "\E263";
 	}
 	@else if $icon == bank {
-		content: "\E264";
+	    content: "\E264";
 	}
 	@else if $icon == vcard {
-		content: "\E265";
+	    content: "\E265";
 	}
 	@else if $icon == electrical_plug {
-		content: "\E266";
+	    content: "\E266";
 	}
 	@else if $icon == flag {
-		content: "\E267";
+	    content: "\E267";
 	}
 	@else if $icon == credit_card {
-		content: "\E268";
+	    content: "\E268";
 	}
 	@else if $icon == keyboard_wireless {
-		content: "\E269";
+	    content: "\E269";
 	}
 	@else if $icon == keyboard_wired {
-		content: "\E270";
+	    content: "\E270";
 	}
 	@else if $icon == shield {
-		content: "\E271";
+	    content: "\E271";
 	}
 	@else if $icon == ring {
-		content: "\02DA";
+	    content: "\02DA";
 	}
 	@else if $icon == cake {
-		content: "\E273";
+	    content: "\E273";
 	}
 	@else if $icon == drink {
-		content: "\E274";
+	    content: "\E274";
 	}
 	@else if $icon == beer {
-		content: "\E275";
+	    content: "\E275";
 	}
 	@else if $icon == fast_food {
-		content: "\E276";
+	    content: "\E276";
 	}
 	@else if $icon == cutlery {
-		content: "\E277";
+	    content: "\E277";
 	}
 	@else if $icon == pizza {
-		content: "\E278";
+	    content: "\E278";
 	}
 	@else if $icon == birthday_cake {
-		content: "\E279";
+	    content: "\E279";
 	}
 	@else if $icon == tablet {
-		content: "\E280";
+	    content: "\E280";
 	}
 	@else if $icon == settings {
-		content: "\E281";
+	    content: "\E281";
 	}
 	@else if $icon == bullets {
-		content: "\E282";
+	    content: "\E282";
 	}
 	@else if $icon == cardio {
-		content: "\E283";
+	    content: "\E283";
 	}
 	@else if $icon == t_shirt {
-		content: "\E284";
+	    content: "\E284";
 	}
 	@else if $icon == pants {
-		content: "\E285";
+	    content: "\E285";
 	}
 	@else if $icon == sweater {
-		content: "\E286";
+	    content: "\E286";
 	}
 	@else if $icon == fabric {
-		content: "\E287";
+	    content: "\E287";
 	}
 	@else if $icon == leather {
-		content: "\E288";
+	    content: "\E288";
 	}
 	@else if $icon == scissors {
-		content: "\E289";
+	    content: "\E289";
 	}
 	@else if $icon == bomb {
-		content: "\E290";
+	    content: "\E290";
 	}
 	@else if $icon == skull {
-		content: "\E291";
+	    content: "\E291";
 	}
 	@else if $icon == celebration {
-		content: "\E292";
+	    content: "\E292";
 	}
 	@else if $icon == tea_kettle {
-		content: "\E293";
+	    content: "\E293";
 	}
 	@else if $icon == french_press {
-		content: "\E294";
+	    content: "\E294";
 	}
 	@else if $icon == coffee_cup {
-		content: "\E295";
+	    content: "\E295";
 	}
 	@else if $icon == pot {
-		content: "\E296";
+	    content: "\E296";
 	}
 	@else if $icon == grater {
-		content: "\E297";
+	    content: "\E297";
 	}
 	@else if $icon == kettle {
-		content: "\E298";
+	    content: "\E298";
 	}
 	@else if $icon == hospital {
-		content: "\E299";
+	    content: "\E299";
 	}
 	@else if $icon == hospital_h {
-		content: "\E300";
+	    content: "\E300";
 	}
 	@else if $icon == microphone {
-		content: "\E301";
+	    content: "\E301";
 	}
 	@else if $icon == webcam {
-		content: "\E302";
+	    content: "\E302";
 	}
 	@else if $icon == temple_christianity_church {
-		content: "\E303";
+	    content: "\E303";
 	}
 	@else if $icon == temple_islam {
-		content: "\E304";
+	    content: "\E304";
 	}
 	@else if $icon == temple_hindu {
-		content: "\E305";
+	    content: "\E305";
 	}
 	@else if $icon == temple_buddhist {
-		content: "\E306";
+	    content: "\E306";
 	}
 	@else if $icon == bicycle {
-		content: "\E307";
+	    content: "\E307";
 	}
 	@else if $icon == life_preserver {
-		content: "\E308";
+	    content: "\E308";
 	}
 	@else if $icon == share_alt {
-		content: "\E309";
+	    content: "\E309";
 	}
 	@else if $icon == comments {
-		content: "\E310";
+	    content: "\E310";
 	}
 	@else if $icon == flower {
-		content: "\2698";
+	    content: "\2698";
 	}
 	@else if $icon == baseball {
-		content: "\26BE";
+	    content: "\26BE";
 	}
 	@else if $icon == rugby {
-		content: "\E313";
+	    content: "\E313";
 	}
 	@else if $icon == ax {
-		content: "\E314";
+	    content: "\E314";
 	}
 	@else if $icon == table_tennis {
-		content: "\E315";
+	    content: "\E315";
 	}
 	@else if $icon == bowling {
-		content: "\E316";
+	    content: "\E316";
 	}
 	@else if $icon == tree_conifer {
-		content: "\E317";
+	    content: "\E317";
 	}
 	@else if $icon == tree_deciduous {
-		content: "\E318";
+	    content: "\E318";
 	}
 	@else if $icon == more_items {
-		content: "\E319";
+	    content: "\E319";
 	}
 	@else if $icon == sort {
-		content: "\E320";
+	    content: "\E320";
 	}
 	@else if $icon == filter {
-		content: "\E321";
+	    content: "\E321";
 	}
 	@else if $icon == gamepad {
-		content: "\E322";
+	    content: "\E322";
 	}
 	@else if $icon == playing_dices {
-		content: "\E323";
+	    content: "\E323";
 	}
 	@else if $icon == calculator {
-		content: "\E324";
+	    content: "\E324";
 	}
 	@else if $icon == tie {
-		content: "\E325";
+	    content: "\E325";
 	}
 	@else if $icon == wallet {
-		content: "\E326";
+	    content: "\E326";
 	}
 	@else if $icon == piano {
-		content: "\E327";
+	    content: "\E327";
 	}
 	@else if $icon == sampler {
-		content: "\E328";
+	    content: "\E328";
 	}
 	@else if $icon == podium {
-		content: "\E329";
+	    content: "\E329";
 	}
 	@else if $icon == soccer_ball {
-		content: "\E330";
+	    content: "\E330";
 	}
 	@else if $icon == blog {
-		content: "\E331";
+	    content: "\E331";
 	}
 	@else if $icon == dashboard {
-		content: "\E332";
+	    content: "\E332";
 	}
 	@else if $icon == certificate {
-		content: "\E333";
+	    content: "\E333";
 	}
 	@else if $icon == bell {
-		content: "\E334";
+	    content: "\E334";
 	}
 	@else if $icon == candle {
-		content: "\E335";
+	    content: "\E335";
 	}
 	@else if $icon == pushpin {
-		content: "\E336";
+	    content: "\E336";
 	}
 	@else if $icon == iphone_shake {
-		content: "\E337";
+	    content: "\E337";
 	}
 	@else if $icon == pin_flag {
-		content: "\E338";
+	    content: "\E338";
 	}
 	@else if $icon == turtle {
-		content: "\E339";
+	    content: "\E339";
 	}
 	@else if $icon == rabbit {
-		content: "\E340";
+	    content: "\E340";
 	}
 	@else if $icon == globe {
-		content: "\E341";
+	    content: "\E341";
 	}
 	@else if $icon == briefcase {
-		content: "\E342";
+	    content: "\E342";
 	}
 	@else if $icon == hdd {
-		content: "\E343";
+	    content: "\E343";
 	}
 	@else if $icon == thumbs_up {
-		content: "\E344";
+	    content: "\E344";
 	}
 	@else if $icon == thumbs_down {
-		content: "\E345";
+	    content: "\E345";
 	}
 	@else if $icon == hand_right {
-		content: "\E346";
+	    content: "\E346";
 	}
 	@else if $icon == hand_left {
-		content: "\E347";
+	    content: "\E347";
 	}
 	@else if $icon == hand_up {
-		content: "\E348";
+	    content: "\E348";
 	}
 	@else if $icon == hand_down {
-		content: "\E349";
+	    content: "\E349";
 	}
 	@else if $icon == fullscreen {
-		content: "\E350";
+	    content: "\E350";
 	}
 	@else if $icon == shopping_bag {
-		content: "\E351";
+	    content: "\E351";
 	}
 	@else if $icon == book_open {
-		content: "\E352";
+	    content: "\E352";
 	}
 	@else if $icon == nameplate {
-		content: "\E353";
+	    content: "\E353";
 	}
 	@else if $icon == nameplate_alt {
-		content: "\E354";
+	    content: "\E354";
 	}
 	@else if $icon == vases {
-		content: "\E355";
+	    content: "\E355";
 	}
 	@else if $icon == bullhorn {
-		content: "\E356";
+	    content: "\E356";
 	}
 	@else if $icon == dumbbell {
-		content: "\E357";
+	    content: "\E357";
 	}
 	@else if $icon == suitcase {
-		content: "\E358";
+	    content: "\E358";
 	}
 	@else if $icon == file_import {
-		content: "\E359";
+	    content: "\E359";
 	}
 	@else if $icon == file_export {
-		content: "\E360";
+	    content: "\E360";
 	}
 	@else if $icon == bug {
-		content: "\E361";
+	    content: "\E361";
 	}
 	@else if $icon == crown {
-		content: "\E362";
+	    content: "\E362";
 	}
 	@else if $icon == smoking {
-		content: "\E363";
+	    content: "\E363";
 	}
 	@else if $icon == cloud_download {
-		content: "\E364";
+	    content: "\E364";
 	}
 	@else if $icon == cloud_upload {
-		content: "\E365";
+	    content: "\E365";
 	}
 	@else if $icon == restart {
-		content: "\E366";
+	    content: "\E366";
 	}
 	@else if $icon == security_camera {
-		content: "\E367";
+	    content: "\E367";
 	}
 	@else if $icon == expand {
-		content: "\E368";
+	    content: "\E368";
 	}
 	@else if $icon == collapse {
-		content: "\E369";
+	    content: "\E369";
 	}
 	@else if $icon == collapse_top {
-		content: "\E370";
+	    content: "\E370";
 	}
 	@else if $icon == globe_af {
-		content: "\E371";
+	    content: "\E371";
 	}
 	@else if $icon == global {
-		content: "\E372";
+	    content: "\E372";
 	}
 	@else if $icon == spray {
-		content: "\E373";
+	    content: "\E373";
 	}
 	@else if $icon == nails {
-		content: "\E374";
+	    content: "\E374";
 	}
 	@else if $icon == claw_hammer {
-		content: "\E375";
+	    content: "\E375";
 	}
 	@else if $icon == classic_hammer {
-		content: "\E376";
+	    content: "\E376";
 	}
 	@else if $icon == hand_saw {
-		content: "\E377";
+	    content: "\E377";
 	}
 	@else if $icon == riflescope {
-		content: "\E378";
+	    content: "\E378";
 	}
 	@else if $icon == electrical_socket_eu {
-		content: "\E379";
+	    content: "\E379";
 	}
 	@else if $icon == electrical_socket_us {
-		content: "\E380";
+	    content: "\E380";
 	}
 	@else if $icon == message_forward {
-		content: "\E381";
+	    content: "\E381";
 	}
 	@else if $icon == coat_hanger {
-		content: "\E382";
+	    content: "\E382";
 	}
 	@else if $icon == dress {
-		content: "\E383";
+	    content: "\E383";
 	}
 	@else if $icon == bathrobe {
-		content: "\E384";
+	    content: "\E384";
 	}
 	@else if $icon == shirt {
-		content: "\E385";
+	    content: "\E385";
 	}
 	@else if $icon == underwear {
-		content: "\E386";
+	    content: "\E386";
 	}
 	@else if $icon == log_in {
-		content: "\E387";
+	    content: "\E387";
 	}
 	@else if $icon == log_out {
-		content: "\E388";
+	    content: "\E388";
 	}
 	@else if $icon == exit {
-		content: "\E389";
+	    content: "\E389";
 	}
 	@else if $icon == new_window_alt {
-		content: "\E390";
+	    content: "\E390";
 	}
 	@else if $icon == video_sd {
-		content: "\E391";
+	    content: "\E391";
 	}
 	@else if $icon == video_hd {
-		content: "\E392";
+	    content: "\E392";
 	}
 	@else if $icon == subtitles {
-		content: "\E393";
+	    content: "\E393";
 	}
 	@else if $icon == sound_stereo {
-		content: "\E394";
+	    content: "\E394";
 	}
 	@else if $icon == sound_dolby {
-		content: "\E395";
+	    content: "\E395";
 	}
 	@else if $icon == sound_5_1 {
-		content: "\E396";
+	    content: "\E396";
 	}
 	@else if $icon == sound_6_1 {
-		content: "\E397";
+	    content: "\E397";
 	}
 	@else if $icon == sound_7_1 {
-		content: "\E398";
+	    content: "\E398";
 	}
 	@else if $icon == copyright_mark {
-		content: "\E399";
+	    content: "\E399";
 	}
 	@else if $icon == registration_mark {
-		content: "\E400";
+	    content: "\E400";
 	}
 	@else if $icon == radar {
-		content: "\E401";
+	    content: "\E401";
 	}
 	@else if $icon == skateboard {
-		content: "\E402";
+	    content: "\E402";
 	}
 	@else if $icon == golf_course {
-		content: "\E403";
+	    content: "\E403";
 	}
 	@else if $icon == sorting {
-		content: "\E404";
+	    content: "\E404";
 	}
 	@else if $icon == sort_by_alphabet {
-		content: "\E405";
+	    content: "\E405";
 	}
 	@else if $icon == sort_by_alphabet_alt {
-		content: "\E406";
+	    content: "\E406";
 	}
 	@else if $icon == sort_by_order {
-		content: "\E407";
+	    content: "\E407";
 	}
 	@else if $icon == sort_by_order_alt {
-		content: "\E408";
+	    content: "\E408";
 	}
 	@else if $icon == sort_by_attributes {
-		content: "\E409";
+	    content: "\E409";
 	}
 	@else if $icon == sort_by_attributes_alt {
-		content: "\E410";
+	    content: "\E410";
 	}
 	@else if $icon == compressed {
-		content: "\E411";
+	    content: "\E411";
 	}
 	@else if $icon == package {
-		content: "\E412";
+	    content: "\E412";
 	}
 	@else if $icon == cloud_plus {
-		content: "\E413";
+	    content: "\E413";
 	}
 	@else if $icon == cloud_minus {
-		content: "\E414";
+	    content: "\E414";
 	}
 	@else if $icon == disk_save {
-		content: "\E415";
+	    content: "\E415";
 	}
 	@else if $icon == disk_open {
-		content: "\E416";
+	    content: "\E416";
 	}
 	@else if $icon == disk_saved {
-		content: "\E417";
+	    content: "\E417";
 	}
 	@else if $icon == disk_remove {
-		content: "\E418";
+	    content: "\E418";
 	}
 	@else if $icon == disk_import {
-		content: "\E419";
+	    content: "\E419";
 	}
 	@else if $icon == disk_export {
-		content: "\E420";
+	    content: "\E420";
 	}
 	@else if $icon == tower {
-		content: "\E421";
+	    content: "\E421";
 	}
 	@else if $icon == send {
-		content: "\E422";
+	    content: "\E422";
 	}
 	@else if $icon == git_branch {
-		content: "\E423";
+	    content: "\E423";
 	}
 	@else if $icon == git_create {
-		content: "\E424";
+	    content: "\E424";
 	}
 	@else if $icon == git_private {
-		content: "\E425";
+	    content: "\E425";
 	}
 	@else if $icon == git_delete {
-		content: "\E426";
+	    content: "\E426";
 	}
 	@else if $icon == git_merge {
-		content: "\E427";
+	    content: "\E427";
 	}
 	@else if $icon == git_pull_request {
-		content: "\E428";
+	    content: "\E428";
 	}
 	@else if $icon == git_compare {
-		content: "\E429";
+	    content: "\E429";
 	}
 	@else if $icon == git_commit {
-		content: "\E430";
+	    content: "\E430";
 	}
 	@else if $icon == construction_cone {
-		content: "\E431";
+	    content: "\E431";
 	}
 	@else if $icon == shoe_steps {
-		content: "\E432";
+	    content: "\E432";
 	}
 	@else if $icon == plus {
-		content: "\002B";
+	    content: "\002B";
 	}
 	@else if $icon == minus {
-		content: "\2212";
+	    content: "\2212";
 	}
 	@else if $icon == redo {
-		content: "\E435";
+	    content: "\E435";
 	}
 	@else if $icon == undo {
-		content: "\E436";
+	    content: "\E436";
 	}
 	@else if $icon == golf {
-		content: "\E437";
+	    content: "\E437";
 	}
 	@else if $icon == hockey {
-		content: "\E438";
+	    content: "\E438";
 	}
 	@else if $icon == pipe {
-		content: "\E439";
+	    content: "\E439";
 	}
 	@else if $icon == wrench {
-		content: "\E440";
+	    content: "\E440";
 	}
 	@else if $icon == folder_closed {
-		content: "\E441";
+	    content: "\E441";
 	}
 	@else if $icon == phone_alt {
-		content: "\E442";
+	    content: "\E442";
 	}
 	@else if $icon == earphone {
-		content: "\E443";
+	    content: "\E443";
 	}
 	@else if $icon == floppy_disk {
-		content: "\E444";
+	    content: "\E444";
 	}
 	@else if $icon == floppy_saved {
-		content: "\E445";
+	    content: "\E445";
 	}
 	@else if $icon == floppy_remove {
-		content: "\E446";
+	    content: "\E446";
 	}
 	@else if $icon == floppy_save {
-		content: "\E447";
+	    content: "\E447";
 	}
 	@else if $icon == floppy_open {
-		content: "\E448";
+	    content: "\E448";
 	}
 	@else if $icon == translate {
-		content: "\E449";
+	    content: "\E449";
 	}
 	@else if $icon == fax {
-		content: "\E450";
+	    content: "\E450";
 	}
 	@else if $icon == factory {
-		content: "\E451";
+	    content: "\E451";
 	}
 	@else if $icon == shop_window {
-		content: "\E452";
+	    content: "\E452";
 	}
 	@else if $icon == shop {
-		content: "\E453";
+	    content: "\E453";
 	}
 	@else if $icon == kiosk {
-		content: "\E454";
+	    content: "\E454";
 	}
 	@else if $icon == kiosk_wheels {
-		content: "\E455";
+	    content: "\E455";
 	}
 	@else if $icon == kiosk_light {
-		content: "\E456";
+	    content: "\E456";
 	}
 	@else if $icon == kiosk_food {
-		content: "\E457";
+	    content: "\E457";
 	}
 	@else if $icon == transfer {
-		content: "\E458";
+	    content: "\E458";
 	}
 	@else if $icon == money {
-		content: "\E459";
+	    content: "\E459";
 	}
 	@else if $icon == header {
-		content: "\E460";
+	    content: "\E460";
 	}
 	@else if $icon == blacksmith {
-		content: "\E461";
+	    content: "\E461";
 	}
 	@else if $icon == saw_blade {
-		content: "\E462";
+	    content: "\E462";
 	}
 	@else if $icon == basketball {
-		content: "\E463";
+	    content: "\E463";
 	}
 	@else if $icon == server {
-		content: "\E464";
+	    content: "\E464";
 	}
 	@else if $icon == server_plus {
-		content: "\E465";
+	    content: "\E465";
 	}
 	@else if $icon == server_minus {
-		content: "\E466";
+	    content: "\E466";
 	}
 	@else if $icon == server_ban {
-		content: "\E467";
+	    content: "\E467";
 	}
 	@else if $icon == server_flag {
-		content: "\E468";
+	    content: "\E468";
 	}
 	@else if $icon == server_lock {
-		content: "\E469";
+	    content: "\E469";
 	}
 	@else if $icon == server_new {
-		content: "\E470";
+	    content: "\E470";
+	}
+	@else if $icon == charging_station {
+	    content: "\F471";
+	}
+	@else if $icon == gas_station {
+	    content: "\E472";
+	}
+	@else if $icon == target {
+	    content: "\E473";
+	}
+	@else if $icon == bed_alt {
+	    content: "\E474";
+	}
+	@else if $icon == mosquito_net {
+	    content: "\E475";
+	}
+	@else if $icon == dining_set {
+	    content: "\E476";
+	}
+	@else if $icon == plate_of_food {
+	    content: "\E477";
+	}
+	@else if $icon == hygiene_kit {
+	    content: "\E478";
+	}
+	@else if $icon == blackboard {
+	    content: "\E479";
+	}
+	@else if $icon == marriage {
+	    content: "\E480";
+	}
+	@else if $icon == bucket {
+	    content: "\E481";
+	}
+	@else if $icon == none_color_swatch {
+	    content: "\E482";
+	}
+	@else if $icon == bring_forward {
+	    content: "\E483";
+	}
+	@else if $icon == bring_to_front {
+	    content: "\E484";
+	}
+	@else if $icon == send_backward {
+	    content: "\E485";
+	}
+	@else if $icon == send_to_back {
+	    content: "\E486";
+	}
+	@else if $icon == fit_frame_to_image {
+	    content: "\E487";
+	}
+	@else if $icon == fit_image_to_frame {
+	    content: "\E488";
+	}
+	@else if $icon == multiple_displays {
+	    content: "\E489";
+	}
+	@else if $icon == handshake {
+	    content: "\E490";
+	}
+	@else if $icon == child {
+	    content: "\E491";
+	}
+	@else if $icon == baby_formula {
+	    content: "\E492";
+	}
+	@else if $icon == medicine {
+	    content: "\E493";
+	}
+	@else if $icon == atv_vehicle {
+	    content: "\E494";
+	}
+	@else if $icon == motorcycle {
+	    content: "\E495";
+	}
+	@else if $icon == bed {
+	    content: "\E496";
+	}
+	@else if $icon == tent {
+	    content: "\26FA";
+	}
+	@else if $icon == glasses {
+	    content: "\E498";
+	}
+	@else if $icon == sunglasses {
+	    content: "\E499";
+	}
+	@else if $icon == family {
+	    content: "\E500";
+	}
+	@else if $icon == education {
+	    content: "\E501";
+	}
+	@else if $icon == shoes {
+	    content: "\E502";
+	}
+	@else if $icon == map {
+	    content: "\E503";
+	}
+	@else if $icon == cd {
+	    content: "\E504";
+	}
+	@else if $icon == alert {
+	    content: "\E505";
+	}
+	@else if $icon == piggy_bank {
+	    content: "\E506";
+	}
+	@else if $icon == star_half {
+	    content: "\E507";
+	}
+	@else if $icon == cluster {
+	    content: "\E508";
+	}
+	@else if $icon == flowchart {
+	    content: "\E509";
+	}
+	@else if $icon == commodities {
+	    content: "\E510";
+	}
+	@else if $icon == duplicate {
+	    content: "\E511";
+	}
+	@else if $icon == copy {
+	    content: "\E512";
+	}
+	@else if $icon == paste {
+	    content: "\E513";
+	}
+	@else if $icon == bath_bathtub {
+	    content: "\E514";
+	}
+	@else if $icon == bath_shower {
+	    content: "\E515";
+	}
+	@else if $icon == shower {
+	    content: "\1F6BF";
+	}
+	@else if $icon == menu_hamburger {
+	    content: "\E517";
+	}
+	@else if $icon == option_vertical {
+	    content: "\E518";
+	}
+	@else if $icon == option_horizontal {
+	    content: "\E519";
+	}
+	@else if $icon == currency_conversion {
+	    content: "\E520";
+	}
+	@else if $icon == user_ban {
+	    content: "\E521";
+	}
+	@else if $icon == user_lock {
+	    content: "\E522";
+	}
+	@else if $icon == user_flag {
+	    content: "\E523";
+	}
+	@else if $icon == user_asterisk {
+	    content: "\E524";
+	}
+	@else if $icon == user_alert {
+	    content: "\E525";
+	}
+	@else if $icon == user_key {
+	    content: "\E526";
+	}
+	@else if $icon == user_conversation {
+	    content: "\E527";
+	}
+	@else if $icon == database {
+	    content: "\E528";
+	}
+	@else if $icon == database_search {
+	    content: "\E529";
+	}
+	@else if $icon == list_alt {
+	    content: "\E530";
+	}
+	@else if $icon == hazard_sign {
+	    content: "\E531";
+	}
+	@else if $icon == hazard {
+	    content: "\E532";
+	}
+	@else if $icon == stop_sign {
+	    content: "\E533";
+	}
+	@else if $icon == lab {
+	    content: "\E534";
+	}
+	@else if $icon == lab_alt {
+	    content: "\E535";
+	}
+	@else if $icon == ice_cream {
+	    content: "\E536";
+	}
+	@else if $icon == ice_lolly {
+	    content: "\E537";
+	}
+	@else if $icon == ice_lolly_tasted {
+	    content: "\E538";
+	}
+	@else if $icon == invoice {
+	    content: "\E539";
+	}
+	@else if $icon == cart_tick {
+	    content: "\E540";
+	}
+	@else if $icon == hourglass {
+	    content: "\231B";
+	}
+	@else if $icon == cat {
+	    content: "\1F408";
+	}
+	@else if $icon == lamp {
+	    content: "\E543";
+	}
+	@else if $icon == scale_classic {
+	    content: "\E544";
+	}
+	@else if $icon == eye_plus {
+	    content: "\E545";
+	}
+	@else if $icon == eye_minus {
+	    content: "\E546";
+	}
+	@else if $icon == quote {
+	    content: "\E547";
+	}
+	@else if $icon == bitcoin {
+	    content: "\E548";
+	}
+	@else if $icon == yen {
+	    content: "\00A5";
+	}
+	@else if $icon == ruble {
+	    content: "\20BD";
+	}
+	@else if $icon == erase {
+	    content: "\E551";
+	}
+	@else if $icon == podcast {
+	    content: "\E552";
+	}
+	@else if $icon == firework {
+	    content: "\E553";
+	}
+	@else if $icon == scale {
+	    content: "\E554";
+	}
+	@else if $icon == king {
+	    content: "\E555";
+	}
+	@else if $icon == queen {
+	    content: "\E556";
+	}
+	@else if $icon == pawn {
+	    content: "\E557";
+	}
+	@else if $icon == bishop {
+	    content: "\E558";
+	}
+	@else if $icon == knight {
+	    content: "\E559";
+	}
+	@else if $icon == mic_mute {
+	    content: "\E560";
+	}
+	@else if $icon == voicemail {
+	    content: "\E561";
+	}
+	@else if $icon == paragraph {
+	    content: "\00B6";
+	}
+	@else if $icon == person_walking {
+	    content: "\E563";
+	}
+	@else if $icon == person_wheelchair {
+	    content: "\E564";
+	}
+	@else if $icon == underground {
+	    content: "\E565";
+	}
+	@else if $icon == car_hov {
+	    content: "\E566";
+	}
+	@else if $icon == car_rental {
+	    content: "\E567";
+	}
+	@else if $icon == transport {
+	    content: "\E568";
+	}
+	@else if $icon == taxi {
+	    content: "\1F695";
+	}
+	@else if $icon == ice_cream_no {
+	    content: "\E570";
+	}
+	@else if $icon == uk_rat_u {
+	    content: "\E571";
+	}
+	@else if $icon == uk_rat_pg {
+	    content: "\E572";
+	}
+	@else if $icon == uk_rat_12a {
+	    content: "\E573";
+	}
+	@else if $icon == uk_rat_12 {
+	    content: "\E574";
+	}
+	@else if $icon == uk_rat_15 {
+	    content: "\E575";
+	}
+	@else if $icon == uk_rat_18 {
+	    content: "\E576";
+	}
+	@else if $icon == uk_rat_r18 {
+	    content: "\E577";
+	}
+	@else if $icon == tv {
+	    content: "\E578";
+	}
+	@else if $icon == sms {
+	    content: "\E579";
+	}
+	@else if $icon == mms {
+	    content: "\E580";
+	}
+	@else if $icon == us_rat_g {
+	    content: "\E581";
+	}
+	@else if $icon == us_rat_pg {
+	    content: "\E582";
+	}
+	@else if $icon == us_rat_pg_13 {
+	    content: "\E583";
+	}
+	@else if $icon == us_rat_restricted {
+	    content: "\E584";
+	}
+	@else if $icon == us_rat_no_one_17 {
+	    content: "\E585";
+	}
+	@else if $icon == equalizer {
+	    content: "\E586";
+	}
+	@else if $icon == speakers {
+	    content: "\E587";
+	}
+	@else if $icon == remote_control {
+	    content: "\E588";
+	}
+	@else if $icon == remote_control_tv {
+	    content: "\E589";
+	}
+	@else if $icon == shredder {
+	    content: "\E590";
+	}
+	@else if $icon == folder_heart {
+	    content: "\E591";
+	}
+	@else if $icon == person_running {
+	    content: "\E592";
+	}
+	@else if $icon == person {
+	    content: "\E593";
+	}
+	@else if $icon == voice {
+	    content: "\E594";
+	}
+	@else if $icon == stethoscope {
+	    content: "\E595";
+	}
+	@else if $icon == hotspot {
+	    content: "\E596";
+	}
+	@else if $icon == activity {
+	    content: "\E597";
+	}
+	@else if $icon == watch {
+	    content: "\231A";
+	}
+	@else if $icon == scissors_alt {
+	    content: "\E599";
+	}
+	@else if $icon == car_wheel {
+	    content: "\E600";
+	}
+	@else if $icon == chevron_up {
+	    content: "\E601";
+	}
+	@else if $icon == chevron_down {
+	    content: "\E602";
+	}
+	@else if $icon == superscript {
+	    content: "\E603";
+	}
+	@else if $icon == subscript {
+	    content: "\E604";
+	}
+	@else if $icon == text_size {
+	    content: "\E605";
+	}
+	@else if $icon == text_color {
+	    content: "\E606";
+	}
+	@else if $icon == text_background {
+	    content: "\E607";
+	}
+	@else if $icon == modal_window {
+	    content: "\E608";
+	}
+	@else if $icon == newspaper {
+	    content: "\1F4F0";
+	}
+	@else if $icon == tractor {
+	    content: "\1F69C";
 	}
 }
