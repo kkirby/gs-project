@@ -709,4 +709,16 @@ macro extract(obj,keys)
 	AST
 		let $storage = $obj
 		$newObj
+
+/**
+		gsEval macro
+		Usage:
+			gsEval(for i from 0 til 4; i) // [0,1,2,3]
+**/
+macro gsEval(str)
+	str := @macroExpandAll str
+	let asdf = @internalCall \root, @const(\random), str, @const(null), @const(false)
+	let res = rootRequire('../../gorillascript/lib/jstranslator.js')(asdf,@parser.macros,@parser@.getPosition,{'return':true})
+	let code = JSON.stringify(new Function('',res.node.body.toString()).apply())
+	AST eval($code)
 //macro operator binary inall, inAll, in=	
