@@ -3,7 +3,7 @@ import .#.Tag
 
 class! extends Component
 	def initialize()
-		$(document):on deviceready()@
+		document.addEventListener \deviceready, #@
 			async err <- asyncWrap nfc.addTagDiscoveredListener @@.tagScanned
 			throw? err
 		GLOBAL.Rfid := @
