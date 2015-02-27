@@ -12,7 +12,7 @@
     $spec-background: ();
     $background-type: type-of($background);
 
-    @if $background-type == string or list {
+    @if $background-type == string or $background-type == list {
       $background-str: if($background-type == list, nth($background, 1), $background);
 
       $url-str:       str-slice($background-str, 0, 3);
@@ -20,7 +20,7 @@
 
       @if $url-str == "url" {
         $webkit-background: $background;
-          $spec-background: $background;
+        $spec-background:   $background;
       }
 
       @else if $gradient-type == "linear" {
@@ -37,23 +37,19 @@
 
       @else {
         $webkit-background: $background;
-          $spec-background: $background;
+        $spec-background:   $background;
       }
     }
 
     @else {
       $webkit-background: $background;
-        $spec-background: $background;
+      $spec-background:   $background;
     }
 
     $webkit-backgrounds: append($webkit-backgrounds, $webkit-background, comma);
     $spec-backgrounds:   append($spec-backgrounds,   $spec-background,   comma);
   }
-  @if $webkit-backgrounds != $spec-backgrounds {
-	  background: $webkit-backgrounds;
-	  background: $spec-backgrounds;
-  }
-  @else {
-	  background: $spec-backgrounds;
-  }
+
+  background: $webkit-backgrounds;
+  background: $spec-backgrounds;
 }
