@@ -41,7 +41,7 @@ class!
 	def PreloadLocalAssets(progress,cb)
 		@Preload GsLoadableFiles, progress, cb
 	
-	def Preload(files,progress,cb)
+	def Preload(files,progress = # ->,cb = # ->)
 		let mutable loaded = 0
 		progress files.length
 		asyncfor(10) err <- next, file in files
