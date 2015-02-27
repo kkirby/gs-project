@@ -178,6 +178,42 @@ macro $
 				$first
 				$second
 	
+	syntax selector as InvocationArguments,':','onOneOf',body as Body
+		let element = $$_reduce arguments
+		let removerVar = @tmp \removeEvents, true
+		let listenersVar = @tmp \listeners, true
+		let adders = []
+		let removers = []
+		let listeners = for arg in body.args[1 to -1]
+			let [name,listener] = arg.args
+			adders.push AST
+				$element.addEventListener $name, $listenersVar[$name].actualListener
+			removers.push AST
+				$element.removeEventListener $name, $listenersVar[$name].actualListener
+			AST
+				* $name
+				* {
+					listener: $listener
+					actualListener: #(...args)
+						$removerVar()
+						$listenersVar[$name].listener(...args)
+				}
+		let listenersObj = __call(
+			null
+			__symbol(null,\internal,\object)
+			__symbol(null,\internal,\nothing)
+			...listeners
+		)
+		AST
+			do
+				let $listenersVar = $listenersObj
+				let $removerVar = #!
+					$removers
+				$adders
+				{
+					remove: $removerVar
+				}
+	
 	syntax selector as InvocationArguments,':','watch','(',other as Expression,')',event as (Identifier|Expression),func as (FunctionDeclaration|Expression)
 		let funcVar = @tmp \func, true
 		let nestedSelector = other.value

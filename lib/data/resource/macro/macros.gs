@@ -565,6 +565,41 @@ macro _
 				$elm.removeEventListener $event, $callback
 				$userCallback.apply this, arguments
 			$elm.addEventListener $event, $callback
+	
+	syntax selector as InvocationArguments,':','onOneOf',body as Body
+		let element = selector[0]
+		let removerVar = @tmp \removeEvents, true
+		let listenersVar = @tmp \listeners, true
+		let adders = []
+		let removers = []
+		let listeners = for arg in body.args[1 to -1]
+			let [name,listener] = arg.args
+			adders.push AST
+				context.addEventListener $name, $listenersVar[$name].actualListener
+			removers.push AST
+				context.removeEventListener $name, $listenersVar[$name].actualListener
+			AST
+				* $name
+				* {
+					listener: $listener
+					actualListener: #(...args)
+						$removerVar()
+						$listenersVar[$name].listener(...args)
+				}
+		let listenersObj = __call(
+			null
+			__symbol(null,\internal,\object)
+			__symbol(null,\internal,\nothing)
+			...listeners
+		)
+		AST
+			do context = $element
+				let $listenersVar = $listenersObj
+				let $removerVar = #! -> $removers
+				$adders
+				{
+					remove: $removerVar
+				}
 
 macro bindTogether
 	syntax 'left',':',left as Expression,',','right',':',right as Expression,body as Body
