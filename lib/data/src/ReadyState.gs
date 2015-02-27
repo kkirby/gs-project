@@ -27,7 +27,7 @@ class!
 			let waiters = @waiters.concat()
 			@waiters := []
 			// execute the waiters outside of this context
-			sleep 0
+			//sleep 0 // I can't remember why I had this :(
 			for waiter in waiters; waiter()
 	
 	def whenReady(cb)
