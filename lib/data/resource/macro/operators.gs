@@ -120,13 +120,13 @@ macro operator assign <difference>
 		for filter $tmp in $left
 			$tmp not in $right
 
-macro operator assign <bind>,<bindattr>
+macro operator assign <bind>,<bindattr>,<bindattr-oneway>,<bind-oneway>
 	let mutable leftName = null
 	let mutable leftObj = null
 	left.walk #(item)
 		if item.isCall and leftObj == null
 			leftObj := item
-		else if item.isValue
+		else
 			leftName := item
 	if leftObj == null and left.isCall
 		leftObj := left.args[0]
@@ -135,18 +135,18 @@ macro operator assign <bind>,<bindattr>
 	right.walk #(item)
 		if item.isCall and rightObj == null
 			rightObj := item
-		else if item.isValue
+		else
 			rightName := item
 	if rightObj == null and right.isCall
 		rightObj := right.args[0]
-	let leftEventName = 'attributeChange.'&leftName.value
-	let rightEventName = 'attributeChange.'&rightName.value
+	let leftEventName = ASTE 'attributeChange.'&$leftName
+	let rightEventName = ASTE 'attributeChange.'&$rightName
 	let locked = @tmp \locked, true
 	let leftFunc = @tmp \leftFunc, true
 	let rightFunc = @tmp \rightFunc, true
 	let binder = @tmp \binder, true
 	let addListener =
-		if op == '<bindattr>' and leftObj?
+		if op.indexOf(\attr) != -1 and leftObj?
 			let event = 'attributeChange.'&leftObj.args[1].value
 			AST
 				let $binder = #(e)@
@@ -163,34 +163,48 @@ macro operator assign <bind>,<bindattr>
 	let leftHandler =
 		if macroData.leftHandler
 			let leftHandlerFunc = macroData.leftHandler
-			AST
-				$left := $leftHandlerFunc($right)
-		else
-			ASTE $left := $right
+			ASTE $left := $leftHandlerFunc($right)
+		else; ASTE $left := $right
 	let rightHandler =
 		if macroData.rightHandler
 			let rightHandlerFunc = macroData.rightHandler
-			AST
-				$right := $rightHandlerFunc($left)
-		else
-			ASTE $right := $left
-	AST
-		let mutable $locked = false
-		let $leftFunc = #()@
+			ASTE $right := $rightHandlerFunc($left)
+		else; ASTE $right := $left
+	
+	let oneWay = op.indexOf(\Oneway) != -1
+	
+	let lockBefore = unless oneWay
+		AST
 			if $locked; return
 			$locked := true
+	
+	let lockAfter = unless oneWay
+		ASTE $locked := false
+		
+	
+	let leftFuncAst = AST
+		let $leftFunc = #()!@
+			$lockBefore
 			$rightHandler
-			$locked := false
-		let $rightFunc = #()@
-			if $locked; return
-			$locked := true
+			$lockAfter
+	
+	let rightFuncAst = AST
+		let $rightFunc = #()!@
+			$lockBefore
 			$leftHandler
-			$locked := false
-		$addListener
-		$rightObj.addEventListener $rightEventName, $rightFunc
-		#
-			$leftObj.removeEventListener $leftEventName, $leftFunc
-			$rightObj.removeEventListener $rightEventName, $rightFunc
+			$lockAfter
+	
+	let body = []
+	unless oneWay; body.push ASTE let mutable $locked = false
+	body.push leftFuncAst
+	unless oneWay; body.push rightFuncAst
+	body.push addListener
+	unless oneWay; body.push AST $rightObj.addEventListener $rightEventName, $rightFunc
+	let returnFunc = []
+	returnFunc.push AST $leftObj.removeEventListener $leftEventName, $leftFunc
+	unless oneWay; returnFunc.push AST $rightObj.removeEventListener $rightEventName, $rightFunc
+	body.push ASTE #! -> $returnFunc
+	AST $body
 
 macro operator assign mapownsor=
 	left := @macro-expand-1 left
