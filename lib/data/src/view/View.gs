@@ -88,9 +88,10 @@ class! extends Component
 			$(@node):removeClass \ShowAnimate
 		$(@node):addClass \ShowAnimate
 	
-	def hideAnimate()
+	def hideAnimate(remove = false)
 		$(@node):one afterAnimate()@
-			$(@node):css \display, \none
 			$(@node):removeClass \HideAnimate
+			if remove; @hide()
+			else; $(@node):css \display, \none
 		$(@node):addClass \HideAnimate
 			
