@@ -22,6 +22,14 @@
 	}
 }
 
+/**
+ Usage:
+	@tween(0.5s,(
+		scale: 0 1 elastic
+	)){
+		-webkit-transform: scale-all(contenr-var(scale));
+	}
+ **/
 @mixin tween($duration,$animations...){
 	$animations: keywords($animations);
 	$name: keyframes#{uuid()};
