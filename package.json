@@ -11,7 +11,6 @@
     "deasync": "*",
     "egs": "^0.3.1",
     "glob": "*",
-    "gorillascript": "*",
     "grunt": "~0.4.5",
     "htmltidy": "*",
     "image-size": "*",
