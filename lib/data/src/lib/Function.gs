@@ -77,5 +77,12 @@ Function.prototype.worker := #()
 				else; reject e.data[0]
 			worker.postMessage(args)
 
+Function.prototype.memoize := #()
+	let oldFunc = @
+	let mutable result = null
+	#()
+		result or= oldFunc.apply @, arguments
+		result
+
 Function
 				
