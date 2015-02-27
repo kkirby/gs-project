@@ -43,6 +43,16 @@ macro ucfirst(str)
 	@maybe-cache str, #(setStr, str)
 		ASTE $setStr.substr(0,1).toUpperCase()&$str.substr(1)
 
+/**
+ TODO:
+	On the resulting object container for the handlers,
+	do compile-time object mapping. So instead of
+		prototype.abc.d = function()
+	do
+		prototype.abc = {d: function()}
+	If using custom get/set functions, don't make a __attribute property.
+	Allow for let set = someHandler
+**/
 macro dyn
 	syntax name as Identifier, func as FunctionDeclaration
 		name := name.name
