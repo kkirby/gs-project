@@ -721,4 +721,36 @@ macro gsEval(str)
 	let res = rootRequire('../../gorillascript/lib/jstranslator.js')(asdf,@parser.macros,@parser@.getPosition,{'return':true})
 	let code = JSON.stringify(new Function('',res.node.body.toString()).apply())
 	AST eval($code)
+
+/**
+	Enum macro
+	Usage:
+		enum
+			ABC
+			DEF
+			GHI := 5
+			$[myvar]
+		
+		enum MyEnum
+			ABC
+ **/
+macro enum
+	syntax name as Identifier?, body as Body
+		let data = ASTE {}
+		let addData(mutable name,value)@ 
+			if name.isCall and name.func.name == \access and name.args[0].name == '$'
+				name := name.args[1]
+			else
+				name := name.name
+			data.args.push ASTE [$name,$value]
+		let process(input) 
+			if input.nodeType == \macroAccess and input.data.op == ':='
+				addData input.data.left, input.data.right
+			else if input.isIdent
+				let previous = data.args[*-1].args?[1] ? ASTE -1
+				addData input, ASTE $previous + 1
+		((body.args) ? [body]).forEach process
+		if name?; ASTE let $name = $data
+		else; data
+
 //macro operator binary inall, inAll, in=	
