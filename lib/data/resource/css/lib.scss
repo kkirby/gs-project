@@ -284,7 +284,10 @@
 	$uppercase: false;
 	$direction: null;
 	@each $attr in $attrs {
-		@if type-of($attr) == number {
+		@if $attr == 100 or $attr == 200 or $attr == 300 or $attr == 500 or $attr == 500 or $attr == 700 or $attr == 800 or $attr == 900 {
+			$bold: $attr;
+		}
+		@else if type-of($attr) == number {
 			$size: $attr;
 		}
 		@else if $attr == bold {
