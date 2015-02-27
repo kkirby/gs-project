@@ -8,6 +8,7 @@ class! extends StateMachine
 		* \ticking
 	
 	def initialState = \idle
+	def currentStateName = \idle
 	
 	def frameListeners = null
 	
@@ -32,6 +33,7 @@ class! extends StateMachine
 	
 	def removeFrameListener(listener)
 		@frameListeners arrayRemoveItem listener
+		listener.end?()
 		listener.data.state := \stopped
 		@handle \listenersUpdated
 	
@@ -57,6 +59,7 @@ class! extends StateMachine
 			for frameListener in @frameListeners.concat([])
 				if frameListener.startTime <= tickTime
 					if frameListener.data.state == \stopped; continue
+					if frameListener.data.state == \idle; frameListener.start?()
 					let timeDelta = tickTime - frameListener.startTime
 					let percent = timeDelta / frameListener.duration min 1
 					let easingPercent = toggle(percent == 1,percent,frameListener.easing(percent))
@@ -66,25 +69,32 @@ class! extends StateMachine
 						..timePercent := percent
 						..state := \running
 					frameListener.func frameListener.data
-					if percent == 1; @removeFrameListener frameListener
+					if percent == 1
+						@removeFrameListener frameListener
 			@handle \requestTick
 
 	def _processArguments(args)
+		let result = {
+			easing: \linear
+			delay: 0
+			time: null
+			func: null
+			start: null
+			end: null
+			name: null
+		}
 		if args.length == 1 and typeof args[0] == \object
-			args[0]
+			result <<< args[0]
 		else
-			let result = {
-				easing: \linear
-				delay: 0
-				time: null
-				func: null
-				name: null
-			}
 			for arg in args
 				let type = typeof arg
 				if type == \function
 					if result.func == null
 						result.func := arg
+					else if result.start == null
+						result.start := arg
+					else if result.end == null
+						result.end := arg
 					else
 						result.easing := arg
 				else if type == \number
@@ -106,6 +116,8 @@ class! extends StateMachine
 		let frameListener = {
 			easing: toggle(typeof options.easing == \string,Raphael.easing_formulas[options.easing],options.easing)
 			options.func
+			options.start
+			options.end
 			startTime: new Date().getTime() + options.delay
 			duration: options.time
 			name: options.name
