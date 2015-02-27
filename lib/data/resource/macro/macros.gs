@@ -451,7 +451,10 @@ macro random!
 macro round!(num,places)
 	places or= ASTE 0
 	places.value := 1 * (10 ^ places.value)
-	ASTE Math.round($num * $places) / $places
+	if places.value == 1
+		ASTE Math.round($num)
+	else
+		ASTE Math.round($num * $places) / $places
 
 macro angleToRad(angle)
 	AST
