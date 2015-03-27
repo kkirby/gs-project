@@ -3,6 +3,7 @@
         "email": "kylekirby@optimalconnection.net",
         "name": "Kyle Kirbatski"
     },
+	"description": "A wrapper around gorillascript.",
     "dependencies": {
         "codepage": "*",
         "colors": "*",
