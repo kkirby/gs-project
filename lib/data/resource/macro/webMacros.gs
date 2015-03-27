@@ -154,7 +154,11 @@ macro $
 			$assignment
 			for $name in $tmp
 				$body
-
+	
+	// TODO: Implement
+	//syntax selector as InvocationArguments,':','onAnyFirst',runNow as '!'?,event as (Identifier|Expression),spacer as (':')?,func as (FunctionDeclaration|Expression)
+		
+	
 	syntax selector as InvocationArguments,':','on',runNow as '!'?,event as (Identifier|Expression),spacer as (':')?,func as (FunctionDeclaration|Expression)
 		let element = $$_reduce arguments
 		@maybe-cache func, #(setFunc, func)
@@ -543,13 +547,29 @@ macro dynInput
 		// - Text
 		let onchange = if type == 'text'
 			AST
-				$('input[name="'&$inputName&'"]',@node):on keyup(e)@
-					let eventInfo = {
-						attribute: $attrName
-						value: e.target.value
-					}
-					@emitEvent 'attributeChange', eventInfo
-					@emitEvent 'attributeChange.'&$attrName, eventInfo
+				do
+					let mutable issued = false
+					let reset()
+						if issued == false
+							issued := true
+							setTimeout(
+								# -> issued := false
+								0
+							)
+							true
+						else; false
+					let node = $('input[name="'&$inputName&'"]',@node)
+					let onchange(e)@
+						if not reset(); return
+						let eventInfo = {
+							attribute: $attrName
+							value: node.value
+						}
+						@emitEvent 'attributeChange', eventInfo
+						@emitEvent 'attributeChange.'&$attrName, eventInfo
+					$(node):on keyup onchange
+					$(node):on input onchange
+						
 		// - Select
 		else if type == 'select'
 			AST
