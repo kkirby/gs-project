@@ -28,6 +28,9 @@ class!
 	def getDirectoryEntry(entry,fs)
 		@entryCache[entry.filesystem.name&entry.name] ownsor= DirectoryEntry(fs ? @getFileSystem(entry.filesystem),entry,@)
 	
+	def remove(entry)
+		delete @entryCache[entry.filesystem.name&entry.name]
+	
 	@NativeTypes :=
 		* FS
 		* Entry

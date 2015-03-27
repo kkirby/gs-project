@@ -38,10 +38,10 @@ class!
 	def remove()
 		new Promise #(resolve,reject)@
 			@_entry.remove(
-				#(deleted)
+				#(deleted)@
 					if deleted; Entry.Factory.remove @_entry
 					resolve deleted
-				rejected
+				reject
 			)
 	
 	def getParent()
