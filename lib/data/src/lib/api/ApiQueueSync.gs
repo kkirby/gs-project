@@ -2,13 +2,22 @@ import sys.stateMachine.#
 import sys.lib.RemoteRequest
 import .#Model
 
+// TODO: Update to keep an internal counter of how many times a queue item is tried, and after x amount of tries, forget about it and push it into some sort of failed queue.
 class! extends StateMachine
+	def acceptableFailStatusCodes = null
+	def queueProvider = null
+	def urlProvider = null
 	def timeout = jsTime(1_min)
-	def initialize(@config = {})
+	
+	def initialize(config = {})
 		superArg()
 		@model := ApiQueueSyncModel()
-		$(@config.queueProvider):on! mutated()@**
-			@model.queueItemCount := yield @config.queueProvider.count()
+		@queueProvider := config.queueProvider
+		@urlProvider := config.urlProvider
+		@timeout ?=in config
+		@acceptableFailStatusCodes := config.acceptableFailStatusCodes ? []
+		$(@queueProvider):on! mutated()@**
+			@model.queueItemCount := yield @queueProvider.count()
 	
 	def getStates() -> [\idle,\syncing]
 	
@@ -36,11 +45,14 @@ class! extends StateMachine
 	defState syncing
 		def enter()**
 			try
-				let table = @config.queueProvider
-				let apiUrl = yield @config.urlProvider.get()
+				let table = @queueProvider
+				let apiUrl = yield @urlProvider.get()
 				for record in yield table.allRecords()
 					let {method,uri,data} = record
-					let response = JSON.parse yield RemoteRequest().call(method, apiUrl & '/' & uri, {}, data)
+					try
+						let response = JSON.parse yield RemoteRequest().call(method, apiUrl & uri, {}, data)
+					catch e
+						unless e.statusCode in @acceptableFailStatusCodes; throw e
 					yield table.delete record
 			catch e; @emitEvent \failed, e
 			else; @emitEvent \success
