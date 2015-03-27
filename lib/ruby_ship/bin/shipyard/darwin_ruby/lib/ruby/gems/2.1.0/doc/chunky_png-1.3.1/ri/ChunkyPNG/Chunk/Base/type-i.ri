@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"	type:ETI" ChunkyPNG::Chunk::Base#type;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"LThe four-character type indicator for the chunk. This field is used to ;TI"Mfind the correct class for a chunk when it is loaded from a PNG stream. ;TI"@return [String];T:
-@fileI"lib/chunky_png/chunk.rb;T:0@omit_headings_from_table_of_contents_below0F@I"ChunkyPNG::Chunk::Base;FcRDoc::NormalClass0

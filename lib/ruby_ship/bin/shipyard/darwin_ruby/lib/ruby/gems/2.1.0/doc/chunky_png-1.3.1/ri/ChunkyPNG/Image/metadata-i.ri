@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"metadata:ETI"ChunkyPNG::Image#metadata;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"C@return [Hash] The hash of metadata fields for this PNG image.;T:
-@fileI"lib/chunky_png/image.rb;T:0@omit_headings_from_table_of_contents_below0F@I"ChunkyPNG::Image;FcRDoc::NormalClass0

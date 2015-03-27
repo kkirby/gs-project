@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"data_chunks:ETI"&ChunkyPNG::Datastream#data_chunks;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"=The chunks that together compose the images pixel data. ;TI"1@return [Array<ChunkyPNG::Chunk::ImageData>];T:
-@fileI"!lib/chunky_png/datastream.rb;T:0@omit_headings_from_table_of_contents_below0F@I"ChunkyPNG::Datastream;FcRDoc::NormalClass0

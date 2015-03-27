@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"points:ETI"ChunkyPNG::Vector#points;FI"R;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"Z@return [Array<ChunkyPNG::Point>] The array that holds all the points in this vector.;T:
-@fileI"lib/chunky_png/vector.rb;T:0@omit_headings_from_table_of_contents_below0F@I"ChunkyPNG::Vector;FcRDoc::NormalClass0

@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"encoding_palette:ETI"4ChunkyPNG::Canvas::PNGEncoding#encoding_palette;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"MThe palette used for encoding the image.This is only in used for images ;TI",that get encoded using indexed colors. ;TI"!@return [ChunkyPNG::Palette];T:
-@fileI"*lib/chunky_png/canvas/png_encoding.rb;T:0@omit_headings_from_table_of_contents_below0F@I"#ChunkyPNG::Canvas::PNGEncoding;FcRDoc::NormalModule0

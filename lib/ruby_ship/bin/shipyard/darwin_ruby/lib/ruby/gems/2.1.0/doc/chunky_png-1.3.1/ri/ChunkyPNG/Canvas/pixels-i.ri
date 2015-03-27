@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"pixels:ETI"ChunkyPNG::Canvas#pixels;FI"R;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"I@return [Array<ChunkyPNG::Color>] The list of pixels in this canvas.;To:RDoc::Markup::Verbatim;	[I"=This array always should have +width * height+ elements.;T:@format0:
-@fileI"lib/chunky_png/canvas.rb;T:0@omit_headings_from_table_of_contents_below0F@I"ChunkyPNG::Canvas;FcRDoc::NormalClass0

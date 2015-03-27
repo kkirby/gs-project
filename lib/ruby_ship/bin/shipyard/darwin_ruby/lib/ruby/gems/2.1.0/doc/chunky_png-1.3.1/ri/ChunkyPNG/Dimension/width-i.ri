@@ -1,3 +1,0 @@
-U:RDoc::Attr[iI"
-width:ETI"ChunkyPNG::Dimension#width;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"=@return [Integer] The width-component of this dimension.;T:
-@fileI" lib/chunky_png/dimension.rb;T:0@omit_headings_from_table_of_contents_below0F@I"ChunkyPNG::Dimension;FcRDoc::NormalClass0

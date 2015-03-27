@@ -1,2 +1,0 @@
-U:RDoc::Attr[iI"other_chunks:ETI"'ChunkyPNG::Datastream#other_chunks;FI"RW;T:publico:RDoc::Markup::Document:@parts[o:RDoc::Markup::Paragraph;	[I"(All other chunks in this PNG file. ;TI"/@return [Array<ChunkyPNG::Chunk::Generic>];T:
-@fileI"!lib/chunky_png/datastream.rb;T:0@omit_headings_from_table_of_contents_below0F@I"ChunkyPNG::Datastream;FcRDoc::NormalClass0
