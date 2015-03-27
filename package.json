@@ -17,7 +17,9 @@
     "sprintf": "*",
     "underscore": "*",
     "underscore.string": "*",
-    "wrench": "*"
+    "wrench": "*",
+    "source-map": "~0.1.22",
+    "optimist": "~0.5.0"
   },
   "main": "compile.js",
   "name": "gs-project",
