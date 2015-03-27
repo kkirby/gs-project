@@ -84,5 +84,25 @@ Function.prototype.memoize := #()
 		result or= oldFunc.apply @, arguments
 		result
 
+Function.prototype.cachePromise := #(timeout)
+	let oldFunc = @
+	let mutable result = null
+	let mutable hasResult = false
+	let mutable invalidated = true
+	let res = #**
+		if invalidated
+			try
+				result := yield oldFunc.apply @, arguments
+				hasResult := true
+				invalidated := false
+				setTimeout(
+					# -> invalidated := true
+					timeout
+				)
+			catch e; unless hasResult; throw e
+		result
+	res.isStale := # -> invalidated
+	res
+
 Function
 				
