@@ -1,27 +1,31 @@
 {
-  "name": "gs-project",
-  "version": "1.3.3",
-  "author": {
-    "name": "Kyle Kirby",
-    "email": "kkirby@gmrmarketing.com"
-  },
-  "dependencies": {
-    "codepage": "*",
-    "colors": "*",
-    "deasync": "*",
-    "egs": "^0.3.1",
-    "glob": "*",
-    "grunt": "~0.4.5",
-    "htmltidy": "*",
-    "image-size": "*",
-    "jsdom": "0.11.1",
-    "nodegit": "^0.2.4",
-    "prompt": "*",
-    "sprintf": "*",
-    "underscore": "*",
-    "underscore.string": "*",
-    "wrench": "*",
-    "yargs": "*"
-  },
-  "main": "compile.js"
+    "author": {
+        "email": "kylekirby@optimalconnection.net",
+        "name": "Kyle Kirbatski"
+    },
+    "dependencies": {
+        "codepage": "*",
+        "colors": "*",
+        "deasync": "*",
+        "egs": "^0.3.1",
+        "glob": "*",
+        "grunt": "~0.4.5",
+        "htmltidy": "*",
+        "image-size": "*",
+        "jsdom": "0.11.1",
+        "sprintf": "*",
+        "underscore": "*",
+        "underscore.string": "*",
+        "wrench": "*"
+    },
+    "main": "compile.js",
+    "name": "gs-project",
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/kkirby/gs-project"
+    },
+    "version": "1.3.4",
+	"bin": {
+		"gs-compile": "./compileCli.js"
+	}
 }
