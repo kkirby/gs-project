@@ -2,9 +2,8 @@ import sys.lib.Long
 
 class!
 	@TagToNumber := #(mutable tag)
+		while not (tag.length %% 4); tag.unshift 0
 		let length as Number = tag.length
-		unless length %% 4
-			throw 'The tag id must be a byte array of 4 byte parts.'
 		let numbers = for index as Number in length to 1 by -4
 			for reduce byte as Number in tag[index - 4 to index - 1] by -1, previousByte = 0
 				(previousByte bitlshift 8) bitor (byte + 256) % 256
