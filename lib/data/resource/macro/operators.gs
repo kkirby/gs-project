@@ -94,7 +94,7 @@ macro operator binary =?
 		AST
 			if $setRight?; $left := $right
 
-macro operator binary ?=in
+macro operator assign ?=in with type: \right
 	let name = if left.args?
 		left.args[*-1].value
 	else; null
