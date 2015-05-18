@@ -26,6 +26,9 @@ class!
 		if @eventListeners ownskey eventData.event
 			for eventListener from @eventListeners[eventData.event].values()
 				eventListener eventData
+		if @eventListeners ownskey 'catchAll'
+			for eventListener from @eventListeners.catchAll.values()
+				eventListener eventData
 		let methodName = Component.GetEventMethodName eventData.event
 		if @[methodName]?; @[methodName] eventData.data
 		not eventData.defaultPrevented
@@ -38,6 +41,9 @@ class!
 			defaultPrevented: false
 			preventDefault: # -> @defaultPrevented := true
 		}
+	
+	def proxyEvent(target,name)
+		target.addEventListener name, #(e)@ -> @emitEventData e
 	
 	def addEventListener(name,listener,key)
 		(@eventListeners[name] ownsor= %{}).set key ? listener, listener

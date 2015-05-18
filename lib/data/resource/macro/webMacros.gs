@@ -27,17 +27,23 @@ macro $$_bootstrap()
 		let mutable loaded = false
 		let mutable window = null
 		let mutable err = null
-		jsdom.env html, #(_err, _window)
-			err := _err
-			window := _window
-			loaded := true
+		jsdom.env {
+			html
+			parsingMode: \html
+			done: #(_err, _window)
+				err := _err
+				window := _window
+				loaded := true
+		}
 		while not loaded
 			deasync.sleep 100
 		if err
 			@context.error err, htmlNode
 			return
-		let nodes = window.document.querySelectorAll 'body > *'
-		let res = for node in nodes; $$_processHtmlNode node, context
+		let nodes = window.document.querySelectorAll '*'
+		let res = for node in nodes
+			if node.nodeName.toLowerCase() in [\body,\html,\head]; continue
+			$$_processHtmlNode node, context
 		if res.length == 1; res[0]
 		else; context.internalCall \array, res
 
@@ -483,9 +489,12 @@ macro dynInput
 		////////////
 		// Getter
 		// - Text
-		let getter = if type == 'text'
+		let getter = if type in ['text','textarea']
+			let sel =
+				if type == \text; \input
+				else if type == \textarea; \textarea
 			AST
-				let node = $('input[name="'&$inputName&'"]',@node)
+				let node = $($sel & '[name="'&$inputName&'"]',@node)
 				node?.value
 		// - Select
 		else if type == 'select'
@@ -509,9 +518,12 @@ macro dynInput
 		////////////
 		// Setter
 		// - Text
-		let setter = if type == 'text'
+		let setter = if type in ['text','textarea']
+			let sel =
+				if type == \text; \input
+				else if type == \textarea; \textarea
 			AST
-				let node = $('input[name="'&$inputName&'"]',@node)
+				let node = $($sel & '[name="'&$inputName&'"]',@node)
 				if node?; node.value := value
 		// - Select
 		else if type == 'select'
@@ -545,7 +557,10 @@ macro dynInput
 		////////////
 		// OnChange
 		// - Text
-		let onchange = if type == 'text'
+		let onchange = if type in ['text','textarea']
+			let sel =
+				if type == \text; \input
+				else if type == \textarea; \textarea
 			AST
 				do
 					let mutable issued = false
@@ -558,7 +573,7 @@ macro dynInput
 							)
 							true
 						else; false
-					let node = $('input[name="'&$inputName&'"]',@node)
+					let node = $($sel & '[name="'&$inputName&'"]',@node)
 					let onchange(e)@
 						if not reset(); return
 						let eventInfo = {
