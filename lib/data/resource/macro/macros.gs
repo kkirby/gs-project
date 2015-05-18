@@ -67,6 +67,32 @@ macro dyn
 		else if type in [\set,\Set]
 			ASTE Object.defineProperty @prototype, $name, $func, {set: $func}
 	
+	syntax ident as Identifier, body as Body
+		ident := ident.name
+		let mutable get = null
+		let mutable set = null
+		for node in body.args ? [body]
+			if node.nodeType == \macroAccess  
+				let {macroData,macroName} = node.data
+				if macroName == \let
+					let {type,name,value} =
+						if macroData.func?
+							{
+								name: macroData.ident.name
+								value: macroData.func
+							}
+						else if macroData.declarable?
+							{
+								name: @macroExpandAll(macroData.declarable).ident.name
+								value: macroData.value
+							}
+					if name == \get; get := value
+					else if name == \set; set := value
+		let obj = ASTE {}
+		if get?; obj.args.push ASTE [\get,$get]
+		if set?; obj.args.push ASTE [\set,$set]
+		ASTE Object.defineProperty @prototype, $ident, $obj
+	
 	syntax 'bind',name as Identifier,'->',bindTo as Expression
 		name := name.name
 		AST
