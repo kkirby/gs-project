@@ -24,6 +24,7 @@ class!
 			up: null
 			click: null
 			threshold: null
+			element: null
 		}
 		for arg in args
 			if typeof arg == \function
@@ -32,6 +33,8 @@ class!
 				else if options.click == null; options.click := arg
 			else if typeof arg == \number
 				if options.threshold == null; options.threshold := arg
+			else if arg instanceof HTMLElement
+				options.element := arg
 		IntentClick.BindToElement {
 			selector: '.Clickable'
 			down: #(e)
@@ -44,7 +47,7 @@ class!
 				options.click?(e)
 				unless isEmpty(e.target.dataset.event)
 					$(e.target):trigger(e.target.dataset.event,e)
-			element: $('body')
+			element: options.element ? $('body')
 			disableMove: '.DisableMove *'
 			disableMoveThreshold: options.threshold ? false
 			exactSelection: true
