@@ -608,8 +608,8 @@ macro dynInput
 		// - MultiCheckbox
 		else if type == 'multiCheckbox'
 			AST
-				for input in ($('input[name="'&$inputName&'"]',@node)[])
-					$(input):on change(e)@
+				$(@node):on change(e)@
+					$(e.target):is 'input[name="'&$inputName&'"]'
 						let eventInfo = {
 							attribute: $attrName
 							value: for selectedInput in ($('input[name="'&$inputName&'"]:checked',@node)[]); selectedInput.value
@@ -619,8 +619,8 @@ macro dynInput
 		// - Radio
 		else if type == 'radio'
 			AST
-				for input in ($('input[name="'&$inputName&'"]',@node)[])
-					$(input):on change(e)@
+				$(@node):on change(e)@
+					$(e.target):is 'input[name="'&$inputName&'"]'
 						let eventInfo = {
 							attribute: $attrName
 							value: $getter
