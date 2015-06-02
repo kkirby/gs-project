@@ -31,9 +31,10 @@ class! extends Component
 		if setCurrentAction
 			@currentAction := action
 			@currentActionData := data
-		@[handlerName](...data)
+		let result = @[handlerName](...data)
 		if setCurrentAction
 			@currentAction := @currentActionData := null
+		result
 				
 	def transition(stateName,...data)
 		die if stateName == @currentStateName
