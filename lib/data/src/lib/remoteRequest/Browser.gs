@@ -1,7 +1,7 @@
 import sys.Component
 
 die if typeof module?.exports == \object
-
+// TODO: Implement abort to emit an event and tell the caller of failure.
 class! extends Component
 	def request = null
 	def contentLength = null
@@ -28,5 +28,6 @@ class! extends Component
 	
 	def send(data)
 		@request.send data ? ''
-		
+	
+	def abort() -> @request.abort()
 		
