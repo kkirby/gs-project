@@ -12,6 +12,11 @@ class! extends Entry
 			reject
 		)
 	
+	def getDirectoryRecursive(mutable path,options)**
+		if typeof path == \string; path := path.split r'[\\/]'g
+		if path[0] == ''; path.shift()
+		for reduce dir in path, current = @
+			yield current.getDirectory dir, options
 	
 	def removeRecursively() ->new Promise #(resolve,reject)@
 		@_entry.removeRecursively(
