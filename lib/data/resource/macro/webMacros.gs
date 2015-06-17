@@ -528,14 +528,8 @@ macro dynInput
 		// - Select
 		else if type == 'select'
 			AST
-				let nodes = $('select[name="'&$inputName&'"] option',@node)[]
-				unless nodes? then return
-				let mutable alreadySet = false
-				for node in nodes
-					node.selected := false
-					if node.value == value and not alreadySet
-						node.selected := true
-						alreadySet := true
+				let node = $('select[name="'&$inputName&'"]',@node)
+				if node?; node.value := value
 		// - Checkbox
 		else if type == 'checkbox'
 			AST
