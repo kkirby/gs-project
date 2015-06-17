@@ -13,11 +13,6 @@ class!
 	def constructor()
 		@fileSystemCache := {}
 		@entryCache := {}
-		FS.Factory := @
-		Entry.Factory := @
-		FileEntry.Factory := @
-		DirectoryEntry.Factory := @
-		DirectoryReader.Factory := @
 	
 	def getFileSystem(fs)
 		@fileSystemCache[fs.name] ownsor= FS(fs,@)
