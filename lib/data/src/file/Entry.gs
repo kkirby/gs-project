@@ -31,9 +31,9 @@ class!
 				reject
 			)
 	
-	def toInternalURL() -> @_entry.toInternalURL()
+	def toInternalURL() -> @_entry.toInternalURL?() ? @fullPath
 	
-	def toURL() -> @_entry.toURL()
+	def toURL() -> @_entry.toURL?() ? @fullPath
 	
 	def remove()
 		new Promise #(resolve,reject)@
