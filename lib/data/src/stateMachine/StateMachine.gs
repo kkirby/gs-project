@@ -42,8 +42,9 @@ class! extends Component
 			throw 'Invalid state name '&stateName
 		if @currentStateName?; @handle \exit, ...data
 		@currentStateName := stateName
-		@handle \enter, ...data
+		let res = @handle \enter, ...data
 		@emitEvent \transition
+		res
 	
 	def deferUntilTransition(state)
 		die unless @currentStateName? and @currentAction?
