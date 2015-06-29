@@ -190,6 +190,7 @@ macro $
 	
 	syntax selector as InvocationArguments,':','onOneOf',body as Body
 		let element = $$_reduce arguments
+		let elementVar = @tmp \element, true
 		let removerVar = @tmp \removeEvents, true
 		let listenersVar = @tmp \listeners, true
 		let adders = []
@@ -197,9 +198,9 @@ macro $
 		let listeners = for arg in body.args[1 to -1]
 			let [name,listener] = arg.args
 			adders.push AST
-				$element.addEventListener $name, $listenersVar[$name].actualListener
+				$elementVar.addEventListener $name, $listenersVar[$name].actualListener
 			removers.push AST
-				$element.removeEventListener $name, $listenersVar[$name].actualListener
+				$elementVar.removeEventListener $name, $listenersVar[$name].actualListener
 			AST
 				* $name
 				* {
@@ -216,9 +217,14 @@ macro $
 		)
 		AST
 			do
+				let $elementVar = $element
 				let $listenersVar = $listenersObj
-				let $removerVar = #!
-					$removers
+				let $removerVar = do
+					let mutable called = false
+					#!
+						if called == false
+							called := true
+							$removers
 				$adders
 				{
 					remove: $removerVar
