@@ -14,13 +14,13 @@ class! extends root
 		
 		def toString() -> @statusText & ' (' & @statusCode & ')'
 			
-	def call(method,uri,headers = {},mutable userData = null)
+	def call(method,uri,headers = {},mutable userData = null,@responseType = null)
 		new Promise #(resolve,reject)@
 			_(@):on readyStateChange()@
 				if @readyStateCode == 4
 					let statusCode = int!@statusCode
 					if statusCode >= 200 and statusCode < 300
-						resolve @responseText
+						resolve @response ? @responseText
 					else
 						reject RemoteRequest.Error(@statusCode,(if @statusText?.length > 0 then @statusText else null))
 			@open method, uri

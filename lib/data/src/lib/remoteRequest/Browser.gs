@@ -5,8 +5,10 @@ die if typeof module?.exports == \object
 class! extends Component
 	def request = null
 	def contentLength = null
+	def responseType = null
 	
 	dyn getResponseText() -> @request.responseText
+	dyn getResponse() -> @request.response
 	dyn getStatusCode() -> @request.status
 	dyn getStatusText() -> @request.statusText
 	dyn getResponseHeaders() -> @request.getAllResponseHeaders()
@@ -27,6 +29,8 @@ class! extends Component
 		@emitEvent \readyStateChange
 	
 	def send(data)
+		if @responseType?
+			@request.responseType := @responseType
 		@request.send data ? ''
 	
 	def abort() -> @request.abort()
