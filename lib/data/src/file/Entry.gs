@@ -47,6 +47,6 @@ class!
 	def getParent()
 		new Promise #(resolve,reject)@
 			@_entry.getParent(
-				#(entry) -> resolve @_factory.get(entry)
+				#(entry)@ -> resolve @_factory.get(entry)
 				reject
 			)
