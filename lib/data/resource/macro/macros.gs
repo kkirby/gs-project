@@ -744,7 +744,7 @@ macro extract(obj,keys)
 macro gsEval(str)
 	str := @macroExpandAll str
 	let asdf = @internalCall \root, @const(\random), str, @const(null), @const(false)
-	let res = rootRequire('../../gorillascript/lib/jstranslator.js')(asdf,@parser.macros,@parser@.getPosition,{'return':true})
+	let res = rootRequire('node_modules/gorillascript/lib/jstranslator.js')(asdf,@parser.macros,@parser@.getPosition,{'return':true})
 	let code = JSON.stringify(new Function('',res.node.body.toString()).apply())
 	AST eval($code)
 
