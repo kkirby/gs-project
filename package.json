@@ -10,18 +10,18 @@
     "deasync": "*",
     "egs": "^0.3.1",
     "glob": "*",
+    "gorillascript": "git://github.com/kkirby/gorillascript",
     "grunt": "~0.4.5",
     "htmltidy": "*",
     "image-size": "*",
-    "jsdom": "*",
+    "jsdom": "^3.1.2",
+    "optimist": "~0.5.0",
+    "regenerator": "*",
+    "source-map": "~0.1.22",
     "sprintf": "*",
     "underscore": "*",
     "underscore.string": "*",
-    "wrench": "*",
-    "source-map": "~0.1.22",
-    "optimist": "~0.5.0",
-	"gorillascript": "git://github.com/kkirby/gorillascript",
-	"regenerator": "*"
+    "wrench": "*"
   },
   "main": "compile.js",
   "name": "gs-project",
@@ -32,5 +32,6 @@
   "version": "1.4.3",
   "bin": {
     "gs-compile": "./compileCli.js"
-  }
+  },
+  "devDependencies": {}
 }
