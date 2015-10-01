@@ -179,7 +179,7 @@ class Image
 		
 		
 	def getData(rect = @rect) -> @context.getImageData rect.x, rect.y, rect.width, rect.height
-	def putData(data,rect) -> @context.putImageData data, rect.x, rect.y
+	def putData(data,rect = @rect) -> @context.putImageData data, rect.x, rect.y
 	
 	dyn getWidth() -> @canvas.width
 	dyn getHeight() -> @canvas.height
