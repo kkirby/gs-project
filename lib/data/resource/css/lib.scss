@@ -8,6 +8,18 @@
 
 // Order of the includes matters, and it is: normal, bold, italic, bold+italic.
 
+@function str-replace($needle,$replacement,$haystack){
+	$index: str-index($haystack,$needle);
+	@if $index != null {
+		$first-stop: $index - 1;
+		$second-start: $index + str-length($needle);
+		@return str-slice($haystack,0,$first-stop) + $replacement + str-slice($haystack,$second-start);
+	}
+	@else {
+		@return $haystack;
+	}
+}
+
 @function str-last-index($string,$substring){
 	$last-index: null;
 	$count: 0;
@@ -43,16 +55,34 @@
 	$url: null;
 	$type: null;
 	$extension: null;
+	$hash: null;
+	
+	@if type-of($font-url) == list {
+		$hash: nth($font-url,2);
+		$font-url: nth($font-url,1);
+	}
+	
 	@if str-index($font-url,'url') != null {
 		$url: str-slice($font-url,str-index($font-url,'(') + 1,str-index($font-url,')') - 1);
+	}
+	@else {
+		$url: $font-url;
 	}
 	@if str-index($url,'"') != null or str-index($url,"'") != null {
 		$url: str-slice($url,2,str-length($url) - 1);
 	}
-	
+	$hash-index: str-index($url,'#');
 	$extension-index: str-index($url,'.');
 	@if $extension-index != null {
-		$extension: str-slice($url,$extension-index + 1);
+		@if $hash-index != null {
+			$extension: str-slice($url,$extension-index + 1,$hash-index - 1);
+		}
+		@else {
+			$extension: str-slice($url,$extension-index + 1);
+		}
+	}
+	@if $hash-index != null {
+		$hash: str-slice($url,$hash-index + 1);
 	}
 	@if $extension != null {
 		@if $extension == eot {
@@ -64,12 +94,20 @@
 		@else if $extension == woff {
 			$type: woff;
 		}
+		@else if $extension == woff2 {
+			$type: woff2;
+		}
 		@else if $extension == ttf {
 			$type: truetype;
 		}
 		@else if $extension == svg {
-			$name: str-slice($url,str-last-index($url,'/') + 1,-5);
-			$url: $url + '#' + $name;
+			@if $hash == null {
+				$name: str-slice($url,str-last-index($url,'/') + 1,-5);
+				$url: $url + '#' + $name;
+			}
+			@else if $hash-index == null {
+				$url: $url + '#' + $hash;
+			}
 			$type: svg;
 		}
 	}
@@ -186,29 +224,29 @@
 	$left: $x;
 	$right: auto;
 	$bottom: auto;
-	@if(type-of($top) == 'number' and $top < 0){
-		$bottom: abs($top+1);
+	@if(type-of($top) == 'map'){
+		$bottom: $top.value;
 		$top: auto;
 	}
-	@if(type-of($left) == 'number' and $left < 0){
-		$right: abs($left+1);
+	@if(type-of($left) == 'map'){
+		$right: $left.value;
 		$left: auto;
 	}
-	@if(type-of($width) == 'number' and $width < 0){
+	@if(type-of($width) == 'map'){
 		@if($right == auto){
-			$right: abs($width+1);
+			$right: $width.value;
 		}
 		@else {
-			$left: abs($width+1);
+			$left: $width.value;
 		}
 		$width: auto;
 	}
-	@if(type-of($height) == 'number' and $height < 0){
+	@if(type-of($height) == 'map'){
 		@if($bottom == auto){
-			$bottom: abs($height+1);
+			$bottom: $height.value;
 		}
 		@else {
-			$top: abs($height+1);
+			$top: $height.value;
 		}
 		$height: auto;
 	}
@@ -257,7 +295,7 @@
 }
 
 @function neg($value){
-	@return (-1 * $value) - 1;
+	@return (value: $value);
 }
 
 @mixin disable-selection(){

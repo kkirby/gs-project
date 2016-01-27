@@ -27,17 +27,23 @@ macro $$_bootstrap()
 		let mutable loaded = false
 		let mutable window = null
 		let mutable err = null
-		jsdom.env html, #(_err, _window)
-			err := _err
-			window := _window
-			loaded := true
+		jsdom.env {
+			html
+			parsingMode: \html
+			done: #(_err, _window)
+				err := _err
+				window := _window
+				loaded := true
+		}
 		while not loaded
 			deasync.sleep 100
 		if err
 			@context.error err, htmlNode
 			return
-		let nodes = window.document.querySelectorAll 'body > *'
-		let res = for node in nodes; $$_processHtmlNode node, context
+		let nodes = window.document.querySelectorAll '*'
+		let res = for node in nodes
+			if node.nodeName.toLowerCase() in [\body,\html,\head]; continue
+			$$_processHtmlNode node, context
 		if res.length == 1; res[0]
 		else; context.internalCall \array, res
 
@@ -184,6 +190,7 @@ macro $
 	
 	syntax selector as InvocationArguments,':','onOneOf',body as Body
 		let element = $$_reduce arguments
+		let elementVar = @tmp \element, true
 		let removerVar = @tmp \removeEvents, true
 		let listenersVar = @tmp \listeners, true
 		let adders = []
@@ -191,9 +198,9 @@ macro $
 		let listeners = for arg in body.args[1 to -1]
 			let [name,listener] = arg.args
 			adders.push AST
-				$element.addEventListener $name, $listenersVar[$name].actualListener
+				$elementVar.addEventListener $name, $listenersVar[$name].actualListener
 			removers.push AST
-				$element.removeEventListener $name, $listenersVar[$name].actualListener
+				$elementVar.removeEventListener $name, $listenersVar[$name].actualListener
 			AST
 				* $name
 				* {
@@ -210,9 +217,14 @@ macro $
 		)
 		AST
 			do
+				let $elementVar = $element
 				let $listenersVar = $listenersObj
-				let $removerVar = #!
-					$removers
+				let $removerVar = do
+					let mutable called = false
+					#!
+						if called == false
+							called := true
+							$removers
 				$adders
 				{
 					remove: $removerVar
@@ -483,9 +495,12 @@ macro dynInput
 		////////////
 		// Getter
 		// - Text
-		let getter = if type == 'text'
+		let getter = if type in ['text','textarea']
+			let sel =
+				if type == \text; \input
+				else if type == \textarea; \textarea
 			AST
-				let node = $('input[name="'&$inputName&'"]',@node)
+				let node = $($sel & '[name="'&$inputName&'"]',@node)
 				node?.value
 		// - Select
 		else if type == 'select'
@@ -509,21 +524,18 @@ macro dynInput
 		////////////
 		// Setter
 		// - Text
-		let setter = if type == 'text'
+		let setter = if type in ['text','textarea']
+			let sel =
+				if type == \text; \input
+				else if type == \textarea; \textarea
 			AST
-				let node = $('input[name="'&$inputName&'"]',@node)
+				let node = $($sel & '[name="'&$inputName&'"]',@node)
 				if node?; node.value := value
 		// - Select
 		else if type == 'select'
 			AST
-				let nodes = $('select[name="'&$inputName&'"] option',@node)[]
-				unless nodes? then return
-				let mutable alreadySet = false
-				for node in nodes
-					node.selected := false
-					if node.value == value and not alreadySet
-						node.selected := true
-						alreadySet := true
+				let node = $('select[name="'&$inputName&'"]',@node)
+				if node?; node.value := value
 		// - Checkbox
 		else if type == 'checkbox'
 			AST
@@ -545,7 +557,10 @@ macro dynInput
 		////////////
 		// OnChange
 		// - Text
-		let onchange = if type == 'text'
+		let onchange = if type in ['text','textarea']
+			let sel =
+				if type == \text; \input
+				else if type == \textarea; \textarea
 			AST
 				do
 					let mutable issued = false
@@ -558,7 +573,7 @@ macro dynInput
 							)
 							true
 						else; false
-					let node = $('input[name="'&$inputName&'"]',@node)
+					let node = $($sel & '[name="'&$inputName&'"]',@node)
 					let onchange(e)@
 						if not reset(); return
 						let eventInfo = {
@@ -593,8 +608,8 @@ macro dynInput
 		// - MultiCheckbox
 		else if type == 'multiCheckbox'
 			AST
-				for input in ($('input[name="'&$inputName&'"]',@node)[])
-					$(input):on change(e)@
+				$(@node):on change(e)@
+					$(e.target):is 'input[name="'&$inputName&'"]'
 						let eventInfo = {
 							attribute: $attrName
 							value: for selectedInput in ($('input[name="'&$inputName&'"]:checked',@node)[]); selectedInput.value
@@ -604,8 +619,8 @@ macro dynInput
 		// - Radio
 		else if type == 'radio'
 			AST
-				for input in ($('input[name="'&$inputName&'"]',@node)[])
-					$(input):on change(e)@
+				$(@node):on change(e)@
+					$(e.target):is 'input[name="'&$inputName&'"]'
 						let eventInfo = {
 							attribute: $attrName
 							value: $getter

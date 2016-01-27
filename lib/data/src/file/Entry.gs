@@ -6,9 +6,9 @@ class!
 	dyn getFullPath() -> @_entry.fullPath
 	dyn getNativeURL() -> @_entry.nativeURL
 	def filesystem = null
-	@Factory := null
+	def _factory = null
 	
-	def constructor(@filesystem,@_entry) ->
+	def constructor(@filesystem,@_entry,@_factory) ->
 	
 	def getMetadata()
 		new Promise #(resolve,reject)@ -> @_entry.getMetadata resolve, reject
@@ -18,7 +18,7 @@ class!
 			@_entry.moveTo(
 				parent._entry ? parent
 				newName
-				#(result) -> resolve Entry.Factory.get(result)
+				#(result) -> resolve @_factory.get(result)
 				reject
 			)
 	
@@ -27,19 +27,19 @@ class!
 			@_entry.copyTo(
 				parent._entry ? parent
 				newName
-				#(result) -> resolve Entry.Factory.get(result)
+				#(result) -> resolve @_factory.get(result)
 				reject
 			)
 	
-	def toInternalURL() -> @_entry.toInternalURL()
+	def toInternalURL() -> @_entry.toInternalURL?() ? @fullPath
 	
-	def toURL() -> @_entry.toURL()
+	def toURL() -> @_entry.toURL?() ? @fullPath
 	
 	def remove()
 		new Promise #(resolve,reject)@
 			@_entry.remove(
 				#(deleted)@
-					if deleted; Entry.Factory.remove @_entry
+					if deleted; @_factory.remove @_entry
 					resolve deleted
 				reject
 			)
@@ -47,6 +47,6 @@ class!
 	def getParent()
 		new Promise #(resolve,reject)@
 			@_entry.getParent(
-				#(entry) -> resolve Entry.Factory.get(entry)
+				#(entry)@ -> resolve @_factory.get(entry)
 				reject
 			)

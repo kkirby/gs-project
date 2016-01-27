@@ -68,10 +68,10 @@ macro defState
 				do key = state.args[0].value, value = state.args[1]
 					if value.isCall
 						for _value in value.args
-							let __value = _value.name
+							let __value = _value.name ? _value.value
 							pushes.push ASTE ConcurrentStateNestingPush([$key,$__value])
 					else
-						let _value = value.name
+						let _value = value.name ? value.value
 						pushes.push ASTE ConcurrentStateNestingPush([$key,$_value])
 					pops.push ASTE ConcurrentStateNestingPop()
 		AST

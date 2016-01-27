@@ -109,9 +109,13 @@ macro operator binary ?=in!
 	AST
 		if $right ownskey $configName; $left := $right[$configName]
 
+macro helper __toString = #(str)
+	if typeof! str == \Object; JSON.stringify str
+	else; String(str)
+
 macro operator unary str!
 	AST
-		String($node)
+		__toString($node)
 
 macro operator assign <difference>
 	let tmp = @tmp()

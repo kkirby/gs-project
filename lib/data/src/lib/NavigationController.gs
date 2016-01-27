@@ -92,9 +92,11 @@ class! extends StateMachineWithView
 	
 	def updateAux()
 		let controller = @controllerList[* - 1]
-		$('.AuxRight',@headerNode):remove()
+		let auxRight = $('.AuxRight',@headerNode)
+		if auxRight.children.length > 0
+			$(auxRight.children[0]):remove()
 		if controller.auxRight?
-			$(@headerNode):append controller.auxRight
+			$(auxRight):append controller.auxRight
 	
 	def updateTitle()
 		$(@titleNode):text @controllerList[* - 1].view.node.dataset.navigationTitle

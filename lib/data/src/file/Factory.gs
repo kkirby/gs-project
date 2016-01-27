@@ -4,6 +4,7 @@ import .FileEntry
 import .DirectoryEntry
 import .DirectoryReader
 import .FileWriter
+import .File
 
 class!
 	
@@ -13,11 +14,6 @@ class!
 	def constructor()
 		@fileSystemCache := {}
 		@entryCache := {}
-		FS.Factory := @
-		Entry.Factory := @
-		FileEntry.Factory := @
-		DirectoryEntry.Factory := @
-		DirectoryReader.Factory := @
 	
 	def getFileSystem(fs)
 		@fileSystemCache[fs.name] ownsor= FS(fs,@)
@@ -37,6 +33,7 @@ class!
 		* DirectoryEntry
 		* DirectoryReader
 		* FileWriter
+		* File
 	
 	def isNative(entry)
 		for nativeType in Factory.NativeTypes
@@ -55,6 +52,8 @@ class!
 				\DirectoryReader
 			else if entry instanceof GLOBAL.FileWriter
 				\FileWriter
+			else if entry instanceof GLOBAL.File
+				\File
 		else
 			typeof! entry
 	
@@ -72,5 +71,7 @@ class!
 			DirectoryReader entry
 		else if type == \FileWriter
 			FileWriter entry
+		else if type == \File
+			File entry
 
 class!()
