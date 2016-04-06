@@ -46,10 +46,15 @@ class! extends Entry
 			reject	
 		)
 	
-	def getFile(path,options) -> new Promise #(resolve,reject)@
-		@_entry.getFile(
-			path
-			options
-			#(entry)@ -> resolve @_factory.get(entry)
-			reject
-		)
+	def getFile(path,options)**
+		if options.exclusive == true and options.create == true and options.deleteOnExists == true
+			let entry = @exists path
+			if entry != false
+				yield entry.remove()
+		yield new Promise #(resolve,reject)@
+			@_entry.getFile(
+				path
+				options
+				#(entry)@ -> resolve @_factory.get(entry)
+				reject
+			)
