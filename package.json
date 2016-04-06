@@ -8,7 +8,6 @@
     "codepage": "*",
     "colors": "*",
     "deasync": "*",
-    "egs": "^0.3.1",
     "glob": "*",
     "gorillascript-community": "*",
     "grunt": "~0.4.5",
