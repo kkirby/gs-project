@@ -1,13 +1,15 @@
 import sys.lib.Long
 
 class!
-	@TagToNumber := #(mutable tag)
+	@TagToNumber := #(mutable tag,padToTen = true)
 		while not (tag.length %% 4); tag.unshift 0
 		let length as Number = tag.length
 		let numbers = for index as Number in length to 1 by -4
 			for reduce byte as Number in tag[index - 4 to index - 1] by -1, previousByte = 0
 				(previousByte bitlshift 8) bitor (byte + 256) % 256
-			('0000000000'&previousByte biturshift 0).slice -10
+			let mutable value = previousByte biturshift 0
+			if padToTen; value := ('0000000000'&value).slice -10
+			value
 		numbers.join ''
 	
 	@TagToUnsignedInt := #(bytes,little = false)

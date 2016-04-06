@@ -19,13 +19,13 @@ class!
 		@fileSystemCache[fs.name] ownsor= FS(fs,@)
 	
 	def getFileEntry(entry,fs)
-		@entryCache[entry.filesystem.name&entry.name] ownsor= FileEntry(fs ? @getFileSystem(entry.filesystem),entry,@)
+		@entryCache[entry.filesystem.name&entry.fullPath] ownsor= FileEntry(fs ? @getFileSystem(entry.filesystem),entry,@)
 	
 	def getDirectoryEntry(entry,fs)
-		@entryCache[entry.filesystem.name&entry.name] ownsor= DirectoryEntry(fs ? @getFileSystem(entry.filesystem),entry,@)
+		@entryCache[entry.filesystem.name&entry.fullPath] ownsor= DirectoryEntry(fs ? @getFileSystem(entry.filesystem),entry,@)
 	
 	def remove(entry)
-		delete @entryCache[entry.filesystem.name&entry.name]
+		delete @entryCache[entry.filesystem.name&entry.fullPath]
 	
 	@NativeTypes :=
 		* FS
