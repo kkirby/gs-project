@@ -9,7 +9,6 @@
     "colors": "*",
     "deasync": "*",
     "glob": "*",
-    "gorillascript-community": "*",
     "grunt": "~0.4.5",
     "htmltidy": "*",
     "image-size": "*",
@@ -22,13 +21,16 @@
     "underscore.string": "*",
     "wrench": "*"
   },
+  "peerDependencies": {
+      "gorillascript-community": "*",
+  },
   "main": "compile.js",
   "name": "gs-project",
   "repository": {
     "type": "git",
     "url": "http://github.com/kkirby/gs-project"
   },
-  "version": "1.4.10",
+  "version": "1.5",
   "bin": {
     "gs-compile": "./compileCli.js"
   },
