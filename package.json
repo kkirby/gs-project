@@ -9,7 +9,6 @@
     "colors": "*",
     "deasync": "*",
     "glob": "*",
-    "gorillascript-community": "*",
     "grunt": "~0.4.5",
     "htmltidy": "*",
     "image-size": "*",
@@ -21,6 +20,9 @@
     "underscore": "*",
     "underscore.string": "*",
     "wrench": "*"
+  },
+  "peerDependencies": {
+      "gorillascript-community": "*",
   },
   "main": "compile.js",
   "name": "gs-project",
