@@ -96,7 +96,7 @@ Function.prototype.cachePromise := #(timeout)
 	let res = #**
 		if invalidated
 			try
-				result := yield oldFunc.apply @, arguments
+				result := await oldFunc.apply @, arguments
 				hasResult := true
 				invalidated := false
 				setTimeout(
