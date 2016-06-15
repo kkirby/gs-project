@@ -17,7 +17,7 @@ class! extends StateMachine
 		@timeout ?=in config
 		@acceptableFailStatusCodes := config.acceptableFailStatusCodes ? []
 		$(@queueProvider):on! mutated()@**
-			@model.queueItemCount := yield @queueProvider.count()
+			@model.queueItemCount := await @queueProvider.count()
 	
 	def getStates() -> [\idle,\syncing]
 	
@@ -46,14 +46,14 @@ class! extends StateMachine
 		def enter()**
 			try
 				let table = @queueProvider
-				let apiUrl = yield @urlProvider.get()
-				for record in yield table.allRecords()
+				let apiUrl = await @urlProvider.get()
+				for record in await table.allRecords()
 					let {method,uri,data} = record
 					try
-						let response = JSON.parse yield RemoteRequest().call(method, apiUrl & uri, {}, data)
+						let response = JSON.parse await RemoteRequest().call(method, apiUrl & uri, {}, data)
 					catch e
 						unless e.statusCode in @acceptableFailStatusCodes; throw e
-					yield table.delete record
+					await table.delete record
 			catch e; @emitEvent \failed, e
 			else; @emitEvent \success
 			finally; @transition \idle

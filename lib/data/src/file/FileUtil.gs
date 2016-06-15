@@ -7,18 +7,18 @@ class!
 	@DIR := 0
 	@FILE := 1
 	@GetItem := #(path,size = 1024 * 1024 * 5,type = @FILE,options = {+create,-exclusive})**
-		let fs = yield @RequestFileSystem(1,size)
+		let fs = await @RequestFileSystem(1,size)
 		let pathSegments = path.replace(r'^file://','').split '/'
 		let basename = pathSegments.pop()
-		let dir = yield fs.root.getDirectoryRecursive pathSegments.join('/'), options
+		let dir = await fs.root.getDirectoryRecursive pathSegments.join('/'), options
 		let entry = if type == @DIR
-			yield dir.getDirectory basename, options
+			await dir.getDirectory basename, options
 		else
-			yield dir.getFile basename, options
+			await dir.getFile basename, options
 		entry
 	@Exists := #(path)**
-		let fs = yield @RequestFileSystem(1,1024 * 1024 * 5)
+		let fs = await @RequestFileSystem(1,1024 * 1024 * 5)
 		let pathSegments = path.replace(r'^file://','').split '/'
 		let basename = pathSegments.pop()
-		let dir = yield fs.root.getDirectoryRecursive pathSegments.join('/')
-		yield dir.exists basename
+		let dir = await fs.root.getDirectoryRecursive pathSegments.join('/')
+		await dir.exists basename
