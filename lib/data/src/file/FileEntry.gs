@@ -17,7 +17,7 @@ class! extends Entry
 			)
 	
 	def createReader()**
-		yield (yield @resolve()).createReader()
+		await (await @resolve()).createReader()
 		
 		
 			

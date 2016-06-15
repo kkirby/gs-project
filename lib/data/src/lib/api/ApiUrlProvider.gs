@@ -10,5 +10,5 @@ class! extends Component
 		let obj = Object.create @
 		let self = @
 		obj.get := #()**
-			(yield self.get()) & '/' & method
+			(await self.get()) & '/' & method
 		obj

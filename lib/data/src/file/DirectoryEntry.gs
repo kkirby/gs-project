@@ -2,7 +2,7 @@ import .Entry
 
 let checkExistance(entry,name,getter)**
 	try
-		yield entry[getter](name,{-create,+exclusive})
+		await entry[getter](name,{-create,+exclusive})
 	catch e
 		if e.name in [\NotFoundError,\TypeMismatchError]
 			false
@@ -17,11 +17,11 @@ class! extends Entry
 		if typeof path == \string; path := path.split r'[/]'g
 		if path[0] == ''; path.shift()
 		let pathItem = path.shift()
-		let mutable entry = yield checkExistance @, pathItem, \getDirectory
+		let mutable entry = await checkExistance @, pathItem, \getDirectory
 		if entry != false and path.length > 0
-			yield entry.exists path
+			await entry.exists path
 		else if entry == false and path.length == 0
-			entry := yield checkExistance @, pathItem, \getFile
+			entry := await checkExistance @, pathItem, \getFile
 		entry
 	
 	def getDirectory(path,options) -> new Promise #(resolve,reject)@
@@ -36,7 +36,7 @@ class! extends Entry
 		if typeof path == \string; path := path.split r'[\\/]'g
 		if path[0] == ''; path.shift()
 		for reduce dir in path, current = @
-			yield current.getDirectory dir, options
+			await current.getDirectory dir, options
 	
 	def removeRecursively() ->new Promise #(resolve,reject)@
 		@_entry.removeRecursively(
@@ -50,8 +50,8 @@ class! extends Entry
 		if options.exclusive == true and options.create == true and options.deleteOnExists == true
 			let entry = @exists path
 			if entry != false
-				yield entry.remove()
-		yield new Promise #(resolve,reject)@
+				await entry.remove()
+		await new Promise #(resolve,reject)@
 			@_entry.getFile(
 				path
 				options
