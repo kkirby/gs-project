@@ -1,10 +1,10 @@
 class!
 	def _entry = null
 	def _target = null
-	def constructor(@_target)
-		@_target := new FileReader()
+	def constructor(@_entry)
+		@_target := new GLOBAL.FileReader()
 		@_onResult := new Promise #(resolve,reject)@
-			$(@):on loadend()@
+			@_target.onloadend := #@
 				if @error?; reject @error
 				else; resolve @result
 	dyn bind onabort -> @_target.onabort
@@ -17,7 +17,18 @@ class!
 	dyn getResult() -> @_target.result
 	dyn getError() -> @_target.error
 	
-	def readAsArrayBuffer() -> @_target.readAsArrayBuffer @_entry
-	def readAsBinaryString() -> @_target.readAsBinaryString @_entry
-	def readAsDataURL() -> @_target.readAsDataURL @_entry
-	def readAsText() -> @_target.readAsText @_entry
+	def readAsArrayBuffer()
+		@_target.readAsArrayBuffer @_entry
+		@_onResult
+	
+	def readAsBinaryString()
+		@_target.readAsBinaryString @_entry
+		@_onResult
+		
+	def readAsDataURL()
+		@_target.readAsDataURL @_entry
+		@_onResult
+		
+	def readAsText()
+		@_target.readAsText @_entry
+		@_onResult
