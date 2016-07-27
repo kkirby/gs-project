@@ -31,7 +31,7 @@
     "type": "git",
     "url": "http://github.com/kkirby/gs-project"
   },
-  "version": "2.0.1",
+  "version": "2.0.2",
   "bin": {
     "gs-compile": "./compileCli.js"
   },
