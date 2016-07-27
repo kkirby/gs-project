@@ -12,7 +12,7 @@ class! extends StateMachineWithView
 	def backButtonNode = null
 	def presenterNode = null
 	def presenterCount = 0
-	def transitioning = false
+	def transitioning = null
 	
 	def setup(config = {})
 		@headerNode := $('.NavigationControllerHeader',@node)
@@ -33,24 +33,11 @@ class! extends StateMachineWithView
 			$(@node):addClass config.className
 		$(window):on resize @@.updateWidth
 		$(@view):on afterShow()@ -> @updateWidth()
+		@transitoning := new Promise #(resolve) -> resolve()
 	
 	def catchAll(handler,...data)
 		if @controllerList.length > 0
 			@controllerList[* - 1].handle handler, ...data
-	
-	def render(controller)
-		die if @presenterCount > 0
-		die if @transitoning
-		@controllerList.push controller
-		@updateWidth()
-		@view.addChildView controller.view, '.NavigationControllerContentInner'
-		@updateTitle()
-		@updateBackButton()
-		if @controllerList.length > 1
-			@transitoning := true
-			@view.iScroll.next(450)
-			wait 450
-				@transitoning := false
 	
 	def blurAllInputs()
 		let node = @controllerList[* - 1].view.node
@@ -58,32 +45,60 @@ class! extends StateMachineWithView
 			input.blur()
 			
 	def presentController(controller)
-		@blurAllInputs()
-		@presenterCount += 1
-		let presenter = @presenterNode.cloneNode true
-		presenter.style.display := \none
-		@controllerList.push controller
-		$(@node):append presenter
-		sleep 1
-		presenter.style.display := \block
-		controller.view.show presenter
+		@transitoning := @transitoning.then #@ -> new Promise #(fulfill)@
+			@blurAllInputs()
+			@presenterCount += 1
+			let presenter = @presenterNode.cloneNode true
+			presenter.style.display := \none
+			@controllerList.push controller
+			$(@node):append presenter
+			sleep 1
+			presenter.style.display := \block
+			controller.view.show presenter
+			setTimeout fulfill, 500
 	
 	def dismissController(controller)
-		let position = @controllerList.indexOf controller
-		die unless position != -1
-		@blurAllInputs()
-		@presenterCount -= 1
-		@controllerList.splice position, 1
-		let presenter = controller.node.parentNode
-		let eventName = Vendor(\animationEnd)
-		let event = #(e)@
-			die unless e.animationName == \hideNavigationPresenter
-			presenter.removeEventListener eventName, event
-			controller.view.hide()
-			@node.removeChild presenter
-		presenter.addEventListener eventName, event, false
-		$(presenter):addClass \Dismiss
-		
+		@transitoning := @transitoning.then #@ -> new Promise #(fulfill)@
+			let position = @controllerList.indexOf controller
+			die unless position != -1
+			@blurAllInputs()
+			@presenterCount -= 1
+			@controllerList.splice position, 1
+			let presenter = controller.node.parentNode
+			let eventName = Vendor(\animationEnd)
+			let event = #(e)@
+				die unless e.animationName == \hideNavigationPresenter
+				presenter.removeEventListener eventName, event
+				controller.view.hide()
+				@node.removeChild presenter
+			presenter.addEventListener eventName, event, false
+			$(presenter):addClass \Dismiss
+			setTimeout fulfill, 500	
+	
+	def render(controller)
+		die if @presenterCount > 0
+		@transitoning := @transitoning.then #@ -> new Promise #(fulfill)@
+			@controllerList.push controller
+			@updateWidth()
+			@view.addChildView controller.view, '.NavigationControllerContentInner'
+			@updateTitle()
+			@updateBackButton()
+			if @controllerList.length > 1
+				@view.iScroll.next(450)
+				setTimeout fulfill, 500
+			else; fulfill()
+	
+	def goBack()
+		@transitoning := @transitoning.then #@ -> new Promise #(fulfill)@
+			@blurAllInputs()
+			let controller = @controllerList.pop()
+			@updateTitle()
+			@updateBackButton()
+			@view.iScroll.prev(450)
+			wait 500
+				controller.view.hide()
+				@updateWidth()
+				fulfill()
 	
 	def updateBackButton()
 		$(@node):toggleClass \EnableBackButton, @controllerList.length > 1
@@ -115,13 +130,3 @@ class! extends StateMachineWithView
 			..hasHorizontalScroll := true
 			..wrapperOffset := @view.iScroll.wrapper.getClientRects()[0]
 			.._execEvent \refresh
-	
-	def goBack()
-		@blurAllInputs()
-		let controller = @controllerList.pop()
-		$(@view.iScroll):one scrollEnd()@
-			controller.view.hide()
-			@updateWidth()
-		@updateTitle()
-		@updateBackButton()
-		@view.iScroll.prev(450)

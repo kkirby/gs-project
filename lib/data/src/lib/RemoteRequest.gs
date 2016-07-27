@@ -1,18 +1,18 @@
 import sys.Component
 import .#.Browser
 import .#.NodeJs
+import .CustomError
 
 let root = Browser ? NodeJs
 class! extends root
-	@Error := class
+	@Error := CustomError class RemoteRequestError
 		def statusCode = 0
 		def statusText = null
-		def constructor(@statusCode,@statusText)
+		def constructor(@statusCode,@statusText,@response)
 			if @statusCode == 0
 				@statusText := 'No internet connection, or the server isn\'t responding.'
 			@statusText or= 'Unknown Error'
-		
-		def toString() -> @statusText & ' (' & @statusCode & ')'
+			super @statusText & ' (' & @statusCode & ')'
 			
 	def call(method,uri,headers = {},mutable userData = null,@responseType = null)
 		new Promise #(resolve,reject)@
@@ -22,7 +22,7 @@ class! extends root
 					if statusCode >= 200 and statusCode < 300
 						resolve @response ? @responseText
 					else
-						reject RemoteRequest.Error(@statusCode,(if @statusText?.length > 0 then @statusText else null))
+						reject RemoteRequest.Error(@statusCode,(if @statusText?.length > 0 then @statusText else null),@response ? @responseText)
 			@open method, uri
 			if typeof! userData == \Object
 				if headers not ownskey 'Content-Type'
@@ -32,4 +32,3 @@ class! extends root
 			@send(
 				if userData?; userData
 			)
-			

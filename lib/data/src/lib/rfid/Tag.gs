@@ -10,11 +10,7 @@ class! extends Component
 	def initialize(config)
 		@id ?=in config
 		@type ?=in config
-		@payloads := 
-			if config.ndefMessage?
-				for element in config.ndefMessage
-					Payload element
-			else; []
+		@payloads := config.ndefMessage?.map(Payload) ? []
 	
 	def getIdAsNumber() -> Decoder.TagToNumber @id
 	def getIdAsUnsignedInt(little) -> Decoder.TagToUnsignedInt @id, little

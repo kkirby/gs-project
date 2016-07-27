@@ -29,7 +29,7 @@ class! extends Component
 		let afterSet(tnf) -> @tnfStr := Tnfs[tnf]
 	
 	dyn def attr: type = null
-		let afterSet(type) -> @typeStr := BytestoString type
+		let afterSet(type) -> @typeStr := BytesToString type
 	
 	def data = null
 	

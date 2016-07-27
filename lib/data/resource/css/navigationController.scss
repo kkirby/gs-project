@@ -9,7 +9,7 @@
 		@include transition(opacity .2s);
 	}
 	
-	&.EnableBackButton .NavigationControllerHeaderBackButton {
+	&.EnableBackButton > .NavigationControllerHeader > .NavigationControllerHeaderBackButton {
 		opacity: 1;
 		pointer-events: all;
 	}
