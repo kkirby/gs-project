@@ -23,6 +23,7 @@ class! extends StateMachineWithView
 		@presenterNode := $('.NavigationControllerPresenter',@node)
 		@presenterNode.parentNode.removeChild @presenterNode
 		@controllerList := []
+		@transitoning := new Promise #(resolve) -> resolve()
 		$(@node):on render(e)@ -> @render e.detail
 		$(@node):on present(e)@ -> @presentController e.detail
 		$(@node):on dismiss(e)@ -> @dismissController e.detail
@@ -33,7 +34,6 @@ class! extends StateMachineWithView
 			$(@node):addClass config.className
 		$(window):on resize @@.updateWidth
 		$(@view):on afterShow()@ -> @updateWidth()
-		@transitoning := new Promise #(resolve) -> resolve()
 	
 	def catchAll(handler,...data)
 		if @controllerList.length > 0
