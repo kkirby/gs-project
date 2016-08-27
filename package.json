@@ -18,7 +18,7 @@
     "wrench": "~1.5.8"
   },
   "peerDependencies": {
-    "gorillascript-community": "^1.0.2"
+    "gorillascript-community": "^2.0.0"
   },
   "main": "compile.js",
   "name": "gs-project",
