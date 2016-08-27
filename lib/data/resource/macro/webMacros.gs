@@ -1,51 +1,6 @@
 Element.prototype.matches or= Element.prototype.matchesSelector or Element.prototype.mozMatchesSelector or Element.prototype.webkitMatchesSelector or Element.prototype.msMatchesSelector
 
 macro $$_bootstrap()
-	let jsdom = rootRequire \jsdom
-	let deasync = rootRequire \deasync
-	
-	GLOBAL.$$_processHtmlNode := #(node,context)
-		let res = []
-		let nodeVar = context.tmp()
-		let nodeName = node.nodeName.toLowerCase()
-		if nodeName == '#text'
-			let nodeValue = node.nodeValue
-			res.push ASTE let $nodeVar = document.createTextNode $nodeValue
-		else
-			res.push ASTE let $nodeVar = document.createElement $nodeName
-			for attr in node.attributes
-				let attrName = attr.name
-				let attrValue = attr.value
-				res.push ASTE $nodeVar.setAttribute $attrName, $attrValue
-			for child in node.childNodes
-				let _tmp = $$_processHtmlNode child, context
-				res.push ASTE $nodeVar.appendChild $_tmp
-		res.push nodeVar
-		ASTE $res
-	
-	GLOBAL.$$_processHtml := #(html,context)
-		let mutable loaded = false
-		let mutable window = null
-		let mutable err = null
-		jsdom.env {
-			html
-			parsingMode: \html
-			done: #(_err, _window)
-				err := _err
-				window := _window
-				loaded := true
-		}
-		while not loaded
-			deasync.sleep 100
-		if err
-			@context.error err, htmlNode
-			return
-		let nodes = window.document.querySelectorAll '*'
-		let res = for node in nodes
-			if node.nodeName.toLowerCase() in [\body,\html,\head]; continue
-			$$_processHtmlNode node, context
-		if res.length == 1; res[0]
-		else; context.internalCall \array, res
 
 	GLOBAL.$$_getType := #(input)
 		let mutable type = null
@@ -426,14 +381,42 @@ macro $
 		AST
 			($elm).innerHTML := $html
 	
-	syntax html as InvocationArguments,':','createDom','(',')'
-		let htmlNode = html[0]
-		html := htmlNode
+	syntax args as InvocationArguments,':','createDom','(',')'
+		let html = args[0]
 		if html.nodeType != \value
 			@error('Value was not passed to createDom.',html)
-		else
-			html := html.value
-			$$_processHtml html, @
+		let context = @
+		let htmlparser = root.process.mainModule.require('/Users/kkirbatski/Projects/gs-project/node_modules/htmlparser2')
+		let scope = []
+		scope.get := #() -> scope[scope.length - 1]
+		let mutable rootElm = null
+		let output = []
+		let parser = new htmlparser.Parser(
+			{
+				onopentag: #(name,attributes)
+					let nodeVar = context.tmp()
+					output.push ASTE let $nodeVar = document.createElement $name
+					for key, value of attributes
+						output.push ASTE $nodeVar.setAttribute $key, $value
+					if rootElm == null; rootElm := nodeVar
+					else
+						let parentScope = scope.get()
+						output.push ASTE $parentScope.appendChild $nodeVar
+					scope.push nodeVar
+				ontext: #(text)
+					let parentScope = scope.get()
+					output.push ASTE $parentScope.appendChild(document.createTextNode($text))
+				onclosetag: #(name)
+					scope.pop()
+			},
+			{
+				+decodeEntities
+			}
+		)
+		parser.write(html.value)
+		parser.end()
+		output.push rootElm
+		ASTE $output
 
 	syntax body as Body
 		AST
