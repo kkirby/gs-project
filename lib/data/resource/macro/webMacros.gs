@@ -386,7 +386,7 @@ macro $
 		if html.nodeType != \value
 			@error('Value was not passed to createDom.',html)
 		let context = @
-		let htmlparser = global.process.mainModule.require('htmlparser2')
+		let htmlparser = rootRequire('htmlparser2')
 		let scope = []
 		scope.get := #() -> scope[scope.length - 1]
 		let mutable rootElm = null
