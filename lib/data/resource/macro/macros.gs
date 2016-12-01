@@ -39,6 +39,22 @@ macro yield-cb
 		call := @call call.func, args
 		ASTE yield to-promise! (#(callback)@ -> $call)()
 
+macro await-cb
+	syntax pos as ('(',this as Expression,')')?,call as Expression
+		if pos?.name; pos := pos.name
+		call := @macroExpandAll call
+		let args = [...call.args]
+		let successCb = ASTE #(result) -> callback(null,result)
+		let errorCb = ASTE #(err) -> callback(err)
+		if pos == \start; args.splice(0,0,successCb,errorCb)
+		else if not pos? or pos == \end; args.splice(args.length,0,successCb,errorCb)
+		else if pos == \custom
+			for arg, index in args
+				if arg.name == \success; args[index] := successCb
+				if arg.name == \error; args[index] := errorCb
+		call := @call call.func, args
+		ASTE await to-promise! (#(callback)@ -> $call)()
+
 macro ucfirst(str)
 	@maybe-cache str, #(setStr, str)
 		ASTE $setStr.substr(0,1).toUpperCase()&$str.substr(1)

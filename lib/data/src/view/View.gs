@@ -1,15 +1,5 @@
 import sys.Component
 
-import macro sys.webMacros
-
-macro $View
-	syntax '(',node as Expression,superclass as (',',this as Identifier)?,')',body as Body?
-		superclass ?= @ident \View
-		AST
-			class! extends $superclass
-				def node = $node
-				$body
-
 class! extends Component
 	def node = null
 	def childViews = null
