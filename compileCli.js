@@ -3,31 +3,6 @@ var	path = require('path'),
 	Compiler = require('./lib/compiler/lib/Compiler.js'),
 	ConfigLoader = require('./lib/compiler/lib/ConfigLoader.js');
 
-/*var gs = require('gorillascript');
-
-rootRequire = require;
-gs.getSerializedPrelude().then(function(){
-	console.log(arguments);
-	process.exit();
-},function(){
-	console.log(arguments);
-});
-/*var macrosFile = '/Users/kkirby/Projects/GsScriptProject/lib/data/resource/macro/macros.gs';
-var res = gs.parser(
-	require('fs').readFileSync(macrosFile,'utf8'),null,
-	{
-		serializeMacros: true, filename: macrosFile
-	}
-).then(function(parsed){
-	require('fs').writeFileSync(
-		'/Users/kkirby/Projects/GsScriptProject/lib/data/resource/macro/macrosCompiled.gs',
-		parsed.macros.serialize()
-	);
-	console.log('done');
-},function(){
-	console.log(arguments);
-});*/
-
 var cwd = __dirname;
 var defaultConfigFile = path.join(cwd,'config.default.js');
 
