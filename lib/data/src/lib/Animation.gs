@@ -151,7 +151,7 @@ class! extends StateMachine
 			..data := value: null
 		let distances = {}
 		for key, value of start
-			distances[key] = end[key] - value
+			distances[key] := end[key] - value
 		let oldFunc = options.func
 		options.func := #(data)
 			data.value := {}
