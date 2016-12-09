@@ -18,7 +18,7 @@ class!
 			@_entry.moveTo(
 				parent._entry ? parent
 				newName
-				#(result) -> resolve @_factory.get(result)
+				#(result)@ -> resolve @_factory.get(result)
 				reject
 			)
 	
@@ -27,7 +27,7 @@ class!
 			@_entry.copyTo(
 				parent._entry ? parent
 				newName
-				#(result) -> resolve @_factory.get(result)
+				#(result)@ -> resolve @_factory.get(result)
 				reject
 			)
 	
