@@ -98,9 +98,9 @@ class Rect
 					height := rect.height
 					width := height * ratio
 		if Bitwise.IsBitInValue Rect.CENTER, flags
-			if height < rect.height
+			if height > rect.height
 				y := (rect.height - height) / 2
-			if width < rect.width
+			if width > rect.width
 				x := (rect.width - width) / 2
 		Rect x, y, width, height
 
