@@ -144,4 +144,19 @@ class! extends StateMachine
 			data.value := Math.round((start + distance * data.percent) * 1000) / 1000
 			oldFunc data
 		@Animate options
+	
+	def AnimateValues(start,end,...args)
+		die if start <~=> end
+		let options = @_processArguments args
+			..data := value: null
+		let distances = {}
+		for key, value of start
+			distances[key] := end[key] - value
+		let oldFunc = options.func
+		options.func := #(data)
+			data.value := {}
+			for key, value of start
+				data.value[key] := Math.round((value + distances[key] * data.percent) * 1000) / 1000
+			oldFunc data
+		@Animate options
 class!()
