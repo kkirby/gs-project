@@ -30,4 +30,6 @@ class! extends StateMachine
 					_handler e
 			else
 				_handler e
-
+	
+	def resetState()
+		@view?.resetState?()
