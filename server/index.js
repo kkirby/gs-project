@@ -33,15 +33,12 @@ if (!argv.port && !argv.p) {
 	console.log("Port not specified, defaulting to " + defaultPort);
 }
 
-//app.get('/', function (req, res) {
-//	res.send('Hello World!');
-//});
 app.use(express.static(staticDir))
 app.listen(port, function () {
 	console.log('App listening on port ' + port + '!');
 });
 
-var host = '127.0.0.1';
+var host = '0.0.0.0';
 var corsPort = argv['cors-port'];
 if (corsPort) {
 	var cors_proxy = require('cors-anywhere');
@@ -52,4 +49,3 @@ if (corsPort) {
 		console.log('Running CORS Anywhere on ' + host + ':' + corsPort);
 	});
 }
-
