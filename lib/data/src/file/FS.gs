@@ -1,5 +1,3 @@
-import .DirectoryEntry
-
 class!
 	def _fs = null
 	dyn getName() -> @_fs.name
