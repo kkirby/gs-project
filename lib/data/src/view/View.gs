@@ -84,4 +84,8 @@ class! extends Component
 			if remove; @hide()
 			else; $(@node):css \display, \none
 		$(@node):addClass \HideAnimate
-			
+	
+	def resetState()
+		for childView in @childViews; childView.resetState?()
+		for node in $('*[data-has-reset-state]',@node)[]
+			node.resetState()
