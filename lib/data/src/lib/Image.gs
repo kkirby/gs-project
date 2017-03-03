@@ -1,4 +1,4 @@
-import js sys.JPEGEncoder
+import js sys.jpegEncoder
 import js sys.canvasToBlob
 
 let Bitwise = {
