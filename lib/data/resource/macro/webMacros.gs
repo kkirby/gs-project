@@ -480,7 +480,9 @@ macro dynInput
 				else if type == \textarea; \textarea
 			AST
 				let node = $($sel & '[name="'&$inputName&'"]',@node)
-				if node? and value?; node.value := value
+				if node?
+					if value == null; node.value := ''
+					else; node.value := value
 		// - Select
 		else if type == 'select'
 			AST
