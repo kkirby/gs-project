@@ -1,8 +1,10 @@
 import sys.lib.Long
 
 class!
-	@TagToNumber := #(mutable tag,padToTen = true)
-		while not (tag.length %% 4); tag.unshift 0
+	@TagToNumber := #(mutable tag,padToTen = true,fourByteBigEndian = false)
+		while not (tag.length %% 4)
+			if fourByteBigEndian; tag.push 0
+			else; tag.unshift 0
 		let length as Number = tag.length
 		let numbers = for index as Number in length to 1 by -4
 			for reduce byte as Number in tag[index - 4 to index - 1] by -1, previousByte = 0
