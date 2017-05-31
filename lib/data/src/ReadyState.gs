@@ -2,6 +2,7 @@ import sys.lib.Function
 
 class!
 	def _readyState = 1
+	def _failed = false
 	def waiters = null
 	dyn getIsReady() -> @_readyState == 0 
 	
@@ -17,7 +18,13 @@ class!
 		waitFor
 	
 	def waitFor(waitFor) -> @wait waitFor
-
+	
+	def error(err)!
+		@_failed := err
+		let waiters = @waiters.concat()
+		@waiters := []
+		for waiter in waiters; waiter(null,@_failed)
+	
 	def ready()!
 		if (@_readyState -= 1) == 0
 			// We copy and reassign before we sleep
@@ -32,8 +39,13 @@ class!
 	
 	def _whenReady(cb)
 		if @_readyState == 0; cb()
+		else if @_failed != false; cb(null,@_failed)
 		else; @waiters.push cb
 	
 	def whenReady(cb)
 		if cb; @_whenReady(cb)
-		else; new Promise #(fulfill)@ -> @_whenReady fulfill
+		else; new Promise #(fulfill,reject)@ -> @_whenReady #(res,err)
+			if err?
+				reject err
+			else
+				fulfill res
