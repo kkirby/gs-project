@@ -1,7 +1,7 @@
 import sys.lib.Long
 
 class!
-	@TagToNumber := #(mutable tag,padToTen = true,fourByteBigEndian = false)
+	@TagToNumber := #(mutable tag,padToTen = true,fourByteBigEndian = false,leftTrim = false)
 		while not (tag.length %% 4)
 			if fourByteBigEndian; tag.push 0
 			else; tag.unshift 0
@@ -12,7 +12,11 @@ class!
 			let mutable value = previousByte biturshift 0
 			if padToTen; value := ('0000000000'&value).slice -10
 			value
-		numbers.join ''
+		let mutable result = numbers.join ''
+		if leftTrim
+			result := result.replace r'^0+', ''
+		result
+		
 	
 	@TagToUnsignedInt := #(bytes,little = false)
 		let _255 = Long(255)
