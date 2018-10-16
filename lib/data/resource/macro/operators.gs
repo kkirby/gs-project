@@ -243,6 +243,9 @@ macro helper __compare = #(mutable a,mutable b)
 		return for every aValue, aKey in a
 			__compare b[aKey], aValue
 	else if aType == \object
+		if a == null
+			if b == null; return true
+			return false
 		let [aTypeName,bTypeName] = [typeof! a,typeof! b]
 		if aTypeName != bTypeName; return false
 		if aTypeName == \Object
