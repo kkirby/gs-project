@@ -18,7 +18,8 @@ class!
 		result
 		
 	
-	@TagToUnsignedInt := #(bytes,little = false)
+	@TagToUnsignedInt := #(mutable bytes,little = false)
+		bytes := bytes.map #(byte) -> (byte + 256) % 256
 		let _255 = Long(255)
 		let _256 = Long(256)
 		let result = Long(0)
