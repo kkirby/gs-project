@@ -13,5 +13,5 @@ class! extends Component
 		@payloads := config.ndefMessage?.map(Payload) ? []
 	
 	def getIdAsNumber(padToTen = true,fourByteBigEndian = false,leftTrim = false) -> Decoder.TagToNumber @id, padToTen, fourByteBigEndian, leftTrim
-	def getIdAsUnsignedInt(little) -> Decoder.TagToUnsignedInt @id, little
+	def getIdAsUnsignedInt(little,castToUnsignedChar = false) -> Decoder.TagToUnsignedInt @id, little, castToUnsignedChar
 	def getIdAsHexString(trim) -> Decoder.TagToHexString @id, trim
