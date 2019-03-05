@@ -273,6 +273,10 @@ macro $
 		let elm2 = AST ($($elm))
 		@maybeCache elm2, #(setElm,elm)
 			AST ($setElm).insertBefore $element, $elm.children[0]
+
+	syntax selector as InvocationArguments,':','after',element as Expression
+                let elm = $$_reduce arguments
+                AST ($elm).after $element
 	
 	syntax selector as InvocationArguments,':','firstChild',args as InvocationArguments
 		let elm = $$_reduce arguments

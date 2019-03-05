@@ -17,7 +17,7 @@ class! extends Component
 		if @_isShowing; callback()
 		else; _(@):one afterShow callback
 	
-	def addChildViews(childViews,selector)!
+	def addChildViews(childViews,selector,beforeSelector)!
 		@childViews := @childViews.concat childViews
 		let node =
 			if selector?
@@ -27,11 +27,14 @@ class! extends Component
 				@node
 		for view in childViews
 			if @_isShowing; view.beforeShow()
-			$(node):append view.node
+			if beforeSelector and typeof beforeSelector == \string
+				$(beforeSelector,@node):after view.node
+			else	
+				$(node):append view.node
 			if @_isShowing; view.afterShow()
 	
-	def addChildView(childView,selector)!
-		@addChildViews [childView], selector
+	def addChildView(childView,selector,beforeSelector)!
+		@addChildViews [childView], selector, beforeSelector
 	
 	def removeChildViews(childViews)
 		for childView in childViews; @removeChildView childView
