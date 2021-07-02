@@ -49,7 +49,7 @@ macro $$_bootstrap()
 					__wrap(context)
 			else
 				__symbol(null,\ident,\document)
-		
+
 		if data.length == 1
 			_getContextQuery data[0], isMultiple
 		else
@@ -73,7 +73,7 @@ macro $
 	// Basic Array
 	syntax selector as InvocationArguments,'[',']'
 		$$_reduce arguments, true
-			
+
 	syntax selector as InvocationArguments,'[',']',':','each','as',name as Identifier,body as (Body|Expression)
 		let query = $$_reduce arguments, true
 		let tmp = @tmp()
@@ -82,11 +82,11 @@ macro $
 			$assignment
 			for $name in $tmp
 				$body
-	
+
 	// TODO: Implement
 	//syntax selector as InvocationArguments,':','onAnyFirst',runNow as '!'?,event as (Identifier|Expression),spacer as (':')?,func as (FunctionDeclaration|Expression)
-		
-	
+
+
 	syntax selector as InvocationArguments,':','on',runNow as '!'?,event as (Identifier|Expression),spacer as (':')?,func as (FunctionDeclaration|Expression)
 		let element = $$_reduce arguments
 		@maybe-cache func, #(setFunc, func)
@@ -109,7 +109,7 @@ macro $
 			AST
 				$first
 				$second
-	
+
 	syntax selector as InvocationArguments,':','onOneOf',body as Body
 		let element = $$_reduce arguments
 		let elementVar = @tmp \element, true
@@ -151,7 +151,7 @@ macro $
 				{
 					remove: $removerVar
 				}
-	
+
 	syntax selector as InvocationArguments,':','watch','(',other as Expression,')',event as (Identifier|Expression),func as (FunctionDeclaration|Expression)
 		let funcVar = @tmp \func, true
 		let nestedSelector = other.value
@@ -160,19 +160,19 @@ macro $
 			$($selector):on $event(e)
 				if e.target.matches $nestedSelector
 					$funcVar ...arguments
-	
+
 	syntax selector as InvocationArguments,':','is',isSelector as InvocationArguments,body as Body
 		let newElm = $$_reduce arguments
 		let newSelector = isSelector[0]
 		AST
 			if $newElm.matches($newSelector)
 				$body
-				
+
 	syntax selector as InvocationArguments,':','eIs',isSelector as InvocationArguments
 		let newElm = $$_reduce arguments
 		let newSelector = isSelector[0]
 		AST $newElm.matches($newSelector)
-				
+
 	syntax selector as InvocationArguments,':','toggle',args as InvocationArguments
 		let newElm = $$_reduce arguments
 		let modifier = if args.length == 1 then args[0]
@@ -188,7 +188,7 @@ macro $
 					$newElm.style.display := ''
 				else
 					$newElm.style.display := \none
-	
+
 	syntax selector as InvocationArguments,':','one',event as (Identifier|Expression),spacer as (':')?,func as (FunctionDeclaration|Expression)
 		let userCallback = @tmp \userCallback, true
 		let callback = @tmp \callback, true
@@ -211,7 +211,7 @@ macro $
 				$elm.removeEventListener $event, $callback
 				$userCallback.apply this, arguments
 			$elm.addEventListener $event, $callback
-	
+
 	syntax selector as InvocationArguments,':','closest',matchSelector as InvocationArguments
 		let newElm = $$_reduce arguments
 		let newSelector = matchSelector[0]
@@ -221,7 +221,7 @@ macro $
 			until $tmpElm.matches($newSelector)
 				$tmpElm := $tmpElm.parentNode
 			$tmpElm
-	
+
 	syntax selector as InvocationArguments,':','trigger',event as InvocationArguments
 		let htmlEvent = @tmp \htmlEvent
 		let newElm = $$_reduce arguments
@@ -231,25 +231,25 @@ macro $
 			let $htmlEvent = document.createEvent(\CustomEvent)
 			$htmlEvent.initCustomEvent($eventName,true,true,$data)
 			$newElm.dispatchEvent($htmlEvent)
-	
+
 	syntax selector as InvocationArguments,':','hasClass',className as InvocationArguments
 		let newElm = $$_reduce arguments
 		let newClassName = className[0]
 		AST
 			$newElm.classList.contains($newClassName)
-	
+
 	syntax selector as InvocationArguments,':','removeClass',className as InvocationArguments
 		let newElm = $$_reduce arguments
 		let newClassName = className[0]
 		AST
 			$newElm.classList.remove($newClassName)
-			
+
 	syntax selector as InvocationArguments,':','addClass',className as InvocationArguments
 		let newElm = $$_reduce arguments
 		let newClassName = className[0]
 		AST
 			$newElm.classList.add($newClassName)
-			
+
 	syntax selector as InvocationArguments,':','toggleClass',args as InvocationArguments
 		let newElm = $$_reduce arguments
 		let className = args[0]
@@ -263,11 +263,11 @@ macro $
 					$newElm.classList.add($className)
 				else
 					$newElm.classList.remove($className)
-		
+
 	syntax selector as InvocationArguments,':','append',element as Expression
 		let elm = $$_reduce arguments
 		AST ($($elm)).appendChild $element
-	
+
 	syntax selector as InvocationArguments,':','prepend',element as Expression
 		let elm = $$_reduce arguments
 		let elm2 = AST ($($elm))
@@ -275,36 +275,43 @@ macro $
 			AST ($setElm).insertBefore $element, $elm.children[0]
 
 	syntax selector as InvocationArguments,':','after',element as Expression
-                let elm = $$_reduce arguments
-                AST ($elm).after $element
-	
+		let elm = $$_reduce arguments
+		let ref = @tmp()
+		AST
+			let $ref = $($elm)
+			if $ref?.parentNode?
+				$ref.parentNode.insertBefore($element, $ref.nextSibling)
+
+		// AST ($elm).parentNode.insertBefore($element, $ref.nextSibling)
+		// AST ($elm).after $element
+
 	syntax selector as InvocationArguments,':','firstChild',args as InvocationArguments
 		let elm = $$_reduce arguments
 		AST
 			($($elm)).children[0]
-	
+
 	syntax selector as InvocationArguments,':','lastChild',args as InvocationArguments
 		let elm = $$_reduce arguments
 		let elm2 = ASTE ($($elm))
 		@maybeCache elm2, #(setElm,elm)
 			AST
 				($setElm).children[$elm.children.length - 1]
-	
+
 	syntax selector as InvocationArguments,':','appendAll',elements as Expression
 		let elm = $$_reduce arguments
 		let tmp = @tmp()
 		AST
 			let $temp = $elm
 			for elm in $elements; $temp.appendChild elm
-		
+
 	syntax selector as InvocationArguments,':','appendTo',element as Expression
 		let elm = $$_reduce arguments
 		AST ($element).appendChild $elm
-		
+
 	syntax selector as InvocationArguments,':','remove',element as Expression
 		let elm = $$_reduce arguments
 		AST ($($elm)).removeChild $element
-	
+
 	syntax selector as InvocationArguments,':','remove','(',')'
 		let elm = $$_reduce arguments
 		let tmp = @tmp()
@@ -313,7 +320,7 @@ macro $
 			if $tmp?.parentNode?
 				$tmp.parentNode.removeChild $tmp
 			$tmp
-	
+
 	syntax selector as InvocationArguments,':','css',properties as InvocationArguments
 		let elm = $$_reduce arguments
 		let styles = {}
@@ -341,17 +348,17 @@ macro $
 		let elm = $$_reduce arguments
 		AST
 			($elm).style.display := 'none'
-	
+
 	syntax selector as InvocationArguments,':','text',text as Expression
 		let elm = $$_reduce arguments
 		AST
 			($elm).innerText := $text
-	
+
 	syntax selector as InvocationArguments,':','html',html as Expression
 		let elm = $$_reduce arguments
 		AST
 			($elm).innerHTML := $html
-	
+
 	syntax args as InvocationArguments,':','createDom','(',')'
 		let html = args[0]
 		if html.nodeType != \value
@@ -540,7 +547,7 @@ macro dynInput
 						@emitEvent 'attributeChange.'&$attrName, eventInfo
 					$(node):on keyup onchange
 					$(node):on input onchange
-						
+
 		// - Select
 		else if type == 'select'
 			AST
@@ -583,7 +590,7 @@ macro dynInput
 						}
 						@emitEvent 'attributeChange', eventInfo
 						@emitEvent 'attributeChange.'&$attrName, eventInfo
-						
+
 		let tmp = @tmp \oldSetup, true
 		AST
 			let $tmp = @prototype._bindingSetup
