@@ -3,6 +3,10 @@
     "email": "kylekirby@optimalconnection.net",
     "name": "Kyle Kirbatski"
   },
+  "contributors": [{
+	  "email": "SchraderMJ11@gmail.com",
+	  "name": "Matt Schrader"
+  }],
   "description": "A wrapper around gorillascript.",
   "dependencies": {
     "blueimp-tmpl": "~3.4.0",
@@ -29,7 +33,7 @@
     "type": "git",
     "url": "http://github.com/kkirby/gs-project"
   },
-  "version": "4.0.10",
+  "version": "4.0.11",
   "bin": {
     "gs-compile": "./compileCli.js"
   },

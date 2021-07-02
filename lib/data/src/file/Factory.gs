@@ -54,6 +54,8 @@ class!
 				\FileWriter
 			else if entry instanceof GLOBAL.File
 				\File
+		else if Symbol?.toStringTag != null 
+			entry[Symbol.toStringTag]
 		else
 			typeof! entry
 	
