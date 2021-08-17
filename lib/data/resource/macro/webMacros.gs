@@ -280,7 +280,10 @@ macro $
 		AST
 			let $ref = $($elm)
 			if $ref?.parentNode?
-				$ref.parentNode.insertBefore($element, $ref.nextSibling)
+				if $ref.nextSibling?
+					$ref.parentNode.insertBefore($element, $ref.nextSibling)
+				else
+					$ref.parentNode.appendChild $element
 
 		// AST ($elm).parentNode.insertBefore($element, $ref.nextSibling)
 		// AST ($elm).after $element
