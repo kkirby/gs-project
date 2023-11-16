@@ -10,7 +10,7 @@ class!
 		new Promise #(resolve,reject)@
 			@_directoryReader.readEntries(
 				#(entries)
-					return for entry in entries; @_factory.get entry
+					resolve for entry in entries; @_factory.get entry
 				reject
 			)
 			

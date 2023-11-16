@@ -3,8 +3,11 @@ import .Entry
 let checkExistance(entry,name,getter)**
 	try
 		await entry[getter](name,{-create,+exclusive})
+		true
 	catch e
 		if e.name in [\NotFoundError,\TypeMismatchError]
+			false
+		else if e.code == FileError.NOT_FOUND_ERR or e.code == FileError.TYPE_MISMATCH_ERR
 			false
 		else
 			throw e
@@ -48,7 +51,7 @@ class! extends Entry
 	
 	def getFile(path,options)**
 		if options.exclusive == true and options.create == true and options.deleteOnExists == true
-			let entry = @exists path
+			let entry = await @exists path
 			if entry != false
 				await entry.remove()
 		await new Promise #(resolve,reject)@
